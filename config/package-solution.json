@@ -27,7 +27,7 @@
         "title": "modern-calendar ModernCalendarWebPart Feature",
         "description": "The feature that activates ModernCalendarWebPart from the modern-calendar solution.",
         "id": "c2a397d3-8c8f-47ab-b731-897178313c15",
-        "version": "1.0.5.0",
+        "version": "1.0.8.0",
         "componentIds": [
           "c2a397d3-8c8f-47ab-b731-897178313c15"
         ]
