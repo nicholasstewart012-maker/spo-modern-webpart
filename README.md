@@ -67,6 +67,11 @@ Version|Date|Comments|
   - Choose site
   - List
   - Start, End, Title and Details fields
+  - **Color Field**: Select the column containing the color value (e.g., "CategoryColor").
+    - Supported formats:
+      - Hex: `#FF0000` or `FF0000`
+      - RGB: `rgb(255, 0, 0)` or `255, 0, 0`
+    - Invalid values will fallback to the default calendar color.
   
 
 ## Features

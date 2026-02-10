@@ -455,7 +455,7 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
         end: moment.utc(end, 'YYYY-MM-DD HH:mm:ss').toDate(),
         id: list["Id"],
         detail: list[this.properties.detail],
-        color: list[this.properties.colorField],
+        color: this._normalizeColor(list[this.properties.colorField]),
       };
     });
     this.context.statusRenderer.clearLoadingIndicator(this.domElement);
@@ -576,5 +576,46 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
           "There was an error loading your list, please verify the selected list has Calendar Events or choose a new list."
         );
       });
+  }
+
+  /**
+   * Normalizes a color string to a valid CSS color value.
+   * check, if the color is a hex value (3 or 6 chars) and add # if missing.
+   * check, if the color is a rgb value and add rgb() if missing.
+   * @param color The color string to normalize
+   */
+  private _normalizeColor(color: string): string | undefined {
+    if (!color) {
+      return undefined;
+    }
+
+    color = color.trim();
+
+    // Check for Hex (with or without #)
+    // Matches 3 or 6 hex digits, optionally preceded by #
+    const hexRegex = /^#?([0-9A-F]{3}|[0-9A-F]{6})$/i;
+    if (hexRegex.test(color)) {
+      if (!color.startsWith("#")) {
+        return "#" + color;
+      }
+      return color;
+    }
+
+    // Check for RGB (e.g., "255,0,0" or "rgb(255,0,0)")
+    // loose check for 3 distinct numbers separated by commas
+    const rgbRegex = /^(rgb\()?(\d{1,3},\s*\d{1,3},\s*\d{1,3})\)?$/i;
+    const match = color.match(rgbRegex);
+    if (match) {
+      // match[2] contains the numbers part
+      return `rgb(${match[2]})`;
+    }
+
+    // If it's already a valid named color or other format we don't strictly validate, 
+    // we return it as is, or we could return undefined to fallback.
+    // For now, let's return it as is if it looks somewhat like a string, 
+    // but the requirement was specifically about HEX and RGB.
+    // If it fails both strict checks above, we might want to return undefined 
+    // to allow FullCalendar to use the default color.
+    return undefined;
   }
 }
