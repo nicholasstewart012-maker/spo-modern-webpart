@@ -1,0 +1,7 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/deploy-azure-storage.schema.json",
+  "account": "<!-- STORAGE ACCOUNT NAME -->",
+  "container": "react-organization-chart",
+  "accessKey": "<!-- ACCESS KEY -->",
+  "workingDir": "./release/assets/"  
+}
