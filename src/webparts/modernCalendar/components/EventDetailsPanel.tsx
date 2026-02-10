@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { Panel, PanelType } from '@fluentui/react/lib/Panel';
-import { IconButton } from '@fluentui/react/lib/Button';
-import { Icon } from '@fluentui/react/lib/Icon';
+import { Panel, PanelType, IconButton, Icon } from '@fluentui/react';
 import styles from './EventDetailsPanel.module.scss';
 import moment from 'moment';
 import DOMPurify from 'dompurify';
