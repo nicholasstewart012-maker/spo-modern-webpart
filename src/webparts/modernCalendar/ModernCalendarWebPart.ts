@@ -502,6 +502,7 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
     if (calendarEl) {
       const calendar = new Calendar(calendarEl, {
         eventDisplay: 'block',
+        displayEventTime: true,
         eventClick: (args: EventClickArg) => {
           const calEvent = args.event;
           // Task B: Open React Panel

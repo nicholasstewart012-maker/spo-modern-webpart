@@ -29,7 +29,7 @@
     // Basic Button
     outline: transparent;
     position: relative;
-    font-family: "Segoe UI WestEuropean","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    font-family: "Segoe UI WestEuropean", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 14px;
     font-weight: 400;
@@ -52,31 +52,55 @@
 }
 
 input[aria-label='hide-col'] {
-    display:none;
-  }
-  
+  display: none;
+}
+
 #spPropertyPaneContainer input[aria-label='hide-col'] {
-    display:none;
-  }
+  display: none;
+}
 
 
 :global {
-  /* Hide the dot-style indicator */
+
+  /* Hide the dot indicator entirely */
   .fc-daygrid-event-dot {
     display: none !important;
   }
 
-  /* Ensure events look like filled pills/blocks */
-  .fc-daygrid-event {
-    border-radius: 6px;
-    padding: 2px 6px;
-    border-width: 1px;
-    margin-top: 1px;
+  /*
+    FullCalendar month view timed events often render as "dot events":
+    <a class="fc-daygrid-event fc-daygrid-dot-event ...">
+    We force these to LOOK like filled block events.
+  */
+  .fc-daygrid-dot-event {
+    display: block !important;
+    padding: 2px 6px !important;
+    border-radius: 6px !important;
+
+    /* Use FullCalendar's CSS variables which are set from event.backgroundColor/borderColor/textColor */
+    background: var(--fc-event-bg-color) !important;
+    border: 1px solid var(--fc-event-border-color) !important;
+    color: var(--fc-event-text-color) !important;
   }
 
-  /* Improve typography inside blocks */
-  .fc-daygrid-event .fc-event-title,
-  .fc-daygrid-event .fc-event-time {
+  /* Ensure inner content inherits the text color */
+  .fc-daygrid-dot-event .fc-event-time,
+  .fc-daygrid-dot-event .fc-event-title {
+    color: inherit !important;
     font-weight: 600;
+  }
+
+  /* Remove dot-event layout constraints that keep it looking like a list row */
+  .fc-daygrid-dot-event .fc-event-title {
+    display: inline !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Also style normal block events (all-day events) to match */
+  .fc-daygrid-block-event {
+    border-radius: 6px;
+    padding: 2px 6px;
   }
 }
