@@ -59,3 +59,24 @@ input[aria-label='hide-col'] {
     display:none;
   }
 
+
+:global {
+  /* Hide the dot-style indicator */
+  .fc-daygrid-event-dot {
+    display: none !important;
+  }
+
+  /* Ensure events look like filled pills/blocks */
+  .fc-daygrid-event {
+    border-radius: 6px;
+    padding: 2px 6px;
+    border-width: 1px;
+    margin-top: 1px;
+  }
+
+  /* Improve typography inside blocks */
+  .fc-daygrid-event .fc-event-title,
+  .fc-daygrid-event .fc-event-time {
+    font-weight: 600;
+  }
+}

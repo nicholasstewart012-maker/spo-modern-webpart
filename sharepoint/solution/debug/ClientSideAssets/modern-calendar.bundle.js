@@ -643,50 +643,6 @@ function findElementRecursive(element, matchFunction, doc) {
 
 /***/ }),
 
-/***/ 9118:
-/*!**********************************************************************!*\
-  !*** ./node_modules/@fluentui/dom-utilities/lib/getActiveElement.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getActiveElement: () => (/* binding */ getActiveElement)
-/* harmony export */ });
-var getActiveElement = function (doc) {
-    var ae = doc.activeElement;
-    while (ae === null || ae === void 0 ? void 0 : ae.shadowRoot) {
-        ae = ae.shadowRoot.activeElement;
-    }
-    return ae;
-};
-
-
-/***/ }),
-
-/***/ 3673:
-/*!********************************************************************!*\
-  !*** ./node_modules/@fluentui/dom-utilities/lib/getEventTarget.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getEventTarget: () => (/* binding */ getEventTarget)
-/* harmony export */ });
-var getEventTarget = function (event) {
-    var target = event.target;
-    if (target && target.shadowRoot) {
-        target = event.composedPath()[0];
-    }
-    return target;
-};
-
-
-/***/ }),
-
 /***/ 9330:
 /*!***************************************************************!*\
   !*** ./node_modules/@fluentui/dom-utilities/lib/getParent.js ***!
@@ -4197,7 +4153,7 @@ var getBaseButtonClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoize
     var _a, _b;
     var classNames = (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getGlobalClassNames)(ButtonGlobalClassNames, theme || {});
     var isExpanded = expanded && !isSplit;
-    return (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.mergeStyleSets)(styles.__shadowConfig__, {
+    return (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.mergeStyleSets)({
         root: [
             classNames.msButton,
             styles.root,
@@ -4206,35 +4162,41 @@ var getBaseButtonClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoize
             isExpanded && [
                 'is-expanded',
                 styles.rootExpanded,
-                (_a = {},
-                    _a[":hover .".concat(classNames.msButtonIcon)] = styles.iconExpandedHovered,
-                    // menuIcon falls back to rootExpandedHovered to support original behavior
-                    _a[":hover .".concat(classNames.msButtonMenuIcon)] = styles.menuIconExpandedHovered || styles.rootExpandedHovered,
-                    _a[':hover'] = styles.rootExpandedHovered,
-                    _a),
+                {
+                    selectors: (_a = {},
+                        _a[":hover ." + classNames.msButtonIcon] = styles.iconExpandedHovered,
+                        // menuIcon falls back to rootExpandedHovered to support original behavior
+                        _a[":hover ." + classNames.msButtonMenuIcon] = styles.menuIconExpandedHovered || styles.rootExpandedHovered,
+                        _a[':hover'] = styles.rootExpandedHovered,
+                        _a),
+                },
             ],
             hasMenu && [ButtonGlobalClassNames.msButtonHasMenu, styles.rootHasMenu],
             disabled && ['is-disabled', styles.rootDisabled],
             !disabled &&
                 !isExpanded &&
-                !checked && (_b = {
-                    ':hover': styles.rootHovered
-                },
-                _b[":hover .".concat(classNames.msButtonLabel)] = styles.labelHovered,
-                _b[":hover .".concat(classNames.msButtonIcon)] = styles.iconHovered,
-                _b[":hover .".concat(classNames.msButtonDescription)] = styles.descriptionHovered,
-                _b[":hover .".concat(classNames.msButtonMenuIcon)] = styles.menuIconHovered,
-                _b[':focus'] = styles.rootFocused,
-                _b[':active'] = styles.rootPressed,
-                _b[":active .".concat(classNames.msButtonIcon)] = styles.iconPressed,
-                _b[":active .".concat(classNames.msButtonDescription)] = styles.descriptionPressed,
-                _b[":active .".concat(classNames.msButtonMenuIcon)] = styles.menuIconPressed,
-                _b),
+                !checked && {
+                selectors: (_b = {
+                        ':hover': styles.rootHovered
+                    },
+                    _b[":hover ." + classNames.msButtonLabel] = styles.labelHovered,
+                    _b[":hover ." + classNames.msButtonIcon] = styles.iconHovered,
+                    _b[":hover ." + classNames.msButtonDescription] = styles.descriptionHovered,
+                    _b[":hover ." + classNames.msButtonMenuIcon] = styles.menuIconHovered,
+                    _b[':focus'] = styles.rootFocused,
+                    _b[':active'] = styles.rootPressed,
+                    _b[":active ." + classNames.msButtonIcon] = styles.iconPressed,
+                    _b[":active ." + classNames.msButtonDescription] = styles.descriptionPressed,
+                    _b[":active ." + classNames.msButtonMenuIcon] = styles.menuIconPressed,
+                    _b),
+            },
             disabled && checked && [styles.rootCheckedDisabled],
             !disabled &&
                 checked && {
-                ':hover': styles.rootCheckedHovered,
-                ':active': styles.rootCheckedPressed,
+                selectors: {
+                    ':hover': styles.rootCheckedHovered,
+                    ':active': styles.rootCheckedPressed,
+                },
             },
             className,
         ],
@@ -4258,8 +4220,10 @@ var getBaseButtonClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoize
             !disabled &&
                 !isExpanded &&
                 !checked && {
-                ':hover': styles.menuIconHovered,
-                ':active': styles.menuIconPressed,
+                selectors: {
+                    ':hover': styles.menuIconHovered,
+                    ':active': styles.menuIconPressed,
+                },
             },
             isExpanded && ['is-expanded', styles.menuIconExpanded],
         ],
@@ -4362,9 +4326,9 @@ var BaseButton = /** @class */ (function (_super) {
         };
         _this._onRenderTextContents = function () {
             var _a = _this.props, text = _a.text, children = _a.children, 
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             _b = _a.secondaryText, 
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             secondaryText = _b === void 0 ? _this.props.description : _b, _c = _a.onRenderText, onRenderText = _c === void 0 ? _this._onRenderText : _c, _d = _a.onRenderDescription, onRenderDescription = _d === void 0 ? _this._onRenderDescription : _d;
             if (text || typeof children === 'string' || secondaryText) {
                 return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", { className: _this._classNames.textContainer },
@@ -4395,7 +4359,7 @@ var BaseButton = /** @class */ (function (_super) {
             return children;
         };
         _this._onRenderDescription = function (props) {
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             var _a = props.secondaryText, secondaryText = _a === void 0 ? _this.props.description : _a;
             // ms-Button-description is only shown when the button type is compound.
             // In other cases it will not be displayed.
@@ -4459,18 +4423,16 @@ var BaseButton = /** @class */ (function (_super) {
             if (!_this.state.menuHidden) {
                 _this._dismissMenu();
             }
-            // toggle split buttons need two separate targets, even for touch
-            var singleTouchTarget = _this._processingTouch && !_this.props.toggle;
-            if (!singleTouchTarget && _this.props.onClick) {
+            if (!_this._processingTouch && _this.props.onClick) {
                 _this.props.onClick(ev);
             }
-            else if (singleTouchTarget) {
+            else if (_this._processingTouch) {
                 _this._onMenuClick(ev);
             }
         };
         _this._onKeyDown = function (ev) {
             // explicity cancelling event so click won't fire after this
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             if (_this.props.disabled && (ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_11__.KeyCodes.enter || ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_11__.KeyCodes.space)) {
                 ev.preventDefault();
                 ev.stopPropagation();
@@ -4490,9 +4452,9 @@ var BaseButton = /** @class */ (function (_super) {
             }
         };
         _this._onKeyPress = function (ev) {
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             if (!_this.props.disabled && _this.props.onKeyPress !== undefined) {
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
+                // eslint-disable-next-line deprecation/deprecation
                 _this.props.onKeyPress(ev); // not cancelling event because it's not disabled
             }
         };
@@ -4517,7 +4479,7 @@ var BaseButton = /** @class */ (function (_super) {
             }
         };
         _this._onSplitButtonContainerKeyDown = function (ev) {
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             if (ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_11__.KeyCodes.enter || ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_11__.KeyCodes.space) {
                 if (_this._buttonElement.current) {
                     _this._buttonElement.current.click();
@@ -4537,9 +4499,9 @@ var BaseButton = /** @class */ (function (_super) {
             if (_this.props.onKeyDown) {
                 _this.props.onKeyDown(ev);
             }
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             var isUp = ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_11__.KeyCodes.up;
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             var isDown = ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_11__.KeyCodes.down;
             if (!ev.defaultPrevented && _this._isValidMenuOpenKey(ev)) {
                 var onMenuClick = _this.props.onMenuClick;
@@ -4550,7 +4512,7 @@ var BaseButton = /** @class */ (function (_super) {
                 ev.preventDefault();
                 ev.stopPropagation();
             }
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             if (ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_11__.KeyCodes.enter || ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_11__.KeyCodes.space) {
                 // We manually set the focus visibility to true if opening via Enter or Space to account for the scenario where
                 // a user clicks on the button, closes the menu and then opens it via keyboard. In this scenario our default logic
@@ -4623,9 +4585,9 @@ var BaseButton = /** @class */ (function (_super) {
     BaseButton.prototype.render = function () {
         var _a;
         var _b = this.props, ariaDescription = _b.ariaDescription, ariaLabel = _b.ariaLabel, ariaHidden = _b.ariaHidden, className = _b.className, disabled = _b.disabled, allowDisabledFocus = _b.allowDisabledFocus, primaryDisabled = _b.primaryDisabled, 
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         _c = _b.secondaryText, 
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         secondaryText = _c === void 0 ? this.props.description : _c, href = _b.href, iconProps = _b.iconProps, menuIconProps = _b.menuIconProps, styles = _b.styles, checked = _b.checked, variantClassName = _b.variantClassName, theme = _b.theme, toggle = _b.toggle, getClassNames = _b.getClassNames, role = _b.role;
         var menuHidden = this.state.menuHidden;
         // Button is disabled if the whole button (in case of splitButton is disabled) or if the primary action is disabled
@@ -4639,7 +4601,7 @@ var BaseButton = /** @class */ (function (_super) {
         var renderAsAnchor = !isPrimaryButtonDisabled && !!href;
         var tag = renderAsAnchor ? 'a' : 'button';
         var nativeProps = (0,_Utilities__WEBPACK_IMPORTED_MODULE_20__.getNativeProps)(
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         (0,_Utilities__WEBPACK_IMPORTED_MODULE_21__.assign)(renderAsAnchor ? {} : { type: 'button' }, this.props.rootProps, this.props), renderAsAnchor ? _Utilities__WEBPACK_IMPORTED_MODULE_20__.anchorProperties : _Utilities__WEBPACK_IMPORTED_MODULE_20__.buttonProperties, [
             'disabled', // let disabled buttons be focused and styled as disabled.
         ]);
@@ -4681,7 +4643,7 @@ var BaseButton = /** @class */ (function (_super) {
         var checkedOrPressedValue = isCheckboxTypeRole ? !!checked : toggle === true ? !!checked : undefined;
         var buttonProps = (0,_Utilities__WEBPACK_IMPORTED_MODULE_21__.assign)(nativeProps, (_a = {
                 className: this._classNames.root,
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
+                // eslint-disable-next-line deprecation/deprecation
                 ref: this._mergedRef(this.props.elementRef, this._buttonElement),
                 disabled: isPrimaryButtonDisabled && !allowDisabledFocus,
                 onKeyDown: this._onKeyDown,
@@ -4707,7 +4669,7 @@ var BaseButton = /** @class */ (function (_super) {
             return this._onRenderSplitButtonContent(tag, buttonProps);
         }
         else if (this.props.menuProps) {
-            var _e = this.props.menuProps.id, id = _e === void 0 ? "".concat(this._labelId, "-menu") : _e;
+            var _e = this.props.menuProps.id, id = _e === void 0 ? this._labelId + "-menu" : _e;
             (0,_Utilities__WEBPACK_IMPORTED_MODULE_21__.assign)(buttonProps, {
                 'aria-expanded': !menuHidden,
                 'aria-controls': !menuHidden ? id : null,
@@ -4761,9 +4723,9 @@ var BaseButton = /** @class */ (function (_super) {
         var props = this.props;
         var Tag = tag;
         var menuIconProps = props.menuIconProps, menuProps = props.menuProps, _a = props.onRenderIcon, onRenderIcon = _a === void 0 ? this._onRenderIcon : _a, _b = props.onRenderAriaDescription, onRenderAriaDescription = _b === void 0 ? this._onRenderAriaDescription : _b, _c = props.onRenderChildren, onRenderChildren = _c === void 0 ? this._onRenderChildren : _c, 
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         _d = props.onRenderMenu, 
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         onRenderMenu = _d === void 0 ? this._onRenderMenu : _d, _e = props.onRenderMenuIcon, onRenderMenuIcon = _e === void 0 ? this._onRenderMenuIcon : _e, disabled = props.disabled;
         var keytipProps = props.keytipProps;
         if (keytipProps && menuProps) {
@@ -4801,7 +4763,7 @@ var BaseButton = /** @class */ (function (_super) {
      */
     BaseButton.prototype._shouldRenderMenu = function () {
         var menuHidden = this.state.menuHidden;
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         var _a = this.props, persistMenu = _a.persistMenu, renderPersistedMenuHiddenOnMount = _a.renderPersistedMenuHiddenOnMount;
         if (!menuHidden) {
             // Always should render a menu when it is expanded
@@ -4922,11 +4884,11 @@ var BaseButton = /** @class */ (function (_super) {
      */
     BaseButton.prototype._isValidMenuOpenKey = function (ev) {
         if (this.props.menuTriggerKeyCode) {
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             return ev.which === this.props.menuTriggerKeyCode;
         }
         else if (this.props.menuProps) {
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             return ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_11__.KeyCodes.down && (ev.altKey || ev.metaKey);
         }
         // Note: When enter is pressed, we will let the event continue to propagate
@@ -5002,18 +4964,18 @@ var getStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoizeFunction)(func
                 borderRadius: effects.roundedCorner2,
                 boxSizing: 'border-box',
                 cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                display: 'inline-block',
                 padding: '0 16px',
                 textDecoration: 'none',
                 textAlign: 'center',
                 userSelect: 'none',
-                // IE11 workaround for preventing shift of child elements of a button when active.
-                ':active > span': {
-                    position: 'relative',
-                    left: 0,
-                    top: 0,
+                selectors: {
+                    // IE11 workaround for preventing shift of child elements of a button when active.
+                    ':active > span': {
+                        position: 'relative',
+                        left: 0,
+                        top: 0,
+                    },
                 },
             },
         ],
@@ -5024,24 +4986,28 @@ var getStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoizeFunction)(func
                 borderColor: disabledBackground,
                 color: disabledText,
                 cursor: 'default',
-                ':hover': noOutline,
-                ':focus': noOutline,
+                selectors: {
+                    ':hover': noOutline,
+                    ':focus': noOutline,
+                },
             },
         ],
-        iconDisabled: (_a = {
-                color: disabledText
-            },
-            _a[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                color: 'GrayText',
-            },
-            _a),
-        menuIconDisabled: (_b = {
-                color: disabledText
-            },
-            _b[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                color: 'GrayText',
-            },
-            _b),
+        iconDisabled: {
+            color: disabledText,
+            selectors: (_a = {},
+                _a[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+                    color: 'GrayText',
+                },
+                _a),
+        },
+        menuIconDisabled: {
+            color: disabledText,
+            selectors: (_b = {},
+                _b[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+                    color: 'GrayText',
+                },
+                _b),
+        },
         flexContainer: {
             display: 'flex',
             height: '100%',
@@ -5148,15 +5114,16 @@ var getStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoizeFunction)(func
             border: 'none',
             color: semanticColors.link,
         },
-        rootHovered: (_a = {
-                color: palette.themeDarkAlt,
-                backgroundColor: palette.neutralLighter
-            },
-            _a[_Styling__WEBPACK_IMPORTED_MODULE_3__.HighContrastSelector] = {
-                borderColor: 'Highlight',
-                color: 'Highlight',
-            },
-            _a),
+        rootHovered: {
+            color: palette.themeDarkAlt,
+            backgroundColor: palette.neutralLighter,
+            selectors: (_a = {},
+                _a[_Styling__WEBPACK_IMPORTED_MODULE_3__.HighContrastSelector] = {
+                    borderColor: 'Highlight',
+                    color: 'Highlight',
+                },
+                _a),
+        },
         rootHasMenu: {
             width: 'auto',
         },
@@ -5195,40 +5162,42 @@ var getStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoizeFunction)(func
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   SplitButtonGlobalClassNames: () => (/* binding */ SplitButtonGlobalClassNames),
 /* harmony export */   getSplitButtonClassNames: () => (/* binding */ getSplitButtonClassNames)
 /* harmony export */ });
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../Utilities */ 5659);
 /* harmony import */ var _Styling__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../Styling */ 8455);
 
 
-var SplitButtonGlobalClassNames = {
-    msSplitButtonDivider: 'ms-SplitButton-divider',
-};
 var getSplitButtonClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoizeFunction)(function (styles, disabled, expanded, checked, primaryDisabled) {
     return {
         root: (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.mergeStyles)(styles.splitButtonMenuButton, expanded && [styles.splitButtonMenuButtonExpanded], disabled && [styles.splitButtonMenuButtonDisabled], checked && !disabled && [styles.splitButtonMenuButtonChecked], primaryDisabled &&
             !disabled && [
             {
-                ':focus': styles.splitButtonMenuFocused,
+                selectors: {
+                    ':focus': styles.splitButtonMenuFocused,
+                },
             },
         ]),
         splitButtonContainer: (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.mergeStyles)(styles.splitButtonContainer, !disabled &&
             checked && [
             styles.splitButtonContainerChecked,
             {
-                ':hover': styles.splitButtonContainerCheckedHovered,
+                selectors: {
+                    ':hover': styles.splitButtonContainerCheckedHovered,
+                },
             },
         ], !disabled &&
             !checked && [
             {
-                ':hover': styles.splitButtonContainerHovered,
-                ':focus': styles.splitButtonContainerFocused,
+                selectors: {
+                    ':hover': styles.splitButtonContainerHovered,
+                    ':focus': styles.splitButtonContainerFocused,
+                },
             },
         ], disabled && styles.splitButtonContainerDisabled),
         icon: (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.mergeStyles)(styles.splitButtonMenuIcon, disabled && styles.splitButtonMenuIconDisabled, !disabled && primaryDisabled && styles.splitButtonMenuIcon),
         flexContainer: (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.mergeStyles)(styles.splitButtonFlexContainer),
-        divider: (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.mergeStyles)(SplitButtonGlobalClassNames.msSplitButtonDivider, styles.splitButtonDivider, (primaryDisabled || disabled) && styles.splitButtonDividerDisabled),
+        divider: (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.mergeStyles)(styles.splitButtonDivider, (primaryDisabled || disabled) && styles.splitButtonDividerDisabled),
     };
 });
 
@@ -5253,7 +5222,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var getStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoizeFunction)(function (theme, customStyles) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
     var effects = theme.effects, palette = theme.palette, semanticColors = theme.semanticColors;
     var buttonHighContrastFocus = {
         left: -2,
@@ -5274,125 +5243,91 @@ var getStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoizeFunction)(func
             (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getFocusStyle)(theme, { highContrastStyle: buttonHighContrastFocus, inset: 2, pointerEvents: 'none' }),
             {
                 display: 'inline-flex',
-                '.ms-Button--default': {
-                    borderTopRightRadius: '0',
-                    borderBottomRightRadius: '0',
-                    borderRight: 'none',
-                    flexGrow: '1',
-                },
-                '.ms-Button--primary': (_a = {
+                selectors: {
+                    '.ms-Button--default': {
+                        borderTopRightRadius: '0',
+                        borderBottomRightRadius: '0',
+                        borderRight: 'none',
+                        flexGrow: '1',
+                    },
+                    '.ms-Button--primary': {
                         borderTopRightRadius: '0',
                         borderBottomRightRadius: '0',
                         border: 'none',
                         flexGrow: '1',
-                        ':hover': {
-                            border: 'none',
-                        },
-                        ':active': {
-                            border: 'none',
-                        }
+                        selectors: (_a = {},
+                            _a[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ color: 'WindowText', backgroundColor: 'Window', border: '1px solid WindowText', borderRightWidth: '0' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()),
+                            _a[':hover'] = {
+                                border: 'none',
+                            },
+                            _a[':active'] = {
+                                border: 'none',
+                            },
+                            _a),
                     },
-                    _a[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ color: 'WindowText', backgroundColor: 'Window', border: '1px solid WindowText', borderRightWidth: '0' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()), { ':hover': {
-                            backgroundColor: 'Highlight',
-                            border: '1px solid Highlight',
-                            borderRightWidth: '0',
-                            color: 'HighlightText',
-                        }, ':active': {
-                            border: '1px solid Highlight',
-                        } }),
-                    _a),
-                '.ms-Button--default + .ms-Button': (_b = {},
-                    _b[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                        border: '1px solid WindowText',
-                        borderLeftWidth: '0',
-                        ':hover': {
-                            backgroundColor: 'HighlightText',
-                            borderColor: 'Highlight',
-                            color: 'Highlight',
-                            '.ms-Button-menuIcon': (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ backgroundColor: 'HighlightText', color: 'Highlight' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()),
-                        },
+                    '.ms-Button--primary + .ms-Button': {
+                        border: 'none',
+                        selectors: (_b = {},
+                            _b[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+                                border: '1px solid WindowText',
+                                borderLeftWidth: '0',
+                            },
+                            _b),
                     },
-                    _b),
-                '.ms-Button--default + .ms-Button[aria-expanded="true"]': (_c = {},
-                    _c[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                        backgroundColor: 'HighlightText',
-                        borderColor: 'Highlight',
-                        color: 'Highlight',
-                        '.ms-Button-menuIcon': (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ backgroundColor: 'HighlightText', color: 'Highlight' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()),
-                    },
-                    _c),
-                '.ms-Button--primary + .ms-Button': (_d = {
-                        border: 'none'
-                    },
-                    _d[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                        border: '1px solid WindowText',
-                        borderLeftWidth: '0',
-                        ':hover': {
-                            borderLeftWidth: '0',
-                            backgroundColor: 'Highlight',
-                            borderColor: 'Highlight',
-                            color: 'HighlightText',
-                            '.ms-Button-menuIcon': (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()), { color: 'HighlightText' }),
-                        },
-                    },
-                    _d),
-                '.ms-Button--primary + .ms-Button[aria-expanded="true"]': (_e = {},
-                    _e[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ backgroundColor: 'Highlight', borderColor: 'Highlight', color: 'HighlightText' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()), { '.ms-Button-menuIcon': {
-                            color: 'HighlightText',
-                        } }),
-                    _e),
-                '.ms-Button.is-disabled': (_f = {},
-                    _f[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                        color: 'GrayText',
-                        borderColor: 'GrayText',
-                        backgroundColor: 'Window',
-                    },
-                    _f),
+                },
             },
         ],
         splitButtonContainerHovered: {
-            '.ms-Button--default.is-disabled': (_g = {
-                    backgroundColor: semanticColors.buttonBackgroundDisabled,
-                    color: semanticColors.buttonTextDisabled
+            selectors: {
+                '.ms-Button--primary': {
+                    selectors: (_c = {},
+                        _c[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+                            color: 'Window',
+                            backgroundColor: 'Highlight',
+                        },
+                        _c),
                 },
-                _g[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                    color: 'GrayText',
-                    borderColor: 'GrayText',
-                    backgroundColor: 'Window',
+                '.ms-Button.is-disabled': {
+                    color: semanticColors.buttonTextDisabled,
+                    selectors: (_d = {},
+                        _d[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+                            color: 'GrayText',
+                            borderColor: 'GrayText',
+                            backgroundColor: 'Window',
+                        },
+                        _d),
                 },
-                _g),
-            '.ms-Button--primary.is-disabled': (_h = {
-                    backgroundColor: semanticColors.primaryButtonBackgroundDisabled,
-                    color: semanticColors.primaryButtonTextDisabled
-                },
-                _h[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                    color: 'GrayText',
-                    borderColor: 'GrayText',
-                    backgroundColor: 'Window',
-                },
-                _h),
+            },
         },
         splitButtonContainerChecked: {
-            '.ms-Button--primary': (_j = {},
-                _j[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ color: 'Window', backgroundColor: 'WindowText' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()),
-                _j),
+            selectors: {
+                '.ms-Button--primary': {
+                    selectors: (_e = {},
+                        _e[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ color: 'Window', backgroundColor: 'WindowText' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()),
+                        _e),
+                },
+            },
         },
         splitButtonContainerCheckedHovered: {
-            '.ms-Button--primary': (_k = {},
-                _k[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ color: 'Window', backgroundColor: 'WindowText' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()),
-                _k),
+            selectors: {
+                '.ms-Button--primary': {
+                    selectors: (_f = {},
+                        _f[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ color: 'Window', backgroundColor: 'WindowText' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()),
+                        _f),
+                },
+            },
         },
         splitButtonContainerFocused: {
             outline: 'none!important',
         },
-        splitButtonMenuButton: (_l = {
+        splitButtonMenuButton: (_g = {
                 padding: 6,
                 height: 'auto',
                 boxSizing: 'border-box',
                 borderRadius: 0,
                 borderTopRightRadius: effects.roundedCorner2,
                 borderBottomRightRadius: effects.roundedCorner2,
-                border: "1px solid ".concat(palette.neutralSecondaryAlt),
+                border: "1px solid " + palette.neutralSecondaryAlt,
                 borderLeft: 'none',
                 outline: 'transparent',
                 userSelect: 'none',
@@ -5407,43 +5342,53 @@ var getStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoizeFunction)(func
                 marginRight: 0,
                 marginBottom: 0
             },
-            _l[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+            _g[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
                 '.ms-Button-menuIcon': {
                     color: 'WindowText',
                 },
             },
-            _l),
-        splitButtonDivider: (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, splitButtonDividerBaseStyles), (_m = {}, _m[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-            backgroundColor: 'WindowText',
-        }, _m)),
-        splitButtonDividerDisabled: (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, splitButtonDividerBaseStyles), (_o = {}, _o[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-            backgroundColor: 'GrayText',
-        }, _o)),
-        splitButtonMenuButtonDisabled: (_p = {
-                pointerEvents: 'none',
-                border: 'none',
-                ':hover': {
-                    cursor: 'default',
+            _g),
+        splitButtonDivider: (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, splitButtonDividerBaseStyles), { selectors: (_h = {},
+                _h[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+                    backgroundColor: 'WindowText',
                 },
-                '.ms-Button--primary': (_q = {},
-                    _q[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                        color: 'GrayText',
-                        borderColor: 'GrayText',
-                        backgroundColor: 'Window',
+                _h) }),
+        splitButtonDividerDisabled: (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, splitButtonDividerBaseStyles), { selectors: (_j = {},
+                _j[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+                    backgroundColor: 'GrayText',
+                },
+                _j) }),
+        splitButtonMenuButtonDisabled: {
+            pointerEvents: 'none',
+            border: 'none',
+            selectors: (_k = {
+                    ':hover': {
+                        cursor: 'default',
                     },
-                    _q),
-                '.ms-Button-menuIcon': (_r = {},
-                    _r[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                        color: 'GrayText',
+                    '.ms-Button--primary': {
+                        selectors: (_l = {},
+                            _l[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+                                color: 'GrayText',
+                                borderColor: 'GrayText',
+                                backgroundColor: 'Window',
+                            },
+                            _l),
                     },
-                    _r)
-            },
-            _p[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
-                color: 'GrayText',
-                border: '1px solid GrayText',
-                backgroundColor: 'Window',
-            },
-            _p),
+                    '.ms-Button-menuIcon': {
+                        selectors: (_m = {},
+                            _m[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+                                color: 'GrayText',
+                            },
+                            _m),
+                    }
+                },
+                _k[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = {
+                    color: 'GrayText',
+                    border: '1px solid GrayText',
+                    backgroundColor: 'Window',
+                },
+                _k),
+        },
         splitButtonFlexContainer: {
             display: 'flex',
             height: '100%',
@@ -5451,12 +5396,13 @@ var getStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoizeFunction)(func
             justifyContent: 'center',
             alignItems: 'center',
         },
-        splitButtonContainerDisabled: (_s = {
-                outline: 'none',
-                border: 'none'
-            },
-            _s[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ color: 'GrayText', borderColor: 'GrayText', backgroundColor: 'Window' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()),
-            _s),
+        splitButtonContainerDisabled: {
+            outline: 'none',
+            border: 'none',
+            selectors: (_o = {},
+                _o[_Styling__WEBPACK_IMPORTED_MODULE_1__.HighContrastSelector] = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ color: 'GrayText', borderColor: 'GrayText', backgroundColor: 'Window' }, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getHighContrastNoAdjustStyle)()),
+                _o),
+        },
         splitButtonMenuFocused: (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.getFocusStyle)(theme, { highContrastStyle: buttonHighContrastFocus, inset: 2 })),
     };
     return (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.concatStyleSets)(splitButtonStyles, customStyles);
@@ -5506,31 +5452,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   CalloutContentBase: () => (/* binding */ CalloutContentBase)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! tslib */ 196);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 196);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ 8340);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _common_DirectionalHint__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../common/DirectionalHint */ 9861);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Utilities */ 3703);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Utilities */ 2419);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Utilities */ 5947);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../Utilities */ 4751);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../Utilities */ 7974);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../Utilities */ 8972);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../../Utilities */ 6924);
-/* harmony import */ var _Positioning__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Positioning */ 2084);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Utilities */ 3703);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Utilities */ 2419);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Utilities */ 5947);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Utilities */ 4751);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../Utilities */ 7974);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../Utilities */ 8972);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../Utilities */ 6924);
 /* harmony import */ var _Positioning__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Positioning */ 5079);
-/* harmony import */ var _Popup__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../Popup */ 4218);
+/* harmony import */ var _Positioning__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Positioning */ 2084);
+/* harmony import */ var _Popup__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../Popup */ 4218);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Utilities */ 3583);
 /* harmony import */ var _Styling__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Styling */ 8455);
 /* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fluentui/react-hooks */ 5672);
 /* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fluentui/react-hooks */ 2307);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @fluentui/react-hooks */ 5559);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @fluentui/react-hooks */ 544);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @fluentui/react-hooks */ 9939);
-/* harmony import */ var _utilities_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../utilities/dom */ 4707);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @fluentui/react-hooks */ 5559);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @fluentui/react-hooks */ 544);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @fluentui/react-hooks */ 9939);
 var _a;
-
-
 
 
 
@@ -5581,7 +5524,7 @@ var getClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_4__.classNamesFunctio
 function useBounds(_a, targetRef, targetWindow) {
     var bounds = _a.bounds, _b = _a.minPagePadding, minPagePadding = _b === void 0 ? DEFAULT_PROPS.minPagePadding : _b, target = _a.target;
     var _c = react__WEBPACK_IMPORTED_MODULE_0__.useState(false), targetWindowResized = _c[0], setTargetWindowResized = _c[1];
-    var cachedBounds = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var cachedBounds = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     var getBounds = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(function () {
         if (!cachedBounds.current || targetWindowResized) {
             var currentBounds = typeof bounds === 'function' ? (targetWindow ? bounds(target, targetWindow) : undefined) : bounds;
@@ -5610,32 +5553,21 @@ function useBounds(_a, targetRef, targetWindow) {
 /**
  * (Hook) to return the maximum available height for the Callout to render into.
  */
-function useMaxHeight(_a, getBounds, targetRef, positions) {
+function useMaxHeight(_a, getBounds, positions) {
     var _b;
-    var calloutMaxHeight = _a.calloutMaxHeight, finalHeight = _a.finalHeight, directionalHint = _a.directionalHint, directionalHintFixed = _a.directionalHintFixed, hidden = _a.hidden, gapSpace = _a.gapSpace, beakWidth = _a.beakWidth, isBeakVisible = _a.isBeakVisible, coverTarget = _a.coverTarget;
+    var calloutMaxHeight = _a.calloutMaxHeight, finalHeight = _a.finalHeight, directionalHint = _a.directionalHint, directionalHintFixed = _a.directionalHintFixed, hidden = _a.hidden;
     var _c = react__WEBPACK_IMPORTED_MODULE_0__.useState(), maxHeight = _c[0], setMaxHeight = _c[1];
     var _d = (_b = positions === null || positions === void 0 ? void 0 : positions.elementPosition) !== null && _b !== void 0 ? _b : {}, top = _d.top, bottom = _d.bottom;
-    var targetRect = (targetRef === null || targetRef === void 0 ? void 0 : targetRef.current) ? (0,_Positioning__WEBPACK_IMPORTED_MODULE_5__.getRectangleFromTarget)(targetRef.current) : undefined;
     react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
         var _a;
-        var bounds = (_a = getBounds()) !== null && _a !== void 0 ? _a : {};
-        var topBounds = bounds.top;
-        var bottomBounds = bounds.bottom;
-        var calculatedHeight;
-        // If aligned to top edge of target and not covering target, update bottom bounds to the
-        // top of the target (accounting for gap space and beak)
-        if ((positions === null || positions === void 0 ? void 0 : positions.targetEdge) === _Positioning__WEBPACK_IMPORTED_MODULE_1__.RectangleEdge.top && (targetRect === null || targetRect === void 0 ? void 0 : targetRect.top) && !coverTarget) {
-            bottomBounds = targetRect.top - (0,_Positioning__WEBPACK_IMPORTED_MODULE_5__.calculateGapSpace)(isBeakVisible, beakWidth, gapSpace);
-        }
-        if (typeof top === 'number' && bottomBounds) {
-            calculatedHeight = bottomBounds - top;
-        }
-        else if (typeof bottom === 'number' && typeof topBounds === 'number' && bottomBounds) {
-            calculatedHeight = bottomBounds - topBounds - bottom;
-        }
-        if ((!calloutMaxHeight && !hidden) ||
-            (calloutMaxHeight && calculatedHeight && calloutMaxHeight > calculatedHeight)) {
-            setMaxHeight(calculatedHeight);
+        var _b = (_a = getBounds()) !== null && _a !== void 0 ? _a : {}, topBounds = _b.top, bottomBounds = _b.bottom;
+        if (!calloutMaxHeight && !hidden) {
+            if (typeof top === 'number' && bottomBounds) {
+                setMaxHeight(bottomBounds - top);
+            }
+            else if (typeof bottom === 'number' && typeof topBounds === 'number' && bottomBounds) {
+                setMaxHeight(bottomBounds - topBounds - bottom);
+            }
         }
         else if (calloutMaxHeight) {
             setMaxHeight(calloutMaxHeight);
@@ -5643,62 +5575,35 @@ function useMaxHeight(_a, getBounds, targetRef, positions) {
         else {
             setMaxHeight(undefined);
         }
-    }, [
-        bottom,
-        calloutMaxHeight,
-        finalHeight,
-        directionalHint,
-        directionalHintFixed,
-        getBounds,
-        hidden,
-        positions,
-        top,
-        gapSpace,
-        beakWidth,
-        isBeakVisible,
-        targetRect,
-        coverTarget,
-    ]);
+    }, [bottom, calloutMaxHeight, finalHeight, directionalHint, directionalHintFixed, getBounds, hidden, positions, top]);
     return maxHeight;
 }
 /**
  * (Hook) to find the current position of Callout. If Callout is resized then a new position is calculated.
  */
-function usePositions(props, hostElement, calloutElement, targetRef, getBounds, popupRef) {
+function usePositions(props, hostElement, calloutElement, targetRef, getBounds) {
     var _a = react__WEBPACK_IMPORTED_MODULE_0__.useState(), positions = _a[0], setPositions = _a[1];
     var positionAttempts = react__WEBPACK_IMPORTED_MODULE_0__.useRef(0);
-    var previousTarget = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var previousTarget = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     var async = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_6__.useAsync)();
-    var hidden = props.hidden, target = props.target, finalHeight = props.finalHeight, calloutMaxHeight = props.calloutMaxHeight, onPositioned = props.onPositioned, directionalHint = props.directionalHint, hideOverflow = props.hideOverflow, preferScrollResizePositioning = props.preferScrollResizePositioning;
-    var win = (0,_utilities_dom__WEBPACK_IMPORTED_MODULE_8__.useWindowEx)();
-    var localRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
-    var popupStyles;
-    if (localRef.current !== popupRef.current) {
-        localRef.current = popupRef.current;
-        popupStyles = popupRef.current ? win === null || win === void 0 ? void 0 : win.getComputedStyle(popupRef.current) : undefined;
-    }
-    var popupOverflowY = popupStyles === null || popupStyles === void 0 ? void 0 : popupStyles.overflowY;
+    var hidden = props.hidden, target = props.target, finalHeight = props.finalHeight, calloutMaxHeight = props.calloutMaxHeight, onPositioned = props.onPositioned, directionalHint = props.directionalHint;
     react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
         if (!hidden) {
             var timerId_1 = async.requestAnimationFrame(function () {
                 var _a, _b;
                 if (hostElement.current && calloutElement) {
-                    var currentProps = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)({}, props), { target: targetRef.current, bounds: getBounds() });
+                    var currentProps = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)({}, props), { target: targetRef.current, bounds: getBounds() });
                     // duplicate calloutElement & remove useMaxHeight's maxHeight for position calc
                     var dupeCalloutElement = calloutElement.cloneNode(true);
-                    dupeCalloutElement.style.maxHeight = calloutMaxHeight ? "".concat(calloutMaxHeight) : '';
+                    dupeCalloutElement.style.maxHeight = calloutMaxHeight ? "" + calloutMaxHeight : '';
                     dupeCalloutElement.style.visibility = 'hidden';
                     (_a = calloutElement.parentElement) === null || _a === void 0 ? void 0 : _a.appendChild(dupeCalloutElement);
                     var previousPositions = previousTarget.current === target ? positions : undefined;
-                    // only account for scroll resizing if styles allow callout to scroll
-                    // (popup styles determine if callout will scroll)
-                    var isOverflowYHidden = hideOverflow || popupOverflowY === 'clip' || popupOverflowY === 'hidden';
-                    var shouldScroll = preferScrollResizePositioning && !isOverflowYHidden;
                     // If there is a finalHeight given then we assume that the user knows and will handle
                     // additional positioning adjustments so we should call positionCard
                     var newPositions = finalHeight
-                        ? (0,_Positioning__WEBPACK_IMPORTED_MODULE_5__.positionCard)(currentProps, hostElement.current, dupeCalloutElement, previousPositions, win)
-                        : (0,_Positioning__WEBPACK_IMPORTED_MODULE_5__.positionCallout)(currentProps, hostElement.current, dupeCalloutElement, previousPositions, shouldScroll, undefined, win);
+                        ? (0,_Positioning__WEBPACK_IMPORTED_MODULE_5__.positionCard)(currentProps, hostElement.current, dupeCalloutElement, previousPositions)
+                        : (0,_Positioning__WEBPACK_IMPORTED_MODULE_5__.positionCallout)(currentProps, hostElement.current, dupeCalloutElement, previousPositions);
                     // clean up duplicate calloutElement
                     (_b = calloutElement.parentElement) === null || _b === void 0 ? void 0 : _b.removeChild(dupeCalloutElement);
                     // Set the new position only when the positions do not exist or one of the new callout positions
@@ -5742,10 +5647,6 @@ function usePositions(props, hostElement, calloutElement, targetRef, getBounds, 
         positions,
         props,
         target,
-        hideOverflow,
-        preferScrollResizePositioning,
-        popupOverflowY,
-        win,
     ]);
     return positions;
 }
@@ -5758,7 +5659,7 @@ function useAutoFocus(_a, positions, calloutElement) {
     var hasPositions = !!positions;
     react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
         if (!hidden && setInitialFocus && hasPositions && calloutElement) {
-            var timerId_2 = async.requestAnimationFrame(function () { return (0,_Utilities__WEBPACK_IMPORTED_MODULE_10__.focusFirstChild)(calloutElement); }, calloutElement);
+            var timerId_2 = async.requestAnimationFrame(function () { return (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.focusFirstChild)(calloutElement); }, calloutElement);
             return function () { return async.cancelAnimationFrame(timerId_2); };
         }
     }, [hidden, hasPositions, async, calloutElement, setInitialFocus]);
@@ -5767,10 +5668,16 @@ function useAutoFocus(_a, positions, calloutElement) {
  * (Hook) to set up various handlers to dismiss the popup when it loses focus or the window scrolls or similar cases.
  */
 function useDismissHandlers(_a, positions, hostElement, targetRef, targetWindow) {
-    var hidden = _a.hidden, onDismiss = _a.onDismiss, preventDismissOnScroll = _a.preventDismissOnScroll, preventDismissOnResize = _a.preventDismissOnResize, preventDismissOnLostFocus = _a.preventDismissOnLostFocus, dismissOnTargetClick = _a.dismissOnTargetClick, shouldDismissOnWindowFocus = _a.shouldDismissOnWindowFocus, preventDismissOnEvent = _a.preventDismissOnEvent;
+    var hidden = _a.hidden, onDismiss = _a.onDismiss, 
+    // eslint-disable-next-line deprecation/deprecation
+    preventDismissOnScroll = _a.preventDismissOnScroll, 
+    // eslint-disable-next-line deprecation/deprecation
+    preventDismissOnResize = _a.preventDismissOnResize, 
+    // eslint-disable-next-line deprecation/deprecation
+    preventDismissOnLostFocus = _a.preventDismissOnLostFocus, dismissOnTargetClick = _a.dismissOnTargetClick, shouldDismissOnWindowFocus = _a.shouldDismissOnWindowFocus, preventDismissOnEvent = _a.preventDismissOnEvent;
     var isMouseDownOnPopup = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
     var async = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_6__.useAsync)();
-    var mouseDownHandlers = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useConst)([
+    var mouseDownHandlers = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useConst)([
         function () {
             isMouseDownOnPopup.current = true;
         },
@@ -5798,7 +5705,7 @@ function useDismissHandlers(_a, positions, hostElement, targetRef, targetWindow)
         var dismissOnClickOrScroll = function (ev) {
             var eventPaths = ev.composedPath ? ev.composedPath() : [];
             var target = eventPaths.length > 0 ? eventPaths[0] : ev.target;
-            var isEventTargetOutsideCallout = hostElement.current && !(0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.elementContains)(hostElement.current, target);
+            var isEventTargetOutsideCallout = hostElement.current && !(0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.elementContains)(hostElement.current, target);
             // If mouse is pressed down on callout but moved outside then released, don't dismiss the callout.
             if (isEventTargetOutsideCallout && isMouseDownOnPopup.current) {
                 isMouseDownOnPopup.current = false;
@@ -5810,7 +5717,7 @@ function useDismissHandlers(_a, positions, hostElement, targetRef, targetWindow)
                     (!targetRef.current ||
                         'stopPropagation' in targetRef.current ||
                         dismissOnTargetClick ||
-                        (target !== targetRef.current && !(0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.elementContains)(targetRef.current, target))))) {
+                        (target !== targetRef.current && !(0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.elementContains)(targetRef.current, target))))) {
                 if (preventDismissOnEvent && preventDismissOnEvent(ev)) {
                     return;
                 }
@@ -5837,11 +5744,11 @@ function useDismissHandlers(_a, positions, hostElement, targetRef, targetWindow)
             async.setTimeout(function () {
                 if (!hidden && targetWindow) {
                     var disposables_1 = [
-                        (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.on)(targetWindow, 'scroll', dismissOnScroll, true),
-                        (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.on)(targetWindow, 'resize', dismissOnResize, true),
-                        (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.on)(targetWindow.document.documentElement, 'focus', dismissOnLostFocus, true),
-                        (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.on)(targetWindow.document.documentElement, 'click', dismissOnLostFocus, true),
-                        (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.on)(targetWindow, 'blur', dismissOnTargetWindowBlur, true),
+                        (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.on)(targetWindow, 'scroll', dismissOnScroll, true),
+                        (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.on)(targetWindow, 'resize', dismissOnResize, true),
+                        (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.on)(targetWindow.document.documentElement, 'focus', dismissOnLostFocus, true),
+                        (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.on)(targetWindow.document.documentElement, 'click', dismissOnLostFocus, true),
+                        (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.on)(targetWindow, 'blur', dismissOnTargetWindowBlur, true),
                     ];
                     resolve(function () {
                         disposables_1.forEach(function (dispose) { return dispose(); });
@@ -5870,31 +5777,29 @@ function useDismissHandlers(_a, positions, hostElement, targetRef, targetWindow)
     return mouseDownHandlers;
 }
 var CalloutContentBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (propsWithoutDefaults, forwardedRef) {
-    var props = (0,_Utilities__WEBPACK_IMPORTED_MODULE_14__.getPropsWithDefaults)(DEFAULT_PROPS, propsWithoutDefaults);
+    var props = (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.getPropsWithDefaults)(DEFAULT_PROPS, propsWithoutDefaults);
     var styles = props.styles, style = props.style, ariaLabel = props.ariaLabel, ariaDescribedBy = props.ariaDescribedBy, ariaLabelledBy = props.ariaLabelledBy, className = props.className, isBeakVisible = props.isBeakVisible, children = props.children, beakWidth = props.beakWidth, calloutWidth = props.calloutWidth, calloutMaxWidth = props.calloutMaxWidth, calloutMinWidth = props.calloutMinWidth, doNotLayer = props.doNotLayer, finalHeight = props.finalHeight, _a = props.hideOverflow, hideOverflow = _a === void 0 ? !!finalHeight : _a, backgroundColor = props.backgroundColor, calloutMaxHeight = props.calloutMaxHeight, onScroll = props.onScroll, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     _b = props.shouldRestoreFocus, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     shouldRestoreFocus = _b === void 0 ? true : _b, target = props.target, hidden = props.hidden, onLayerMounted = props.onLayerMounted, popupProps = props.popupProps;
     var hostElement = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
-    var popupRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
-    var mergedPopupRefs = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_15__.useMergedRefs)(popupRef, popupProps === null || popupProps === void 0 ? void 0 : popupProps.ref);
     var _c = react__WEBPACK_IMPORTED_MODULE_0__.useState(null), calloutElement = _c[0], setCalloutElement = _c[1];
     var calloutCallback = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(function (calloutEl) {
         setCalloutElement(calloutEl);
     }, []);
-    var rootRef = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_15__.useMergedRefs)(hostElement, forwardedRef);
-    var _d = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_16__.useTarget)(props.target, {
+    var rootRef = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_14__.useMergedRefs)(hostElement, forwardedRef);
+    var _d = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_15__.useTarget)(props.target, {
         current: calloutElement,
     }), targetRef = _d[0], targetWindow = _d[1];
     var getBounds = useBounds(props, targetRef, targetWindow);
-    var positions = usePositions(props, hostElement, calloutElement, targetRef, getBounds, mergedPopupRefs);
-    var maxHeight = useMaxHeight(props, getBounds, targetRef, positions);
+    var positions = usePositions(props, hostElement, calloutElement, targetRef, getBounds);
+    var maxHeight = useMaxHeight(props, getBounds, positions);
     var _e = useDismissHandlers(props, positions, hostElement, targetRef, targetWindow), mouseDownOnPopup = _e[0], mouseUpOnPopup = _e[1];
     // do not set both top and bottom css props from positions
     // instead, use maxHeight
     var isForcedInBounds = (positions === null || positions === void 0 ? void 0 : positions.elementPosition.top) && (positions === null || positions === void 0 ? void 0 : positions.elementPosition.bottom);
-    var cssPositions = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)({}, positions === null || positions === void 0 ? void 0 : positions.elementPosition), { maxHeight: maxHeight });
+    var cssPositions = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)({}, positions === null || positions === void 0 ? void 0 : positions.elementPosition), { maxHeight: maxHeight });
     if (isForcedInBounds) {
         cssPositions.bottom = undefined;
     }
@@ -5923,31 +5828,29 @@ var CalloutContentBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
         calloutMinWidth: calloutMinWidth,
         doNotLayer: doNotLayer,
     });
-    var overflowStyle = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)({ maxHeight: calloutMaxHeight ? calloutMaxHeight : '100%' }, style), (overflowYHidden && { overflowY: 'hidden' }));
+    var overflowStyle = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)({ maxHeight: calloutMaxHeight ? calloutMaxHeight : '100%' }, style), (overflowYHidden && { overflowY: 'hidden' }));
     var visibilityStyle = props.hidden ? { visibility: 'hidden' } : undefined;
     // React.CSSProperties does not understand IRawStyle, so the inline animations will need to be cast as any for now.
     return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { ref: rootRef, className: classNames.container, style: visibilityStyle },
-        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)({}, (0,_Utilities__WEBPACK_IMPORTED_MODULE_17__.getNativeProps)(props, _Utilities__WEBPACK_IMPORTED_MODULE_17__.divProperties, ARIA_ROLE_ATTRIBUTES), { className: (0,_Utilities__WEBPACK_IMPORTED_MODULE_18__.css)(classNames.root, positions && positions.targetEdge && ANIMATIONS[positions.targetEdge]), style: positions ? (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)({}, cssPositions) : OFF_SCREEN_STYLE, 
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)({}, (0,_Utilities__WEBPACK_IMPORTED_MODULE_16__.getNativeProps)(props, _Utilities__WEBPACK_IMPORTED_MODULE_16__.divProperties, ARIA_ROLE_ATTRIBUTES), { className: (0,_Utilities__WEBPACK_IMPORTED_MODULE_17__.css)(classNames.root, positions && positions.targetEdge && ANIMATIONS[positions.targetEdge]), style: positions ? (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)({}, cssPositions) : OFF_SCREEN_STYLE, 
             // Safari and Firefox on Mac OS requires this to back-stop click events so focus remains in the Callout.
             // See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Clicking_and_focus
             tabIndex: -1, ref: calloutCallback }),
             beakVisible && react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: classNames.beak, style: getBeakPosition(positions) }),
             beakVisible && react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: classNames.beakCurtain }),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Popup__WEBPACK_IMPORTED_MODULE_19__.Popup
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Popup__WEBPACK_IMPORTED_MODULE_18__.Popup
             // don't use getNativeElementProps for role and roledescription because it will also
             // pass through data-* props (resulting in them being used in two places)
-            , (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)({ 
+            , (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)({ 
                 // don't use getNativeElementProps for role and roledescription because it will also
                 // pass through data-* props (resulting in them being used in two places)
-                role: props.role, "aria-roledescription": props['aria-roledescription'], ariaDescribedBy: ariaDescribedBy, ariaLabel: ariaLabel, ariaLabelledBy: ariaLabelledBy, className: classNames.calloutMain, onDismiss: props.onDismiss, onMouseDown: mouseDownOnPopup, onMouseUp: mouseUpOnPopup, onRestoreFocus: props.onRestoreFocus, onScroll: onScroll, 
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
-                shouldRestoreFocus: shouldRestoreFocus, style: overflowStyle }, popupProps, { ref: mergedPopupRefs }), children))));
+                role: props.role, "aria-roledescription": props['aria-roledescription'], ariaDescribedBy: ariaDescribedBy, ariaLabel: ariaLabel, ariaLabelledBy: ariaLabelledBy, className: classNames.calloutMain, onDismiss: props.onDismiss, onMouseDown: mouseDownOnPopup, onMouseUp: mouseUpOnPopup, onRestoreFocus: props.onRestoreFocus, onScroll: onScroll, shouldRestoreFocus: shouldRestoreFocus, style: overflowStyle }, popupProps), children))));
 }), function (previousProps, nextProps) {
     if (!nextProps.shouldUpdateWhenHidden && previousProps.hidden && nextProps.hidden) {
         // Do not update when hidden.
         return true;
     }
-    return (0,_Utilities__WEBPACK_IMPORTED_MODULE_20__.shallowCompare)(previousProps, nextProps);
+    return (0,_Utilities__WEBPACK_IMPORTED_MODULE_19__.shallowCompare)(previousProps, nextProps);
 });
 /**
  * (Utility) to find and return the current `Callout` Beak position.
@@ -5956,7 +5859,7 @@ var CalloutContentBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
  */
 function getBeakPosition(positions) {
     var _a, _b;
-    var beakPositionStyle = (0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_9__.__assign)({}, (_a = positions === null || positions === void 0 ? void 0 : positions.beakPosition) === null || _a === void 0 ? void 0 : _a.elementPosition), { display: ((_b = positions === null || positions === void 0 ? void 0 : positions.beakPosition) === null || _b === void 0 ? void 0 : _b.hideBeak) ? 'none' : undefined });
+    var beakPositionStyle = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_8__.__assign)({}, (_a = positions === null || positions === void 0 ? void 0 : positions.beakPosition) === null || _a === void 0 ? void 0 : _a.elementPosition), { display: ((_b = positions === null || positions === void 0 ? void 0 : positions.beakPosition) === null || _b === void 0 ? void 0 : _b.hideBeak) ? 'none' : undefined });
     if (!beakPositionStyle.top && !beakPositionStyle.bottom && !beakPositionStyle.left && !beakPositionStyle.right) {
         beakPositionStyle.left = BEAK_ORIGIN_POSITION.left;
         beakPositionStyle.top = BEAK_ORIGIN_POSITION.top;
@@ -6150,44 +6053,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   canAnyMenuItemsCheck: () => (/* binding */ canAnyMenuItemsCheck),
 /* harmony export */   getSubmenuItems: () => (/* binding */ getSubmenuItems)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 196);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 196);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ 8340);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ContextualMenu.types */ 4771);
+/* harmony import */ var _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./ContextualMenu.types */ 4771);
 /* harmony import */ var _common_DirectionalHint__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../common/DirectionalHint */ 9861);
-/* harmony import */ var _FocusZone__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../FocusZone */ 2998);
+/* harmony import */ var _FocusZone__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../FocusZone */ 2998);
 /* harmony import */ var _FocusZone__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../../FocusZone */ 8885);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Utilities */ 3583);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Utilities */ 5659);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Utilities */ 6657);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Utilities */ 6924);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Utilities */ 481);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../Utilities */ 9524);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../Utilities */ 3703);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../Utilities */ 6859);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../Utilities */ 7459);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../../Utilities */ 4751);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../../Utilities */ 3736);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ../../Utilities */ 7974);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ../../Utilities */ 8972);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ../../Utilities */ 5123);
-/* harmony import */ var _utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../utilities/contextualMenu/index */ 256);
-/* harmony import */ var _Callout__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ../../Callout */ 6650);
-/* harmony import */ var _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./ContextualMenuItem */ 627);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Utilities */ 5659);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Utilities */ 6657);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Utilities */ 6924);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Utilities */ 481);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../Utilities */ 9524);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../Utilities */ 3703);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../Utilities */ 6859);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../Utilities */ 7459);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../Utilities */ 4751);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ../../Utilities */ 7974);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ../../Utilities */ 8972);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ../../Utilities */ 5123);
+/* harmony import */ var _utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../utilities/contextualMenu/index */ 256);
+/* harmony import */ var _Callout__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ../../Callout */ 6650);
+/* harmony import */ var _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./ContextualMenuItem */ 627);
 /* harmony import */ var _ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./ContextualMenuItemWrapper/index */ 7066);
-/* harmony import */ var _ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./ContextualMenuItemWrapper/index */ 331);
-/* harmony import */ var _ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./ContextualMenuItemWrapper/index */ 6083);
-/* harmony import */ var _Styling__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Styling */ 8455);
-/* harmony import */ var _ContextualMenu_classNames__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ContextualMenu.classNames */ 3208);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fluentui/react-hooks */ 2515);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fluentui/react-hooks */ 8555);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @fluentui/react-hooks */ 8670);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @fluentui/react-hooks */ 5672);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @fluentui/react-hooks */ 2295);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @fluentui/react-hooks */ 9939);
-/* harmony import */ var _ResponsiveMode__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../../ResponsiveMode */ 5774);
-/* harmony import */ var _ResponsiveMode__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ../../ResponsiveMode */ 3629);
-/* harmony import */ var _utilities_MenuContext_index__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ../../utilities/MenuContext/index */ 4788);
+/* harmony import */ var _ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./ContextualMenuItemWrapper/index */ 331);
+/* harmony import */ var _ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./ContextualMenuItemWrapper/index */ 6083);
+/* harmony import */ var _Styling__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Styling */ 8455);
+/* harmony import */ var _ContextualMenu_classNames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ContextualMenu.classNames */ 3208);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fluentui/react-hooks */ 2515);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fluentui/react-hooks */ 8555);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @fluentui/react-hooks */ 8670);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @fluentui/react-hooks */ 5672);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @fluentui/react-hooks */ 2295);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @fluentui/react-hooks */ 9939);
+/* harmony import */ var _ResponsiveMode__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../../ResponsiveMode */ 5774);
+/* harmony import */ var _ResponsiveMode__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ../../ResponsiveMode */ 3629);
+/* harmony import */ var _utilities_MenuContext_index__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ../../utilities/MenuContext/index */ 4788);
 
 
 
@@ -6213,30 +6115,18 @@ var DEFAULT_PROPS = {
     directionalHint: _common_DirectionalHint__WEBPACK_IMPORTED_MODULE_2__.DirectionalHint.bottomAutoEdge,
     beakWidth: 16,
 };
-/* return number of menu items, excluding headers and dividers */
-function getItemCount(items) {
-    var totalItemCount = 0;
-    for (var _i = 0, items_1 = items; _i < items_1.length; _i++) {
-        var item = items_1[_i];
-        if (item.itemType !== _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Divider && item.itemType !== _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Header) {
-            var itemCount = item.customOnRenderListLength ? item.customOnRenderListLength : 1;
-            totalItemCount += itemCount;
-        }
-    }
-    return totalItemCount;
-}
 function getSubmenuItems(item, options) {
     var target = options === null || options === void 0 ? void 0 : options.target;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     var items = item.subMenuProps ? item.subMenuProps.items : item.items;
     if (items) {
         var overrideItems = [];
-        for (var _i = 0, items_2 = items; _i < items_2.length; _i++) {
-            var subItem = items_2[_i];
+        for (var _i = 0, items_1 = items; _i < items_1.length; _i++) {
+            var subItem = items_1[_i];
             if (subItem.preferMenuTargetAsEventTarget) {
                 // For sub-items which need an overridden target, intercept `onClick`
-                var onClick = subItem.onClick, contextItem = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__rest)(subItem, ["onClick"]);
-                overrideItems.push((0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({}, contextItem), { onClick: getOnClickWithOverrideTarget(onClick, target) }));
+                var onClick = subItem.onClick, contextItem = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__rest)(subItem, ["onClick"]);
+                overrideItems.push((0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, contextItem), { onClick: getOnClickWithOverrideTarget(onClick, target) }));
             }
             else {
                 overrideItems.push(subItem);
@@ -6262,19 +6152,19 @@ function canAnyMenuItemsCheck(items) {
 }
 var NavigationIdleDelay = 250; /* ms */
 var COMPONENT_NAME = 'ContextualMenu';
-var _getMenuItemStylesFunction = (0,_Utilities__WEBPACK_IMPORTED_MODULE_5__.memoizeFunction)(function () {
+var _getMenuItemStylesFunction = (0,_Utilities__WEBPACK_IMPORTED_MODULE_4__.memoizeFunction)(function () {
     var styles = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         styles[_i] = arguments[_i];
     }
     return function (styleProps) {
-        return _Styling__WEBPACK_IMPORTED_MODULE_6__.concatStyleSetsWithProps.apply(void 0, (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__spreadArray)([styleProps, _ContextualMenu_classNames__WEBPACK_IMPORTED_MODULE_7__.getItemStyles], styles, false));
+        return _Styling__WEBPACK_IMPORTED_MODULE_5__.concatStyleSetsWithProps.apply(void 0, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__spreadArray)([styleProps, _ContextualMenu_classNames__WEBPACK_IMPORTED_MODULE_6__.getItemStyles], styles));
     };
 });
 //#region Custom hooks
 function useVisibility(props, targetWindow) {
     var _a = props.hidden, hidden = _a === void 0 ? false : _a, onMenuDismissed = props.onMenuDismissed, onMenuOpened = props.onMenuOpened;
-    var previousHidden = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__.usePrevious)(hidden);
+    var previousHidden = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_7__.usePrevious)(hidden);
     var onMenuOpenedRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(onMenuOpened);
     var onMenuClosedRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(onMenuDismissed);
     var propsRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(props);
@@ -6300,7 +6190,7 @@ function useSubMenuState(_a, dismiss) {
     var _c = react__WEBPACK_IMPORTED_MODULE_0__.useState(), submenuTarget = _c[0], setSubmenuTarget = _c[1];
     /** True if the menu was expanded by mouse click OR hover (as opposed to by keyboard) */
     var _d = react__WEBPACK_IMPORTED_MODULE_0__.useState(), shouldFocusOnContainer = _d[0], setShouldFocusOnContainer = _d[1];
-    var subMenuId = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_9__.useId)(COMPONENT_NAME, id);
+    var subMenuId = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__.useId)(COMPONENT_NAME, id);
     var closeSubMenu = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(function () {
         setShouldFocusOnContainer(undefined);
         setExpandedMenuItemKey(undefined);
@@ -6334,13 +6224,13 @@ function useSubMenuState(_a, dismiss) {
                 id: subMenuId,
                 shouldFocusOnMount: true,
                 shouldFocusOnContainer: shouldFocusOnContainer,
-                directionalHint: (0,_Utilities__WEBPACK_IMPORTED_MODULE_10__.getRTL)(theme) ? _common_DirectionalHint__WEBPACK_IMPORTED_MODULE_2__.DirectionalHint.leftTopEdge : _common_DirectionalHint__WEBPACK_IMPORTED_MODULE_2__.DirectionalHint.rightTopEdge,
+                directionalHint: (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.getRTL)(theme) ? _common_DirectionalHint__WEBPACK_IMPORTED_MODULE_2__.DirectionalHint.leftTopEdge : _common_DirectionalHint__WEBPACK_IMPORTED_MODULE_2__.DirectionalHint.rightTopEdge,
                 className: className,
                 gapSpace: 0,
                 isBeakVisible: false,
             };
             if (item.subMenuProps) {
-                (0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.assign)(submenuProps, item.subMenuProps);
+                (0,_Utilities__WEBPACK_IMPORTED_MODULE_10__.assign)(submenuProps, item.subMenuProps);
             }
             if (item.preferMenuTargetAsEventTarget) {
                 var onItemClick = item.onItemClick;
@@ -6368,7 +6258,7 @@ function useShouldUpdateFocusOnMouseMove(_a) {
 }
 function usePreviousActiveElement(_a, targetWindow, hostElement) {
     var hidden = _a.hidden, onRestoreFocus = _a.onRestoreFocus;
-    var previousActiveElement = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var previousActiveElement = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     var tryFocusPreviousActiveElement = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(function (options) {
         var _a, _b;
         if (onRestoreFocus) {
@@ -6381,7 +6271,7 @@ function usePreviousActiveElement(_a, targetWindow, hostElement) {
             (_b = (_a = previousActiveElement.current) === null || _a === void 0 ? void 0 : _a.focus) === null || _b === void 0 ? void 0 : _b.call(_a);
         }
     }, [onRestoreFocus]);
-    (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_12__.useIsomorphicLayoutEffect)(function () {
+    (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useIsomorphicLayoutEffect)(function () {
         var _a, _b;
         if (!hidden) {
             var newElement = targetWindow === null || targetWindow === void 0 ? void 0 : targetWindow.document.activeElement;
@@ -6393,7 +6283,7 @@ function usePreviousActiveElement(_a, targetWindow, hostElement) {
             tryFocusPreviousActiveElement({
                 originalElement: previousActiveElement.current,
                 containsFocus: true,
-                documentContainsFocus: ((_b = (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.getDocument)()) === null || _b === void 0 ? void 0 : _b.hasFocus()) || false,
+                documentContainsFocus: ((_b = (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.getDocument)()) === null || _b === void 0 ? void 0 : _b.hasFocus()) || false,
             });
             previousActiveElement.current = undefined;
         }
@@ -6401,9 +6291,9 @@ function usePreviousActiveElement(_a, targetWindow, hostElement) {
     return [tryFocusPreviousActiveElement];
 }
 function useKeyHandlers(_a, dismiss, hostElement, openSubMenu) {
-    var theme = _a.theme, isSubMenu = _a.isSubMenu, _b = _a.focusZoneProps, _c = _b === void 0 ? {} : _b, checkForNoWrap = _c.checkForNoWrap, _d = _c.direction, focusZoneDirection = _d === void 0 ? _FocusZone__WEBPACK_IMPORTED_MODULE_14__.FocusZoneDirection.vertical : _d;
+    var theme = _a.theme, isSubMenu = _a.isSubMenu, _b = _a.focusZoneProps, _c = _b === void 0 ? {} : _b, checkForNoWrap = _c.checkForNoWrap, _d = _c.direction, focusZoneDirection = _d === void 0 ? _FocusZone__WEBPACK_IMPORTED_MODULE_13__.FocusZoneDirection.vertical : _d;
     /** True if the most recent keydown event was for alt (option) or meta (command). */
-    var lastKeyDownWasAltOrMeta = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var lastKeyDownWasAltOrMeta = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     /**
      * Calls `shouldHandleKey` to determine whether the keyboard event should be handled;
      * if so, stops event propagation and dismisses menu(s).
@@ -6427,26 +6317,29 @@ function useKeyHandlers(_a, dismiss, hostElement, openSubMenu) {
      * Checks if the submenu should be closed
      */
     var shouldCloseSubMenu = function (ev) {
-        var submenuCloseKey = (0,_Utilities__WEBPACK_IMPORTED_MODULE_10__.getRTL)(theme) ? _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.right : _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.left;
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        var submenuCloseKey = (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.getRTL)(theme) ? _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.right : _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.left;
+        // eslint-disable-next-line deprecation/deprecation
         if (ev.which !== submenuCloseKey || !isSubMenu) {
             return false;
         }
-        return !!(focusZoneDirection === _FocusZone__WEBPACK_IMPORTED_MODULE_14__.FocusZoneDirection.vertical ||
-            (checkForNoWrap && !(0,_Utilities__WEBPACK_IMPORTED_MODULE_16__.shouldWrapFocus)(ev.target, 'data-no-horizontal-wrap')));
+        return !!(focusZoneDirection === _FocusZone__WEBPACK_IMPORTED_MODULE_13__.FocusZoneDirection.vertical ||
+            (checkForNoWrap && !(0,_Utilities__WEBPACK_IMPORTED_MODULE_15__.shouldWrapFocus)(ev.target, 'data-no-horizontal-wrap')));
     };
     var shouldHandleKeyDown = function (ev) {
         return (
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.escape || shouldCloseSubMenu(ev) || (ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.up && (ev.altKey || ev.metaKey)));
+        // eslint-disable-next-line deprecation/deprecation
+        ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.escape ||
+            shouldCloseSubMenu(ev) ||
+            // eslint-disable-next-line deprecation/deprecation
+            (ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.up && (ev.altKey || ev.metaKey)));
     };
     var onKeyDown = function (ev) {
         // Take note if we are processing an alt (option) or meta (command) keydown.
         // See comment in shouldHandleKeyUp for reasoning.
         lastKeyDownWasAltOrMeta.current = isAltOrMeta(ev);
         // On Mac, pressing escape dismisses all levels of native context menus
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        var dismissAllMenus = ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.escape && ((0,_Utilities__WEBPACK_IMPORTED_MODULE_17__.isMac)() || (0,_Utilities__WEBPACK_IMPORTED_MODULE_18__.isIOS)());
+        // eslint-disable-next-line deprecation/deprecation
+        var dismissAllMenus = ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.escape && ((0,_Utilities__WEBPACK_IMPORTED_MODULE_16__.isMac)() || (0,_Utilities__WEBPACK_IMPORTED_MODULE_17__.isIOS)());
         return keyHandler(ev, shouldHandleKeyDown, dismissAllMenus);
     };
     /**
@@ -6462,7 +6355,7 @@ function useKeyHandlers(_a, dismiss, hostElement, openSubMenu) {
     var shouldHandleKeyUp = function (ev) {
         var keyPressIsAltOrMetaAlone = lastKeyDownWasAltOrMeta.current && isAltOrMeta(ev);
         lastKeyDownWasAltOrMeta.current = false;
-        return !!keyPressIsAltOrMetaAlone && !((0,_Utilities__WEBPACK_IMPORTED_MODULE_18__.isIOS)() || (0,_Utilities__WEBPACK_IMPORTED_MODULE_17__.isMac)());
+        return !!keyPressIsAltOrMetaAlone && !((0,_Utilities__WEBPACK_IMPORTED_MODULE_17__.isIOS)() || (0,_Utilities__WEBPACK_IMPORTED_MODULE_16__.isMac)());
     };
     var onKeyUp = function (ev) {
         return keyHandler(ev, shouldHandleKeyUp, true /* dismissAllMenus */);
@@ -6477,14 +6370,14 @@ function useKeyHandlers(_a, dismiss, hostElement, openSubMenu) {
         // If we have a modifier key being pressed, we do not want to move focus.
         // Otherwise, handle up and down keys.
         var hasModifier = !!(ev.altKey || ev.metaKey);
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        var isUp = ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.up;
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        var isDown = ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.down;
+        // eslint-disable-next-line deprecation/deprecation
+        var isUp = ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.up;
+        // eslint-disable-next-line deprecation/deprecation
+        var isDown = ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.down;
         if (!hasModifier && (isUp || isDown)) {
             var elementToFocus = isUp
-                ? (0,_Utilities__WEBPACK_IMPORTED_MODULE_16__.getLastFocusable)(hostElement.current, hostElement.current.lastChild, true)
-                : (0,_Utilities__WEBPACK_IMPORTED_MODULE_16__.getFirstFocusable)(hostElement.current, hostElement.current.firstChild, true);
+                ? (0,_Utilities__WEBPACK_IMPORTED_MODULE_15__.getLastFocusable)(hostElement.current, hostElement.current.lastChild, true)
+                : (0,_Utilities__WEBPACK_IMPORTED_MODULE_15__.getFirstFocusable)(hostElement.current, hostElement.current.firstChild, true);
             if (elementToFocus) {
                 elementToFocus.focus();
                 ev.preventDefault();
@@ -6493,10 +6386,10 @@ function useKeyHandlers(_a, dismiss, hostElement, openSubMenu) {
         }
     };
     var onItemKeyDown = function (item, ev) {
-        var openKey = (0,_Utilities__WEBPACK_IMPORTED_MODULE_10__.getRTL)(theme) ? _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.left : _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.right;
+        var openKey = (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.getRTL)(theme) ? _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.left : _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.right;
         if (!item.disabled &&
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            (ev.which === openKey || ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.enter || (ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.down && (ev.altKey || ev.metaKey)))) {
+            // eslint-disable-next-line deprecation/deprecation
+            (ev.which === openKey || ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.enter || (ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.down && (ev.altKey || ev.metaKey)))) {
             openSubMenu(item, ev.currentTarget);
             ev.preventDefault();
         }
@@ -6505,7 +6398,7 @@ function useKeyHandlers(_a, dismiss, hostElement, openSubMenu) {
 }
 function useScrollHandler(asyncTracker) {
     var isScrollIdle = react__WEBPACK_IMPORTED_MODULE_0__.useRef(true);
-    var scrollIdleTimeoutId = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var scrollIdleTimeoutId = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     /**
      * Scroll handler for the callout to make sure the mouse events
      * for updating focus are not interacting during scroll
@@ -6565,13 +6458,7 @@ function useSubmenuEnterTimer(_a, asyncTracker) {
     };
     return [cancelSubMenuTimer, startSubmenuTimer, enterTimerRef];
 }
-function useMouseHandlers(props, 
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-isScrollIdle, subMenuEntryTimer, targetWindow, 
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-shouldUpdateFocusOnMouseEvent, 
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-gotMouseMove, expandedMenuItemKey, hostElement, startSubmenuTimer, cancelSubMenuTimer, openSubMenu, onSubMenuDismiss, dismiss) {
+function useMouseHandlers(props, isScrollIdle, subMenuEntryTimer, targetWindow, shouldUpdateFocusOnMouseEvent, gotMouseMove, expandedMenuItemKey, hostElement, startSubmenuTimer, cancelSubMenuTimer, openSubMenu, onSubMenuDismiss, dismiss) {
     var menuTarget = props.target;
     var onItemMouseEnterBase = function (item, ev, target) {
         if (shouldUpdateFocusOnMouseEvent.current) {
@@ -6644,7 +6531,7 @@ gotMouseMove, expandedMenuItemKey, hostElement, startSubmenuTimer, cancelSubMenu
         }
         // Delay updating expanding/dismissing the submenu
         // and only set focus if we have not already done so
-        if ((0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_19__.hasSubmenu)(item)) {
+        if ((0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_18__.hasSubmenu)(item)) {
             ev.stopPropagation();
             startSubmenuTimer(function () {
                 targetElement.focus();
@@ -6666,7 +6553,7 @@ gotMouseMove, expandedMenuItemKey, hostElement, startSubmenuTimer, cancelSubMenu
         // Cancel an async menu item hover timeout action from being taken and instead
         // just trigger the click event instead.
         cancelSubMenuTimer();
-        if (!(0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_19__.hasSubmenu)(item) && (!items || !items.length)) {
+        if (!(0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_18__.hasSubmenu)(item) && (!items || !items.length)) {
             // This is an item without a menu. Click it.
             executeItemClick(item, ev);
         }
@@ -6719,11 +6606,11 @@ gotMouseMove, expandedMenuItemKey, hostElement, startSubmenuTimer, cancelSubMenu
 //#endregion
 var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (propsWithoutDefaults, forwardedRef) {
     var _a;
-    var _b = (0,_Utilities__WEBPACK_IMPORTED_MODULE_20__.getPropsWithDefaults)(DEFAULT_PROPS, propsWithoutDefaults), ref = _b.ref, props = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__rest)(_b, ["ref"]);
+    var _b = (0,_Utilities__WEBPACK_IMPORTED_MODULE_19__.getPropsWithDefaults)(DEFAULT_PROPS, propsWithoutDefaults), ref = _b.ref, props = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__rest)(_b, ["ref"]);
     var hostElement = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
-    var asyncTracker = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_21__.useAsync)();
-    var menuId = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_9__.useId)(COMPONENT_NAME, props.id);
-    (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useWarnings)({
+    var asyncTracker = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_20__.useAsync)();
+    var menuId = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__.useId)(COMPONENT_NAME, props.id);
+    (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_21__.useWarnings)({
         name: COMPONENT_NAME,
         props: props,
         deprecations: {
@@ -6731,25 +6618,25 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
         },
     });
     var dismiss = function (ev, dismissAll) { var _a; return (_a = props.onDismiss) === null || _a === void 0 ? void 0 : _a.call(props, ev, dismissAll); };
-    var _c = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_23__.useTarget)(props.target, hostElement), targetRef = _c[0], targetWindow = _c[1];
+    var _c = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_22__.useTarget)(props.target, hostElement), targetRef = _c[0], targetWindow = _c[1];
     var tryFocusPreviousActiveElement = usePreviousActiveElement(props, targetWindow, hostElement)[0];
     var _d = useSubMenuState(props, dismiss), expandedMenuItemKey = _d[0], openSubMenu = _d[1], getSubmenuProps = _d[2], onSubMenuDismiss = _d[3];
     var _e = useShouldUpdateFocusOnMouseMove(props), shouldUpdateFocusOnMouseEvent = _e[0], gotMouseMove = _e[1], onMenuFocusCapture = _e[2];
     var _f = useScrollHandler(asyncTracker), onScroll = _f[0], isScrollIdle = _f[1];
     var _g = useSubmenuEnterTimer(props, asyncTracker), cancelSubMenuTimer = _g[0], startSubmenuTimer = _g[1], subMenuEntryTimer = _g[2];
-    var responsiveMode = (0,_ResponsiveMode__WEBPACK_IMPORTED_MODULE_24__.useResponsiveMode)(hostElement, props.responsiveMode);
+    var responsiveMode = (0,_ResponsiveMode__WEBPACK_IMPORTED_MODULE_23__.useResponsiveMode)(hostElement, props.responsiveMode);
     useVisibility(props, targetWindow);
     var _h = useKeyHandlers(props, dismiss, hostElement, openSubMenu), onKeyDown = _h[0], onKeyUp = _h[1], onMenuKeyDown = _h[2], onItemKeyDown = _h[3];
     var _j = useMouseHandlers(props, isScrollIdle, subMenuEntryTimer, targetWindow, shouldUpdateFocusOnMouseEvent, gotMouseMove, expandedMenuItemKey, hostElement, startSubmenuTimer, cancelSubMenuTimer, openSubMenu, onSubMenuDismiss, dismiss), onItemMouseEnterBase = _j[0], onItemMouseMoveBase = _j[1], onMouseItemLeave = _j[2], onItemClick = _j[3], onAnchorClick = _j[4], executeItemClick = _j[5], onItemClickBase = _j[6];
     //#region Render helpers
     var onDefaultRenderMenuList = function (menuListProps, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     menuClassNames, defaultRender) {
         var indexCorrection = 0;
         var items = menuListProps.items, totalItemCount = menuListProps.totalItemCount, hasCheckmarks = menuListProps.hasCheckmarks, hasIcons = menuListProps.hasIcons;
         return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", { className: menuClassNames.list, onKeyDown: onKeyDown, onKeyUp: onKeyUp, role: 'presentation' }, items.map(function (item, index) {
             var menuItem = renderMenuItem(item, index, indexCorrection, totalItemCount, hasCheckmarks, hasIcons, menuClassNames);
-            if (item.itemType !== _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Divider && item.itemType !== _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Header) {
+            if (item.itemType !== _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Divider && item.itemType !== _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Header) {
                 var indexIncrease = item.customOnRenderListLength ? item.customOnRenderListLength : 1;
                 indexCorrection += indexIncrease;
             }
@@ -6758,38 +6645,38 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
     };
     var renderFocusZone = function (children, adjustedFocusZoneProps) {
         var _a = props.focusZoneAs, ChildrenRenderer = _a === void 0 ? _FocusZone__WEBPACK_IMPORTED_MODULE_25__.FocusZone : _a;
-        return react__WEBPACK_IMPORTED_MODULE_0__.createElement(ChildrenRenderer, (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({}, adjustedFocusZoneProps), children);
+        return react__WEBPACK_IMPORTED_MODULE_0__.createElement(ChildrenRenderer, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, adjustedFocusZoneProps), children);
     };
     /**
      * !!!IMPORTANT!!! Avoid mutating `item: IContextualMenuItem` argument. It will
      * cause the menu items to always re-render because the component update is based on shallow comparison.
      */
     var renderMenuItem = function (item, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     menuClassNames) {
         var _a;
         var renderedItems = [];
         var iconProps = item.iconProps || { iconName: 'None' };
-        var getItemClassNames = item.getItemClassNames, // eslint-disable-line @typescript-eslint/no-deprecated
+        var getItemClassNames = item.getItemClassNames, // eslint-disable-line deprecation/deprecation
         itemProps = item.itemProps;
         var styles = itemProps ? itemProps.styles : undefined;
         // We only send a dividerClassName when the item to be rendered is a divider.
         // For all other cases, the default divider style is used.
-        var dividerClassName = item.itemType === _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Divider ? item.className : undefined;
+        var dividerClassName = item.itemType === _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Divider ? item.className : undefined;
         var subMenuIconClassName = item.submenuIconProps ? item.submenuIconProps.className : '';
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         var itemClassNames;
         // IContextualMenuItem#getItemClassNames for backwards compatibility
         // otherwise uses mergeStyles for class names.
         if (getItemClassNames) {
-            itemClassNames = getItemClassNames(props.theme, (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_19__.isItemDisabled)(item), expandedMenuItemKey === item.key, !!(0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_19__.getIsChecked)(item), !!item.href, iconProps.iconName !== 'None', item.className, dividerClassName, iconProps.className, subMenuIconClassName, item.primaryDisabled);
+            itemClassNames = getItemClassNames(props.theme, (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_18__.isItemDisabled)(item), expandedMenuItemKey === item.key, !!(0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_18__.getIsChecked)(item), !!item.href, iconProps.iconName !== 'None', item.className, dividerClassName, iconProps.className, subMenuIconClassName, item.primaryDisabled);
         }
         else {
             var itemStyleProps = {
                 theme: props.theme,
-                disabled: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_19__.isItemDisabled)(item),
+                disabled: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_18__.isItemDisabled)(item),
                 expanded: expandedMenuItemKey === item.key,
-                checked: !!(0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_19__.getIsChecked)(item),
+                checked: !!(0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_18__.getIsChecked)(item),
                 isAnchorLink: !!item.href,
                 knownIcon: iconProps.iconName !== 'None',
                 itemClassName: item.className,
@@ -6802,20 +6689,20 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
             // since the ContextualMenu currently handles item classNames.
             itemClassNames = getContextualMenuItemClassNames(_getMenuItemStylesFunction((_a = menuClassNames.subComponentStyles) === null || _a === void 0 ? void 0 : _a.menuItem, styles), itemStyleProps);
         }
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         if (item.text === '-' || item.name === '-') {
-            item.itemType = _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Divider;
+            item.itemType = _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Divider;
         }
         switch (item.itemType) {
-            case _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Divider:
+            case _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Divider:
                 renderedItems.push(renderSeparator(index, itemClassNames));
                 break;
-            case _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Header:
+            case _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Header:
                 renderedItems.push(renderSeparator(index, itemClassNames));
                 var headerItem = renderHeaderMenuItem(item, itemClassNames, menuClassNames, index, hasCheckmarks, hasIcons);
                 renderedItems.push(renderListItem(headerItem, item.key || index, itemClassNames, item.title));
                 break;
-            case _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Section:
+            case _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Section:
                 renderedItems.push(renderSectionItem(item, itemClassNames, menuClassNames, index, hasCheckmarks, hasIcons));
                 break;
             default:
@@ -6833,15 +6720,15 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
         return react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, { key: item.key }, renderedItems);
     };
     var defaultMenuItemRenderer = function (item, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     menuClassNames) {
         var index = item.index, focusableElementIndex = item.focusableElementIndex, totalItemCount = item.totalItemCount, hasCheckmarks = item.hasCheckmarks, hasIcons = item.hasIcons;
         return renderMenuItem(item, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons, menuClassNames);
     };
     var renderSectionItem = function (sectionItem, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     itemClassNames, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     menuClassNames, index, hasCheckmarks, hasIcons) {
         var sectionProps = sectionItem.sectionProps;
         if (!sectionProps) {
@@ -6857,8 +6744,8 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
                 // of whitespace in order to build a valid element ID
                 var id_1 = menuId + sectionProps.title.replace(/\s/g, '');
                 headerContextualMenuItem = {
-                    key: "section-".concat(sectionProps.title, "-title"),
-                    itemType: _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Header,
+                    key: "section-" + sectionProps.title + "-title",
+                    itemType: _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Header,
                     text: sectionProps.title,
                     id: id_1,
                 };
@@ -6866,7 +6753,7 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
             }
             else {
                 var id_2 = sectionProps.title.id || menuId + sectionProps.title.key.replace(/\s/g, '');
-                headerContextualMenuItem = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({}, sectionProps.title), { id: id_2 });
+                headerContextualMenuItem = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, sectionProps.title), { id: id_2 });
                 ariaLabelledby = id_2;
             }
             if (headerContextualMenuItem) {
@@ -6878,41 +6765,32 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
             }
         }
         if (sectionProps.items && sectionProps.items.length > 0) {
-            var correctedIndex_1 = 0;
-            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", { role: "presentation", key: sectionProps.key || sectionItem.key || "section-".concat(index) },
-                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({}, groupProps),
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", { role: "presentation", key: sectionProps.key || sectionItem.key || "section-" + index },
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, groupProps),
                     react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", { className: menuClassNames.list, role: "presentation" },
                         sectionProps.topDivider && renderSeparator(index, itemClassNames, true, true),
                         headerItem && renderListItem(headerItem, sectionItem.key || index, itemClassNames, sectionItem.title),
                         sectionProps.items.map(function (contextualMenuItem, itemsIndex) {
-                            var menuItem = renderMenuItem(contextualMenuItem, itemsIndex, correctedIndex_1, getItemCount(sectionProps.items), hasCheckmarks, hasIcons, menuClassNames);
-                            if (contextualMenuItem.itemType !== _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Divider &&
-                                contextualMenuItem.itemType !== _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Header) {
-                                var indexIncrease = contextualMenuItem.customOnRenderListLength
-                                    ? contextualMenuItem.customOnRenderListLength
-                                    : 1;
-                                correctedIndex_1 += indexIncrease;
-                            }
-                            return menuItem;
+                            return renderMenuItem(contextualMenuItem, itemsIndex, itemsIndex, sectionProps.items.length, hasCheckmarks, hasIcons, menuClassNames);
                         }),
                         sectionProps.bottomDivider && renderSeparator(index, itemClassNames, false, true)))));
         }
     };
-    var renderListItem = function (content, key, classNames, // eslint-disable-line @typescript-eslint/no-deprecated
+    var renderListItem = function (content, key, classNames, // eslint-disable-line deprecation/deprecation
     title) {
         return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", { role: "presentation", title: title, key: key, className: classNames.item }, content));
     };
-    var renderSeparator = function (index, classNames, // eslint-disable-line @typescript-eslint/no-deprecated
+    var renderSeparator = function (index, classNames, // eslint-disable-line deprecation/deprecation
     top, fromSection) {
         if (fromSection || index > 0) {
             return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("li", { role: "separator", key: 'separator-' + index + (top === undefined ? '' : top ? '-top' : '-bottom'), className: classNames.divider, "aria-hidden": "true" }));
         }
         return null;
     };
-    var renderNormalItem = function (item, classNames, // eslint-disable-line @typescript-eslint/no-deprecated
+    var renderNormalItem = function (item, classNames, // eslint-disable-line deprecation/deprecation
     index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons) {
         if (item.onRender) {
-            return item.onRender((0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({ 'aria-posinset': focusableElementIndex + 1, 'aria-setsize': totalItemCount }, item), dismiss);
+            return item.onRender((0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({ 'aria-posinset': focusableElementIndex + 1, 'aria-setsize': totalItemCount }, item), dismiss);
         }
         var contextualMenuItemAs = props.contextualMenuItemAs;
         var commonProps = {
@@ -6936,49 +6814,31 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
             dismissMenu: dismiss,
         };
         if (item.href) {
-            var ContextualMenuAnchorAs = _ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_26__.ContextualMenuAnchor;
-            if (item.contextualMenuItemWrapperAs) {
-                ContextualMenuAnchorAs = (0,_Utilities__WEBPACK_IMPORTED_MODULE_27__.composeComponentAs)(item.contextualMenuItemWrapperAs, ContextualMenuAnchorAs);
-            }
-            return react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContextualMenuAnchorAs, (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({}, commonProps, { onItemClick: onAnchorClick }));
+            return react__WEBPACK_IMPORTED_MODULE_0__.createElement(_ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_26__.ContextualMenuAnchor, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, commonProps, { onItemClick: onAnchorClick }));
         }
-        if (item.split && (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_19__.hasSubmenu)(item)) {
-            var ContextualMenuSplitButtonAs = _ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_28__.ContextualMenuSplitButton;
-            if (item.contextualMenuItemWrapperAs) {
-                ContextualMenuSplitButtonAs = (0,_Utilities__WEBPACK_IMPORTED_MODULE_27__.composeComponentAs)(item.contextualMenuItemWrapperAs, ContextualMenuSplitButtonAs);
-            }
-            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContextualMenuSplitButtonAs, (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({}, commonProps, { onItemClick: onItemClick, onItemClickBase: onItemClickBase, onTap: cancelSubMenuTimer })));
+        if (item.split && (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_18__.hasSubmenu)(item)) {
+            return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_27__.ContextualMenuSplitButton, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, commonProps, { onItemClick: onItemClick, onItemClickBase: onItemClickBase, onTap: cancelSubMenuTimer })));
         }
-        var ContextualMenuButtonAs = _ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_29__.ContextualMenuButton;
-        if (item.contextualMenuItemWrapperAs) {
-            ContextualMenuButtonAs = (0,_Utilities__WEBPACK_IMPORTED_MODULE_27__.composeComponentAs)(item.contextualMenuItemWrapperAs, ContextualMenuButtonAs);
-        }
-        return react__WEBPACK_IMPORTED_MODULE_0__.createElement(ContextualMenuButtonAs, (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({}, commonProps, { onItemClick: onItemClick, onItemClickBase: onItemClickBase }));
+        return react__WEBPACK_IMPORTED_MODULE_0__.createElement(_ContextualMenuItemWrapper_index__WEBPACK_IMPORTED_MODULE_28__.ContextualMenuButton, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({}, commonProps, { onItemClick: onItemClick, onItemClickBase: onItemClickBase }));
     };
     var renderHeaderMenuItem = function (item, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     itemClassNames, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     menuClassNames, index, hasCheckmarks, hasIcons) {
-        var ChildrenRenderer = _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_30__.ContextualMenuItem;
-        if (item.contextualMenuItemAs) {
-            ChildrenRenderer = (0,_Utilities__WEBPACK_IMPORTED_MODULE_27__.composeComponentAs)(item.contextualMenuItemAs, ChildrenRenderer);
-        }
-        if (props.contextualMenuItemAs) {
-            ChildrenRenderer = (0,_Utilities__WEBPACK_IMPORTED_MODULE_27__.composeComponentAs)(props.contextualMenuItemAs, ChildrenRenderer);
-        }
+        var _a = props.contextualMenuItemAs, ChildrenRenderer = _a === void 0 ? _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_29__.ContextualMenuItem : _a;
         var itemProps = item.itemProps, id = item.id;
-        var divHtmlProperties = itemProps && (0,_Utilities__WEBPACK_IMPORTED_MODULE_31__.getNativeProps)(itemProps, _Utilities__WEBPACK_IMPORTED_MODULE_31__.divProperties);
+        var divHtmlProperties = itemProps && (0,_Utilities__WEBPACK_IMPORTED_MODULE_30__.getNativeProps)(itemProps, _Utilities__WEBPACK_IMPORTED_MODULE_30__.divProperties);
         return (
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({ id: id, className: menuClassNames.header }, divHtmlProperties, { style: item.style }),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(ChildrenRenderer, (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({ item: item, classNames: itemClassNames, index: index, onCheckmarkClick: hasCheckmarks ? onItemClick : undefined, hasIcons: hasIcons }, itemProps))));
+        // eslint-disable-next-line deprecation/deprecation
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({ id: id, className: menuClassNames.header }, divHtmlProperties, { style: item.style }),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(ChildrenRenderer, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({ item: item, classNames: itemClassNames, index: index, onCheckmarkClick: hasCheckmarks ? onItemClick : undefined, hasIcons: hasIcons }, itemProps))));
     };
     //#endregion
     //#region Main render
     var isBeakVisible = props.isBeakVisible;
     var items = props.items, labelElementId = props.labelElementId, id = props.id, className = props.className, beakWidth = props.beakWidth, directionalHint = props.directionalHint, directionalHintForRTL = props.directionalHintForRTL, alignTargetEdge = props.alignTargetEdge, gapSpace = props.gapSpace, coverTarget = props.coverTarget, ariaLabel = props.ariaLabel, doNotLayer = props.doNotLayer, target = props.target, bounds = props.bounds, useTargetWidth = props.useTargetWidth, useTargetAsMinWidth = props.useTargetAsMinWidth, directionalHintFixed = props.directionalHintFixed, shouldFocusOnMount = props.shouldFocusOnMount, shouldFocusOnContainer = props.shouldFocusOnContainer, title = props.title, styles = props.styles, theme = props.theme, calloutProps = props.calloutProps, _k = props.onRenderSubMenu, onRenderSubMenu = _k === void 0 ? onDefaultRenderSubMenu : _k, _l = props.onRenderMenuList, onRenderMenuList = _l === void 0 ? function (menuListProps, defaultRender) { return onDefaultRenderMenuList(menuListProps, classNames, defaultRender); } : _l, focusZoneProps = props.focusZoneProps, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     getMenuClassNames = props.getMenuClassNames;
     var classNames = getMenuClassNames
         ? getMenuClassNames(theme, className)
@@ -6993,7 +6853,7 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
             if (item.iconProps) {
                 return true;
             }
-            if (item.itemType === _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Section &&
+            if (item.itemType === _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Section &&
                 item.sectionProps &&
                 itemsHaveIcons(item.sectionProps.items)) {
                 return true;
@@ -7001,10 +6861,10 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
         }
         return false;
     }
-    var adjustedFocusZoneProps = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({ direction: _FocusZone__WEBPACK_IMPORTED_MODULE_14__.FocusZoneDirection.vertical, handleTabKey: _FocusZone__WEBPACK_IMPORTED_MODULE_14__.FocusZoneTabbableElements.all, isCircularNavigation: true, 'data-tabster': '{"uncontrolled": {}, "focusable": { "excludeFromMover": true }}' }, focusZoneProps), { className: (0,_Utilities__WEBPACK_IMPORTED_MODULE_32__.css)(classNames.root, (_a = props.focusZoneProps) === null || _a === void 0 ? void 0 : _a.className) });
+    var adjustedFocusZoneProps = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({ direction: _FocusZone__WEBPACK_IMPORTED_MODULE_13__.FocusZoneDirection.vertical, handleTabKey: _FocusZone__WEBPACK_IMPORTED_MODULE_13__.FocusZoneTabbableElements.all, isCircularNavigation: true }, focusZoneProps), { className: (0,_Utilities__WEBPACK_IMPORTED_MODULE_31__.css)(classNames.root, (_a = props.focusZoneProps) === null || _a === void 0 ? void 0 : _a.className) });
     var hasCheckmarks = canAnyMenuItemsCheck(items);
     var submenuProps = expandedMenuItemKey && props.hidden !== true ? getSubmenuProps() : null;
-    isBeakVisible = isBeakVisible === undefined ? responsiveMode <= _ResponsiveMode__WEBPACK_IMPORTED_MODULE_33__.ResponsiveMode.medium : isBeakVisible;
+    isBeakVisible = isBeakVisible === undefined ? responsiveMode <= _ResponsiveMode__WEBPACK_IMPORTED_MODULE_32__.ResponsiveMode.medium : isBeakVisible;
     /**
      * When useTargetWidth is true, get the width of the target element and apply it for the context menu container
      */
@@ -7026,11 +6886,18 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
     }
     // The menu should only return if items were provided, if no items were provided then it should not appear.
     if (items && items.length > 0) {
-        var totalItemCount_1 = getItemCount(items);
+        var totalItemCount_1 = 0;
+        for (var _i = 0, items_2 = items; _i < items_2.length; _i++) {
+            var item = items_2[_i];
+            if (item.itemType !== _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Divider && item.itemType !== _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Header) {
+                var itemCount = item.customOnRenderListLength ? item.customOnRenderListLength : 1;
+                totalItemCount_1 += itemCount;
+            }
+        }
         var calloutStyles_1 = classNames.subComponentStyles
             ? classNames.subComponentStyles.callout
             : undefined;
-        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_utilities_MenuContext_index__WEBPACK_IMPORTED_MODULE_34__.MenuContext.Consumer, null, function (menuContext) { return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Callout__WEBPACK_IMPORTED_MODULE_35__.Callout, (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({ styles: calloutStyles_1, onRestoreFocus: tryFocusPreviousActiveElement }, calloutProps, { target: target || menuContext.target, isBeakVisible: isBeakVisible, beakWidth: beakWidth, directionalHint: directionalHint, directionalHintForRTL: directionalHintForRTL, gapSpace: gapSpace, coverTarget: coverTarget, doNotLayer: doNotLayer, className: (0,_Utilities__WEBPACK_IMPORTED_MODULE_32__.css)('ms-ContextualMenu-Callout', calloutProps && calloutProps.className), setInitialFocus: shouldFocusOnMount, onDismiss: props.onDismiss || menuContext.onDismiss, onScroll: onScroll, bounds: bounds, directionalHintFixed: directionalHintFixed, alignTargetEdge: alignTargetEdge, hidden: props.hidden || menuContext.hidden, ref: forwardedRef }),
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_utilities_MenuContext_index__WEBPACK_IMPORTED_MODULE_33__.MenuContext.Consumer, null, function (menuContext) { return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Callout__WEBPACK_IMPORTED_MODULE_34__.Callout, (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__assign)({ styles: calloutStyles_1, onRestoreFocus: tryFocusPreviousActiveElement }, calloutProps, { target: target || menuContext.target, isBeakVisible: isBeakVisible, beakWidth: beakWidth, directionalHint: directionalHint, directionalHintForRTL: directionalHintForRTL, gapSpace: gapSpace, coverTarget: coverTarget, doNotLayer: doNotLayer, className: (0,_Utilities__WEBPACK_IMPORTED_MODULE_31__.css)('ms-ContextualMenu-Callout', calloutProps && calloutProps.className), setInitialFocus: shouldFocusOnMount, onDismiss: props.onDismiss || menuContext.onDismiss, onScroll: onScroll, bounds: bounds, directionalHintFixed: directionalHintFixed, alignTargetEdge: alignTargetEdge, hidden: props.hidden || menuContext.hidden, ref: forwardedRef }),
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { style: contextMenuStyle, ref: hostElement, id: id, className: classNames.container, tabIndex: shouldFocusOnContainer ? 0 : -1, onKeyDown: onMenuKeyDown, onKeyUp: onKeyUp, onFocusCapture: onMenuFocusCapture, "aria-label": ariaLabel, "aria-labelledby": labelElementId, role: 'menu' },
                 title && react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: classNames.title },
                     " ",
@@ -7050,7 +6917,7 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
                     }, function (menuListProps, defaultRender) { return onDefaultRenderMenuList(menuListProps, classNames, defaultRender); }), adjustedFocusZoneProps)
                     : null,
                 submenuProps && onRenderSubMenu(submenuProps, onDefaultRenderSubMenu)),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Utilities__WEBPACK_IMPORTED_MODULE_36__.FocusRects, null))); }));
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Utilities__WEBPACK_IMPORTED_MODULE_35__.FocusRects, null))); }));
     }
     else {
         return null;
@@ -7061,15 +6928,15 @@ var ContextualMenuBase = react__WEBPACK_IMPORTED_MODULE_0__.memo(react__WEBPACK_
         // Do not update when hidden.
         return true;
     }
-    return (0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.shallowCompare)(prevProps, newProps);
+    return (0,_Utilities__WEBPACK_IMPORTED_MODULE_10__.shallowCompare)(prevProps, newProps);
 });
 ContextualMenuBase.displayName = 'ContextualMenuBase';
 /**
  * Returns true if the key for the event is alt (Mac option) or meta (Mac command).
  */
 function isAltOrMeta(ev) {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    return ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_15__.KeyCodes.alt || ev.key === 'Meta';
+    // eslint-disable-next-line deprecation/deprecation
+    return ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_14__.KeyCodes.alt || ev.key === 'Meta';
 }
 function onItemMouseDown(item, ev) {
     var _a;
@@ -7087,7 +6954,7 @@ function onDefaultRenderSubMenu(subMenuProps, defaultRender) {
 function findItemByKeyFromItems(key, items) {
     for (var _i = 0, items_3 = items; _i < items_3.length; _i++) {
         var item = items_3[_i];
-        if (item.itemType === _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItemType.Section && item.sectionProps) {
+        if (item.itemType === _ContextualMenu_types__WEBPACK_IMPORTED_MODULE_24__.ContextualMenuItemType.Section && item.sectionProps) {
             var match = findItemByKeyFromItems(key, item.sectionProps.items);
             if (match) {
                 return match;
@@ -7146,14 +7013,14 @@ __webpack_require__.r(__webpack_exports__);
 var CONTEXTUAL_SPLIT_MENU_MINWIDTH = '28px';
 var MediumScreenSelector = (0,_Styling__WEBPACK_IMPORTED_MODULE_0__.getScreenSelector)(0, _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMaxMedium);
 var getSplitButtonVerticalDividerClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.memoizeFunction)(
-/* eslint-disable @typescript-eslint/no-deprecated */
+/* eslint-disable deprecation/deprecation */
 function (theme) {
     var _a;
     return (0,_Styling__WEBPACK_IMPORTED_MODULE_0__.mergeStyleSets)((0,_Divider_VerticalDivider_classNames__WEBPACK_IMPORTED_MODULE_2__.getDividerClassNames)(theme), {
-        /* eslint-enable @typescript-eslint/no-deprecated */
+        /* eslint-enable deprecation/deprecation */
         wrapper: {
             position: 'absolute',
-            right: 28, // width of the splitMenu based on the padding plus icon fontSize
+            right: 28,
             selectors: (_a = {},
                 _a[MediumScreenSelector] = {
                     right: 32, // fontSize of the icon increased from 12px to 16px
@@ -7213,11 +7080,8 @@ var getItemClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.memoizeFuncti
                             ':hover': styles.rootHovered,
                             ':active': styles.rootPressed
                         },
-                        // eslint-disable-next-line @fluentui/max-len
-                        _a[".".concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:focus, .").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:focus:hover, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:focus, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:focus:hover")] = styles.rootFocused,
-                        _a[".".concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:hover, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:hover")] = {
-                            background: 'inherit;',
-                        },
+                        _a["." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:focus, ." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:focus:hover"] = styles.rootFocused,
+                        _a["." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:hover"] = { background: 'inherit;' },
                         _a),
                 },
             ],
@@ -7226,7 +7090,7 @@ var getItemClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.memoizeFuncti
         splitPrimary: [
             styles.root,
             {
-                width: "calc(100% - ".concat(CONTEXTUAL_SPLIT_MENU_MINWIDTH, ")"),
+                width: "calc(100% - " + CONTEXTUAL_SPLIT_MENU_MINWIDTH + ")",
             },
             checked && ['is-checked', styles.rootChecked],
             (disabled || primaryDisabled) && ['is-disabled', styles.rootDisabled],
@@ -7237,13 +7101,10 @@ var getItemClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.memoizeFuncti
                             ':hover': styles.rootHovered
                         },
                         // when hovering over the splitPrimary also affect the splitMenu
-                        _b[":hover ~ .".concat(classNames.splitMenu)] = styles.rootHovered,
+                        _b[":hover ~ ." + classNames.splitMenu] = styles.rootHovered,
                         _b[':active'] = styles.rootPressed,
-                        // eslint-disable-next-line @fluentui/max-len
-                        _b[".".concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:focus, .").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:focus:hover, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:focus, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:focus:hover")] = styles.rootFocused,
-                        _b[".".concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:hover, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:hover")] = {
-                            background: 'inherit;',
-                        },
+                        _b["." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:focus, ." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:focus:hover"] = styles.rootFocused,
+                        _b["." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:hover"] = { background: 'inherit;' },
                         _b),
                 },
             ],
@@ -7265,11 +7126,8 @@ var getItemClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.memoizeFuncti
                             ':hover': styles.rootHovered,
                             ':active': styles.rootPressed
                         },
-                        // eslint-disable-next-line @fluentui/max-len
-                        _c[".".concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:focus, .").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:focus:hover, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:focus, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:focus:hover")] = styles.rootFocused,
-                        _c[".".concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:hover, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:hover")] = {
-                            background: 'inherit;',
-                        },
+                        _c["." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:focus, ." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:focus:hover"] = styles.rootFocused,
+                        _c["." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:hover"] = { background: 'inherit;' },
                         _c),
                 },
             ],
@@ -7307,8 +7165,7 @@ var getItemClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.memoizeFuncti
                 !checked && [
                 {
                     selectors: (_d = {},
-                        // eslint-disable-next-line @fluentui/max-len
-                        _d[".".concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:focus, .").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, " &:focus:hover, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:focus, :host(.").concat(_Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName, ") &:focus:hover")] = styles.rootFocused,
+                        _d["." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:focus, ." + _Utilities__WEBPACK_IMPORTED_MODULE_4__.IsFocusVisibleClassName + " &:focus:hover"] = styles.rootFocused,
                         _d),
                 },
             ],
@@ -7330,7 +7187,7 @@ var getItemClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.memoizeFuncti
  */
 var getItemStyles = function (props) {
     var theme = props.theme, disabled = props.disabled, expanded = props.expanded, checked = props.checked, isAnchorLink = props.isAnchorLink, knownIcon = props.knownIcon, itemClassName = props.itemClassName, dividerClassName = props.dividerClassName, iconClassName = props.iconClassName, subMenuClassName = props.subMenuClassName, primaryDisabled = props.primaryDisabled, className = props.className;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     return getItemClassNames(theme, disabled, expanded, checked, isAnchorLink, knownIcon, itemClassName, dividerClassName, iconClassName, subMenuClassName, primaryDisabled, className);
 };
 
@@ -7391,7 +7248,7 @@ var getMenuItemStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.memoizeFuncti
                 lineHeight: CONTEXTUAL_MENU_ITEM_HEIGHT,
                 display: 'block',
                 cursor: 'pointer',
-                padding: '0px 8px 0 4px', // inner elements have a margin of 4px (4 + 4 = 8px as on right side)
+                padding: '0px 8px 0 4px',
                 textAlign: 'left',
             },
         ],
@@ -7462,7 +7319,7 @@ var getMenuItemStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.memoizeFuncti
             maxWidth: '100%',
         },
         anchorLink: {
-            padding: '0px 8px 0 4px', // inner elements have a margin of 4px (4 + 4 = 8px as on right side)
+            padding: '0px 8px 0 4px',
             textRendering: 'auto',
             color: 'inherit',
             letterSpacing: 'normal',
@@ -7520,7 +7377,7 @@ var getMenuItemStyles = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.memoizeFuncti
             display: 'inline-block',
             verticalAlign: 'middle',
             flexShrink: '0',
-            fontSize: _Styling__WEBPACK_IMPORTED_MODULE_0__.IconFontSizes.small, // 12px
+            fontSize: _Styling__WEBPACK_IMPORTED_MODULE_0__.IconFontSizes.small,
             selectors: (_e = {
                     ':hover': {
                         color: palette.neutralPrimary,
@@ -7769,11 +7626,11 @@ var renderCheckMarkIcon = function (_a) {
 };
 var renderItemName = function (_a) {
     var item = _a.item, classNames = _a.classNames;
-    /* eslint-disable @typescript-eslint/no-deprecated */
+    /* eslint-disable deprecation/deprecation */
     if (item.text || item.name) {
         return react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", { className: classNames.label }, item.text || item.name);
     }
-    /* eslint-enable @typescript-eslint/no-deprecated */
+    /* eslint-enable deprecation/deprecation */
     return null;
 };
 var renderSecondaryText = function (_a) {
@@ -7884,13 +7741,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ 8340);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Utilities */ 5659);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../Utilities */ 3736);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../Utilities */ 7974);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../Utilities */ 8370);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../Utilities */ 5486);
-/* harmony import */ var _ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ContextualMenuItemWrapper */ 3313);
-/* harmony import */ var _KeytipData__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../KeytipData */ 2008);
-/* harmony import */ var _utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../utilities/contextualMenu/index */ 256);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../Utilities */ 7974);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../Utilities */ 8370);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../Utilities */ 5486);
+/* harmony import */ var _ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ContextualMenuItemWrapper */ 3313);
+/* harmony import */ var _KeytipData__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../KeytipData */ 2008);
+/* harmony import */ var _utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../utilities/contextualMenu/index */ 256);
 /* harmony import */ var _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ContextualMenuItem */ 627);
 
 
@@ -7924,21 +7780,14 @@ var ContextualMenuAnchor = /** @class */ (function (_super) {
     }
     ContextualMenuAnchor.prototype.render = function () {
         var _this = this;
-        var _a = this.props, item = _a.item, classNames = _a.classNames, index = _a.index, focusableElementIndex = _a.focusableElementIndex, totalItemCount = _a.totalItemCount, hasCheckmarks = _a.hasCheckmarks, hasIcons = _a.hasIcons, expandedMenuItemKey = _a.expandedMenuItemKey, onItemClick = _a.onItemClick, openSubMenu = _a.openSubMenu, dismissSubMenu = _a.dismissSubMenu, dismissMenu = _a.dismissMenu;
-        var ChildrenRenderer = _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItem;
-        if (this.props.item.contextualMenuItemAs) {
-            ChildrenRenderer = (0,_Utilities__WEBPACK_IMPORTED_MODULE_4__.composeComponentAs)(this.props.item.contextualMenuItemAs, ChildrenRenderer);
-        }
-        if (this.props.contextualMenuItemAs) {
-            ChildrenRenderer = (0,_Utilities__WEBPACK_IMPORTED_MODULE_4__.composeComponentAs)(this.props.contextualMenuItemAs, ChildrenRenderer);
-        }
+        var _a = this.props, item = _a.item, classNames = _a.classNames, index = _a.index, focusableElementIndex = _a.focusableElementIndex, totalItemCount = _a.totalItemCount, hasCheckmarks = _a.hasCheckmarks, hasIcons = _a.hasIcons, _b = _a.contextualMenuItemAs, ChildrenRenderer = _b === void 0 ? _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItem : _b, expandedMenuItemKey = _a.expandedMenuItemKey, onItemClick = _a.onItemClick, openSubMenu = _a.openSubMenu, dismissSubMenu = _a.dismissSubMenu, dismissMenu = _a.dismissMenu;
         var anchorRel = item.rel;
         if (item.target && item.target.toLowerCase() === '_blank') {
             anchorRel = anchorRel ? anchorRel : 'nofollow noopener noreferrer'; // Safe default to prevent tabjacking
         }
-        var itemHasSubmenu = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_5__.hasSubmenu)(item);
-        var nativeProps = (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getNativeProps)(item, _Utilities__WEBPACK_IMPORTED_MODULE_6__.anchorProperties);
-        var disabled = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_5__.isItemDisabled)(item);
+        var itemHasSubmenu = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_4__.hasSubmenu)(item);
+        var nativeProps = (0,_Utilities__WEBPACK_IMPORTED_MODULE_5__.getNativeProps)(item, _Utilities__WEBPACK_IMPORTED_MODULE_5__.anchorProperties);
+        var disabled = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_4__.isItemDisabled)(item);
         var itemProps = item.itemProps, ariaDescription = item.ariaDescription;
         var keytipProps = item.keytipProps;
         if (keytipProps && itemHasSubmenu) {
@@ -7947,21 +7796,21 @@ var ContextualMenuAnchor = /** @class */ (function (_super) {
         // Check for ariaDescription to set the _ariaDescriptionId and render a hidden span with
         // the description in it to be added to ariaDescribedBy
         if (ariaDescription) {
-            this._ariaDescriptionId = (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.getId)();
+            this._ariaDescriptionId = (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getId)();
         }
-        var ariaDescribedByIds = (0,_Utilities__WEBPACK_IMPORTED_MODULE_8__.mergeAriaAttributeValues)(item.ariaDescribedBy, ariaDescription ? this._ariaDescriptionId : undefined, nativeProps['aria-describedby']);
+        var ariaDescribedByIds = (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.mergeAriaAttributeValues)(item.ariaDescribedBy, ariaDescription ? this._ariaDescriptionId : undefined, nativeProps['aria-describedby']);
         var additionalItemProperties = {
             'aria-describedby': ariaDescribedByIds,
         };
         return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null,
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_KeytipData__WEBPACK_IMPORTED_MODULE_9__.KeytipData, { keytipProps: item.keytipProps, ariaDescribedBy: ariaDescribedByIds, disabled: disabled }, function (keytipAttributes) { return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, additionalItemProperties, nativeProps, keytipAttributes, { ref: _this._anchor, href: item.href, target: item.target, rel: anchorRel, className: classNames.root, role: "menuitem", "aria-haspopup": itemHasSubmenu || undefined, "aria-expanded": itemHasSubmenu ? item.key === expandedMenuItemKey : undefined, "aria-posinset": focusableElementIndex + 1, "aria-setsize": totalItemCount, "aria-disabled": (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_5__.isItemDisabled)(item), 
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_KeytipData__WEBPACK_IMPORTED_MODULE_8__.KeytipData, { keytipProps: item.keytipProps, ariaDescribedBy: ariaDescribedByIds, disabled: disabled }, function (keytipAttributes) { return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, additionalItemProperties, nativeProps, keytipAttributes, { ref: _this._anchor, href: item.href, target: item.target, rel: anchorRel, className: classNames.root, role: "menuitem", "aria-haspopup": itemHasSubmenu || undefined, "aria-expanded": itemHasSubmenu ? item.key === expandedMenuItemKey : undefined, "aria-posinset": focusableElementIndex + 1, "aria-setsize": totalItemCount, "aria-disabled": (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_4__.isItemDisabled)(item), 
+                // eslint-disable-next-line deprecation/deprecation
                 style: item.style, onClick: _this._onItemClick, onMouseEnter: _this._onItemMouseEnter, onMouseLeave: _this._onItemMouseLeave, onMouseMove: _this._onItemMouseMove, onKeyDown: itemHasSubmenu ? _this._onItemKeyDown : undefined }),
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement(ChildrenRenderer, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ componentRef: item.componentRef, item: item, classNames: classNames, index: index, onCheckmarkClick: hasCheckmarks && onItemClick ? onItemClick : undefined, hasIcons: hasIcons, openSubMenu: openSubMenu, dismissSubMenu: dismissSubMenu, dismissMenu: dismissMenu, getSubmenuTarget: _this._getSubmenuTarget }, itemProps)),
                 _this._renderAriaDescription(ariaDescription, classNames.screenReaderText))); })));
     };
     return ContextualMenuAnchor;
-}(_ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_10__.ContextualMenuItemWrapper));
+}(_ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_9__.ContextualMenuItemWrapper));
 
 
 
@@ -7982,13 +7831,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ 8340);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Utilities */ 5659);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../Utilities */ 3736);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../Utilities */ 7974);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../Utilities */ 8370);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../Utilities */ 5486);
-/* harmony import */ var _ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ContextualMenuItemWrapper */ 3313);
-/* harmony import */ var _KeytipData__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../KeytipData */ 2008);
-/* harmony import */ var _utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../utilities/contextualMenu/index */ 256);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../Utilities */ 7974);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../Utilities */ 8370);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../Utilities */ 5486);
+/* harmony import */ var _ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ContextualMenuItemWrapper */ 3313);
+/* harmony import */ var _KeytipData__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../KeytipData */ 2008);
+/* harmony import */ var _utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../utilities/contextualMenu/index */ 256);
 /* harmony import */ var _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ContextualMenuItem */ 627);
 
 
@@ -8016,29 +7864,22 @@ var ContextualMenuButton = /** @class */ (function (_super) {
     }
     ContextualMenuButton.prototype.render = function () {
         var _this = this;
-        var _a = this.props, item = _a.item, classNames = _a.classNames, index = _a.index, focusableElementIndex = _a.focusableElementIndex, totalItemCount = _a.totalItemCount, hasCheckmarks = _a.hasCheckmarks, hasIcons = _a.hasIcons, contextualMenuItemAs = _a.contextualMenuItemAs, expandedMenuItemKey = _a.expandedMenuItemKey, onItemMouseDown = _a.onItemMouseDown, onItemClick = _a.onItemClick, openSubMenu = _a.openSubMenu, dismissSubMenu = _a.dismissSubMenu, dismissMenu = _a.dismissMenu;
-        var ChildrenRenderer = _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItem;
-        if (item.contextualMenuItemAs) {
-            ChildrenRenderer = (0,_Utilities__WEBPACK_IMPORTED_MODULE_4__.composeComponentAs)(item.contextualMenuItemAs, ChildrenRenderer);
-        }
-        if (contextualMenuItemAs) {
-            ChildrenRenderer = (0,_Utilities__WEBPACK_IMPORTED_MODULE_4__.composeComponentAs)(contextualMenuItemAs, ChildrenRenderer);
-        }
-        var isChecked = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_5__.getIsChecked)(item);
+        var _a = this.props, item = _a.item, classNames = _a.classNames, index = _a.index, focusableElementIndex = _a.focusableElementIndex, totalItemCount = _a.totalItemCount, hasCheckmarks = _a.hasCheckmarks, hasIcons = _a.hasIcons, _b = _a.contextualMenuItemAs, ChildrenRenderer = _b === void 0 ? _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_3__.ContextualMenuItem : _b, expandedMenuItemKey = _a.expandedMenuItemKey, onItemMouseDown = _a.onItemMouseDown, onItemClick = _a.onItemClick, openSubMenu = _a.openSubMenu, dismissSubMenu = _a.dismissSubMenu, dismissMenu = _a.dismissMenu;
+        var isChecked = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_4__.getIsChecked)(item);
         var canCheck = isChecked !== null;
-        var defaultRole = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_5__.getMenuItemAriaRole)(item);
-        var itemHasSubmenu = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_5__.hasSubmenu)(item);
+        var defaultRole = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_4__.getMenuItemAriaRole)(item);
+        var itemHasSubmenu = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_4__.hasSubmenu)(item);
         var itemProps = item.itemProps, ariaLabel = item.ariaLabel, ariaDescription = item.ariaDescription;
-        var buttonNativeProperties = (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getNativeProps)(item, _Utilities__WEBPACK_IMPORTED_MODULE_6__.buttonProperties);
+        var buttonNativeProperties = (0,_Utilities__WEBPACK_IMPORTED_MODULE_5__.getNativeProps)(item, _Utilities__WEBPACK_IMPORTED_MODULE_5__.buttonProperties);
         // Do not add the disabled attribute to the button so that it is focusable
         delete buttonNativeProperties.disabled;
         var itemRole = item.role || defaultRole;
         // Check for ariaDescription to set the _ariaDescriptionId and render a hidden span with
         // the description in it to be added to ariaDescribedBy
         if (ariaDescription) {
-            this._ariaDescriptionId = (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.getId)();
+            this._ariaDescriptionId = (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getId)();
         }
-        var ariaDescribedByIds = (0,_Utilities__WEBPACK_IMPORTED_MODULE_8__.mergeAriaAttributeValues)(item.ariaDescribedBy, ariaDescription ? this._ariaDescriptionId : undefined, buttonNativeProperties['aria-describedby']);
+        var ariaDescribedByIds = (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.mergeAriaAttributeValues)(item.ariaDescribedBy, ariaDescription ? this._ariaDescriptionId : undefined, buttonNativeProperties['aria-describedby']);
         var itemButtonProperties = {
             className: classNames.root,
             onClick: this._onItemClick,
@@ -8057,23 +7898,23 @@ var ContextualMenuButton = /** @class */ (function (_super) {
             'aria-expanded': itemHasSubmenu ? item.key === expandedMenuItemKey : undefined,
             'aria-posinset': focusableElementIndex + 1,
             'aria-setsize': totalItemCount,
-            'aria-disabled': (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_5__.isItemDisabled)(item),
+            'aria-disabled': (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_4__.isItemDisabled)(item),
             'aria-checked': (itemRole === 'menuitemcheckbox' || itemRole === 'menuitemradio') && canCheck ? !!isChecked : undefined,
             'aria-selected': itemRole === 'menuitem' && canCheck ? !!isChecked : undefined,
             role: itemRole,
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             style: item.style,
         };
         var keytipProps = item.keytipProps;
         if (keytipProps && itemHasSubmenu) {
             keytipProps = this._getMemoizedMenuButtonKeytipProps(keytipProps);
         }
-        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_KeytipData__WEBPACK_IMPORTED_MODULE_9__.KeytipData, { keytipProps: keytipProps, ariaDescribedBy: ariaDescribedByIds, disabled: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_5__.isItemDisabled)(item) }, function (keytipAttributes) { return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ ref: _this._btn }, buttonNativeProperties, itemButtonProperties, keytipAttributes),
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_KeytipData__WEBPACK_IMPORTED_MODULE_8__.KeytipData, { keytipProps: keytipProps, ariaDescribedBy: ariaDescribedByIds, disabled: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_4__.isItemDisabled)(item) }, function (keytipAttributes) { return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ ref: _this._btn }, buttonNativeProperties, itemButtonProperties, keytipAttributes),
             react__WEBPACK_IMPORTED_MODULE_0__.createElement(ChildrenRenderer, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ componentRef: item.componentRef, item: item, classNames: classNames, index: index, onCheckmarkClick: hasCheckmarks && onItemClick ? onItemClick : undefined, hasIcons: hasIcons, openSubMenu: openSubMenu, dismissSubMenu: dismissSubMenu, dismissMenu: dismissMenu, getSubmenuTarget: _this._getSubmenuTarget }, itemProps)),
             _this._renderAriaDescription(ariaDescription, classNames.screenReaderText))); }));
     };
     return ContextualMenuButton;
-}(_ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_10__.ContextualMenuItemWrapper));
+}(_ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_9__.ContextualMenuItemWrapper));
 
 
 
@@ -8166,16 +8007,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../Utilities */ 9524);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../Utilities */ 3211);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../Utilities */ 1424);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../Utilities */ 8370);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../Utilities */ 8370);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../Utilities */ 5486);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../Utilities */ 7974);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../../Utilities */ 3736);
 /* harmony import */ var _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../ContextualMenuItem */ 627);
 /* harmony import */ var _ContextualMenu_classNames__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../ContextualMenu.classNames */ 3208);
 /* harmony import */ var _KeytipData__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../KeytipData */ 2008);
-/* harmony import */ var _utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../utilities/contextualMenu/index */ 256);
+/* harmony import */ var _utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../utilities/contextualMenu/index */ 256);
 /* harmony import */ var _Divider__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../Divider */ 612);
-/* harmony import */ var _ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./ContextualMenuItemWrapper */ 3313);
+/* harmony import */ var _ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./ContextualMenuItemWrapper */ 3313);
 
 
 
@@ -8195,7 +8035,7 @@ var ContextualMenuSplitButton = /** @class */ (function (_super) {
         });
         _this._onItemKeyDown = function (ev) {
             var _a = _this.props, item = _a.item, onItemKeyDown = _a.onItemKeyDown;
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             if (ev.which === _Utilities__WEBPACK_IMPORTED_MODULE_3__.KeyCodes.enter) {
                 _this._executeItemClick(ev);
                 ev.preventDefault();
@@ -8247,7 +8087,7 @@ var ContextualMenuSplitButton = /** @class */ (function (_super) {
             if (item.disabled || item.isDisabled) {
                 return;
             }
-            if (_this._processingTouch && !item.canCheck && onItemClick) {
+            if (_this._processingTouch && onItemClick) {
                 return onItemClick(item, ev);
             }
             if (executeItemClick) {
@@ -8268,7 +8108,6 @@ var ContextualMenuSplitButton = /** @class */ (function (_super) {
         };
         _this._async = new _Utilities__WEBPACK_IMPORTED_MODULE_4__.Async(_this);
         _this._events = new _Utilities__WEBPACK_IMPORTED_MODULE_5__.EventGroup(_this);
-        _this._dismissLabelId = (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getId)();
         return _this;
     }
     ContextualMenuSplitButton.prototype.componentDidMount = function () {
@@ -8282,9 +8121,8 @@ var ContextualMenuSplitButton = /** @class */ (function (_super) {
     };
     ContextualMenuSplitButton.prototype.render = function () {
         var _this = this;
-        var _a;
-        var _b = this.props, item = _b.item, classNames = _b.classNames, index = _b.index, focusableElementIndex = _b.focusableElementIndex, totalItemCount = _b.totalItemCount, hasCheckmarks = _b.hasCheckmarks, hasIcons = _b.hasIcons, onItemMouseLeave = _b.onItemMouseLeave, expandedMenuItemKey = _b.expandedMenuItemKey;
-        var itemHasSubmenu = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_7__.hasSubmenu)(item);
+        var _a = this.props, item = _a.item, classNames = _a.classNames, index = _a.index, focusableElementIndex = _a.focusableElementIndex, totalItemCount = _a.totalItemCount, hasCheckmarks = _a.hasCheckmarks, hasIcons = _a.hasIcons, onItemMouseLeave = _a.onItemMouseLeave, expandedMenuItemKey = _a.expandedMenuItemKey;
+        var itemHasSubmenu = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_6__.hasSubmenu)(item);
         var keytipProps = item.keytipProps;
         if (keytipProps) {
             keytipProps = this._getMemoizedMenuButtonKeytipProps(keytipProps);
@@ -8293,70 +8131,54 @@ var ContextualMenuSplitButton = /** @class */ (function (_super) {
         // the description in it to be added to ariaDescribedBy
         var ariaDescription = item.ariaDescription;
         if (ariaDescription) {
-            this._ariaDescriptionId = (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getId)();
+            this._ariaDescriptionId = (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.getId)();
         }
-        var ariaChecked = (_a = (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_7__.getIsChecked)(item)) !== null && _a !== void 0 ? _a : undefined;
-        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_KeytipData__WEBPACK_IMPORTED_MODULE_8__.KeytipData, { keytipProps: keytipProps, disabled: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_7__.isItemDisabled)(item) }, function (keytipAttributes) { return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { "data-ktp-target": keytipAttributes['data-ktp-target'], ref: function (splitButton) {
-                _this._splitButton = splitButton;
-            }, role: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_7__.getMenuItemAriaRole)(item), "aria-label": item.ariaLabel, className: classNames.splitContainer, "aria-disabled": (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_7__.isItemDisabled)(item), "aria-expanded": itemHasSubmenu ? item.key === expandedMenuItemKey : undefined, "aria-haspopup": true, "aria-describedby": (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.mergeAriaAttributeValues)(item.ariaDescribedBy, ariaDescription ? _this._ariaDescriptionId : undefined, keytipAttributes['aria-describedby']), "aria-checked": ariaChecked, "aria-posinset": focusableElementIndex + 1, "aria-setsize": totalItemCount, onMouseEnter: _this._onItemMouseEnterPrimary, onMouseLeave: onItemMouseLeave ? onItemMouseLeave.bind(_this, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, item), { subMenuProps: null, items: null })) : undefined, onMouseMove: _this._onItemMouseMovePrimary, onKeyDown: _this._onItemKeyDown, onClick: _this._executeItemClick, onTouchStart: _this._onTouchStart, tabIndex: 0, "data-is-focusable": true, "aria-roledescription": item['aria-roledescription'] },
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_KeytipData__WEBPACK_IMPORTED_MODULE_8__.KeytipData, { keytipProps: keytipProps, disabled: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_6__.isItemDisabled)(item) }, function (keytipAttributes) { return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { "data-ktp-target": keytipAttributes['data-ktp-target'], ref: function (splitButton) { return (_this._splitButton = splitButton); }, role: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_6__.getMenuItemAriaRole)(item), "aria-label": item.ariaLabel, className: classNames.splitContainer, "aria-disabled": (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_6__.isItemDisabled)(item), "aria-expanded": itemHasSubmenu ? item.key === expandedMenuItemKey : undefined, "aria-haspopup": true, "aria-describedby": (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.mergeAriaAttributeValues)(item.ariaDescribedBy, ariaDescription ? _this._ariaDescriptionId : undefined, keytipAttributes['aria-describedby']), "aria-checked": item.isChecked || item.checked, "aria-posinset": focusableElementIndex + 1, "aria-setsize": totalItemCount, onMouseEnter: _this._onItemMouseEnterPrimary, onMouseLeave: onItemMouseLeave ? onItemMouseLeave.bind(_this, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, item), { subMenuProps: null, items: null })) : undefined, onMouseMove: _this._onItemMouseMovePrimary, onKeyDown: _this._onItemKeyDown, onClick: _this._executeItemClick, onTouchStart: _this._onTouchStart, tabIndex: 0, "data-is-focusable": true, "aria-roledescription": item['aria-roledescription'] },
             _this._renderSplitPrimaryButton(item, classNames, index, hasCheckmarks, hasIcons),
             _this._renderSplitDivider(item),
             _this._renderSplitIconButton(item, classNames, index, keytipAttributes),
             _this._renderAriaDescription(ariaDescription, classNames.screenReaderText))); }));
     };
     ContextualMenuSplitButton.prototype._renderSplitPrimaryButton = function (item, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     classNames, index, hasCheckmarks, hasIcons) {
         var _a = this.props, _b = _a.contextualMenuItemAs, ChildrenRenderer = _b === void 0 ? _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_10__.ContextualMenuItem : _b, onItemClick = _a.onItemClick;
         var itemProps = {
             key: item.key,
-            disabled: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_7__.isItemDisabled)(item) || item.primaryDisabled,
-            /* eslint-disable @typescript-eslint/no-deprecated */
+            disabled: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_6__.isItemDisabled)(item) || item.primaryDisabled,
+            /* eslint-disable deprecation/deprecation */
             name: item.name,
             text: item.text || item.name,
             secondaryText: item.secondaryText,
-            /* eslint-enable @typescript-eslint/no-deprecated */
+            /* eslint-enable deprecation/deprecation */
             className: classNames.splitPrimary,
             canCheck: item.canCheck,
             isChecked: item.isChecked,
             checked: item.checked,
             iconProps: item.iconProps,
-            id: this._dismissLabelId,
             onRenderIcon: item.onRenderIcon,
             data: item.data,
             'data-is-focusable': false,
         };
         var itemComponentProps = item.itemProps;
         return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, (0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.getNativeProps)(itemProps, _Utilities__WEBPACK_IMPORTED_MODULE_11__.buttonProperties)),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(ChildrenRenderer, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ "data-is-focusable": false, item: (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, itemProps), { onClick: item.onClick }), classNames: classNames, index: index, onCheckmarkClick: hasCheckmarks && onItemClick ? onItemClick : undefined, hasIcons: hasIcons }, itemComponentProps))));
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(ChildrenRenderer, (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ "data-is-focusable": false, item: itemProps, classNames: classNames, index: index, onCheckmarkClick: hasCheckmarks && onItemClick ? onItemClick : undefined, hasIcons: hasIcons }, itemComponentProps))));
     };
     ContextualMenuSplitButton.prototype._renderSplitDivider = function (item) {
         var getDividerClassNames = item.getSplitButtonVerticalDividerClassNames || _ContextualMenu_classNames__WEBPACK_IMPORTED_MODULE_12__.getSplitButtonVerticalDividerClassNames;
-        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Divider__WEBPACK_IMPORTED_MODULE_13__.VerticalDivider
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        , { 
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            getClassNames: getDividerClassNames }));
+        return react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Divider__WEBPACK_IMPORTED_MODULE_13__.VerticalDivider, { getClassNames: getDividerClassNames });
     };
-    ContextualMenuSplitButton.prototype._renderSplitIconButton = function (item, classNames, // eslint-disable-line @typescript-eslint/no-deprecated
+    ContextualMenuSplitButton.prototype._renderSplitIconButton = function (item, classNames, // eslint-disable-line deprecation/deprecation
     index, keytipAttributes) {
-        var _a = this.props, onItemMouseLeave = _a.onItemMouseLeave, onItemMouseDown = _a.onItemMouseDown, openSubMenu = _a.openSubMenu, dismissSubMenu = _a.dismissSubMenu, dismissMenu = _a.dismissMenu;
-        var ChildrenRenderer = _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_10__.ContextualMenuItem;
-        if (this.props.item.contextualMenuItemAs) {
-            ChildrenRenderer = (0,_Utilities__WEBPACK_IMPORTED_MODULE_14__.composeComponentAs)(this.props.item.contextualMenuItemAs, ChildrenRenderer);
-        }
-        if (this.props.contextualMenuItemAs) {
-            ChildrenRenderer = (0,_Utilities__WEBPACK_IMPORTED_MODULE_14__.composeComponentAs)(this.props.contextualMenuItemAs, ChildrenRenderer);
-        }
+        var _a = this.props, _b = _a.contextualMenuItemAs, ChildrenRenderer = _b === void 0 ? _ContextualMenuItem__WEBPACK_IMPORTED_MODULE_10__.ContextualMenuItem : _b, onItemMouseLeave = _a.onItemMouseLeave, onItemMouseDown = _a.onItemMouseDown, openSubMenu = _a.openSubMenu, dismissSubMenu = _a.dismissSubMenu, dismissMenu = _a.dismissMenu;
         var itemProps = {
             onClick: this._onIconItemClick,
-            disabled: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_7__.isItemDisabled)(item),
+            disabled: (0,_utilities_contextualMenu_index__WEBPACK_IMPORTED_MODULE_6__.isItemDisabled)(item),
             className: classNames.splitMenu,
             subMenuProps: item.subMenuProps,
             submenuIconProps: item.submenuIconProps,
             split: true,
             key: item.key,
-            'aria-labelledby': this._dismissLabelId,
         };
         var buttonProps = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, (0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.getNativeProps)(itemProps, _Utilities__WEBPACK_IMPORTED_MODULE_11__.buttonProperties)), {
             onMouseEnter: this._onItemMouseEnterIcon,
@@ -8367,7 +8189,7 @@ var ContextualMenuSplitButton = /** @class */ (function (_super) {
             onMouseMove: this._onItemMouseMoveIcon,
             'data-is-focusable': false,
             'data-ktp-execute-target': keytipAttributes['data-ktp-execute-target'],
-            'aria-haspopup': true,
+            'aria-hidden': true,
         });
         var itemComponentProps = item.itemProps;
         return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({}, buttonProps),
@@ -8392,7 +8214,7 @@ var ContextualMenuSplitButton = /** @class */ (function (_super) {
         }, TouchIdleDelay);
     };
     return ContextualMenuSplitButton;
-}(_ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_15__.ContextualMenuItemWrapper));
+}(_ContextualMenuItemWrapper__WEBPACK_IMPORTED_MODULE_14__.ContextualMenuItemWrapper));
 
 
 
@@ -8416,7 +8238,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var getClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.classNamesFunction)();
 var VerticalDividerBase = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, ref) {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     var styles = props.styles, theme = props.theme, deprecatedGetClassNames = props.getClassNames, className = props.className;
     var classNames = getClassNames(styles, { theme: theme, getClassNames: deprecatedGetClassNames, className: className });
     return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", { className: classNames.wrapper, ref: ref },
@@ -8446,7 +8268,7 @@ __webpack_require__.r(__webpack_exports__);
  * @deprecated use getStyles exported from VerticalDivider.styles.ts
  */
 var getDividerClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_0__.memoizeFunction)(
-// eslint-disable-next-line @typescript-eslint/no-deprecated
+// eslint-disable-next-line deprecation/deprecation
 function (theme) {
     return (0,_Styling__WEBPACK_IMPORTED_MODULE_1__.mergeStyleSets)({
         wrapper: {
@@ -8501,7 +8323,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getStyles: () => (/* binding */ getStyles)
 /* harmony export */ });
 var getStyles = function (props) {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     var theme = props.theme, getClassNames = props.getClassNames, className = props.className;
     if (!theme) {
         throw new Error('Theme is undefined or null.');
@@ -8603,7 +8425,7 @@ function useRenderedContent(props, _a, rootElement, ref) {
     if (needsTheme) {
         // Disabling ThemeProvider here because theme doesn't need to be re-provided by ThemeProvider if dir has changed.
         renderedContent = (
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Utilities__WEBPACK_IMPORTED_MODULE_9__.Customizer, { settings: { theme: getFabricTheme(theme, dir === 'rtl') } }, renderedContent));
     }
     return renderedContent;
@@ -8716,27 +8538,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   FocusTrapZone: () => (/* binding */ FocusTrapZone)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! tslib */ 196);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! tslib */ 196);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ 8340);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Utilities */ 4968);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Utilities */ 4751);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Utilities */ 3703);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Utilities */ 2419);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Utilities */ 9118);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Utilities */ 3673);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../Utilities */ 5947);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../Utilities */ 9378);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../Utilities */ 7974);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Utilities */ 4751);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Utilities */ 3703);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Utilities */ 2419);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Utilities */ 5947);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Utilities */ 9378);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../Utilities */ 7974);
 /* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fluentui/react-hooks */ 544);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fluentui/react-hooks */ 2515);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fluentui/react-hooks */ 5559);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fluentui/react-hooks */ 8555);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @fluentui/react-hooks */ 1747);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @fluentui/react-hooks */ 732);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fluentui/react-hooks */ 2515);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fluentui/react-hooks */ 5559);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fluentui/react-hooks */ 8555);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fluentui/react-hooks */ 1747);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @fluentui/react-hooks */ 732);
 /* harmony import */ var _WindowProvider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../WindowProvider */ 6130);
-/* harmony import */ var _utilities_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utilities/dom */ 4707);
-
 
 
 
@@ -8748,8 +8565,6 @@ var DEFAULT_PROPS = {
     disableFirstFocus: false,
     forceFocusInsideTrap: true,
     isClickableOutsideFocusTrap: false,
-    // Hardcoding completely uncontrolled flag for proper interop with FluentUI V9.
-    'data-tabster': '{"uncontrolled": {"completely": true}}',
 };
 var useComponentRef = function (componentRef, previouslyFocusedElement, focusFTZ) {
     react__WEBPACK_IMPORTED_MODULE_0__.useImperativeHandle(componentRef, function () { return ({
@@ -8766,20 +8581,18 @@ var FocusTrapZone = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (prop
     var lastBumper = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
     var mergedRootRef = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_1__.useMergedRefs)(root, ref);
     var doc = (0,_WindowProvider__WEBPACK_IMPORTED_MODULE_2__.useDocument)();
-    var win = (0,_utilities_dom__WEBPACK_IMPORTED_MODULE_3__.useWindowEx)();
-    var inShadow = (0,_Utilities__WEBPACK_IMPORTED_MODULE_4__.useHasMergeStylesShadowRootContext)();
-    var isFirstRender = (_a = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_5__.usePrevious)(false)) !== null && _a !== void 0 ? _a : true;
-    var props = (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getPropsWithDefaults)(DEFAULT_PROPS, propsWithoutDefaults);
-    var internalState = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_7__.useConst)({
+    var isFirstRender = (_a = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_3__.usePrevious)(false)) !== null && _a !== void 0 ? _a : true;
+    var props = (0,_Utilities__WEBPACK_IMPORTED_MODULE_4__.getPropsWithDefaults)(DEFAULT_PROPS, propsWithoutDefaults);
+    var internalState = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_5__.useConst)({
         hasFocus: false,
-        focusStackId: (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__.useId)('ftz-', props.id),
+        focusStackId: (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_6__.useId)('ftz-', props.id),
     });
     var children = props.children, componentRef = props.componentRef, disabled = props.disabled, disableFirstFocus = props.disableFirstFocus, forceFocusInsideTrap = props.forceFocusInsideTrap, focusPreviouslyFocusedInnerElement = props.focusPreviouslyFocusedInnerElement, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     firstFocusableSelector = props.firstFocusableSelector, firstFocusableTarget = props.firstFocusableTarget, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     _b = props.disableRestoreFocus, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     disableRestoreFocus = _b === void 0 ? props.ignoreExternalFocusing : _b, isClickableOutsideFocusTrap = props.isClickableOutsideFocusTrap, enableAriaHiddenSiblings = props.enableAriaHiddenSiblings;
     var bumperProps = {
         'aria-hidden': true,
@@ -8787,13 +8600,13 @@ var FocusTrapZone = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (prop
             pointerEvents: 'none',
             position: 'fixed', // 'fixed' prevents browsers from scrolling to bumpers when viewport does not contain them
         },
-        tabIndex: disabled ? -1 : 0, // make bumpers tabbable only when enabled
+        tabIndex: disabled ? -1 : 0,
         'data-is-visible': true,
         'data-is-focus-trap-zone-bumper': true,
     };
     var focusElementAsync = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(function (element) {
         if (element !== firstBumper.current && element !== lastBumper.current) {
-            (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.focusAsync)(element);
+            (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.focusAsync)(element);
         }
     }, []);
     /**
@@ -8801,14 +8614,14 @@ var FocusTrapZone = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (prop
      * useEventCallback always returns the same callback reference but updates the implementation
      * every render to avoid stale captured values.
      */
-    var focusFTZ = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useEventCallback)(function () {
+    var focusFTZ = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__.useEventCallback)(function () {
         if (!root.current) {
             return; // not done mounting
         }
         var previouslyFocusedElementInTrapZone = internalState.previouslyFocusedElementInTrapZone;
         if (focusPreviouslyFocusedInnerElement &&
             previouslyFocusedElementInTrapZone &&
-            (0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.elementContains)(root.current, previouslyFocusedElementInTrapZone)) {
+            (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.elementContains)(root.current, previouslyFocusedElementInTrapZone)) {
             // focus on the last item that had focus in the zone before we left the zone
             focusElementAsync(previouslyFocusedElementInTrapZone);
             return;
@@ -8826,7 +8639,7 @@ var FocusTrapZone = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (prop
         }
         // Fall back to first element if query selector did not match any elements.
         if (!firstFocusableChild) {
-            firstFocusableChild = (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.getNextElement)(root.current, root.current.firstChild, false, false, false, true, undefined, undefined, undefined, inShadow);
+            firstFocusableChild = (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.getNextElement)(root.current, root.current.firstChild, false, false, false, true);
         }
         if (firstFocusableChild) {
             focusElementAsync(firstFocusableChild);
@@ -8838,8 +8651,8 @@ var FocusTrapZone = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (prop
             return;
         }
         var nextFocusable = isFirstBumper === internalState.hasFocus
-            ? (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.getLastTabbable)(root.current, lastBumper.current, true, false, inShadow)
-            : (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.getFirstTabbable)(root.current, firstBumper.current, true, false, inShadow);
+            ? (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.getLastTabbable)(root.current, lastBumper.current, true, false)
+            : (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.getFirstTabbable)(root.current, firstBumper.current, true, false);
         if (nextFocusable) {
             if (nextFocusable === firstBumper.current || nextFocusable === lastBumper.current) {
                 // This can happen when FTZ contains no tabbable elements.
@@ -8862,9 +8675,9 @@ var FocusTrapZone = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (prop
             // even when it's not. Using document.activeElement is another way
             // for us to be able to get what the relatedTarget without relying
             // on the event
-            relatedTarget = (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.getActiveElement)(doc);
+            relatedTarget = doc.activeElement;
         }
-        if (!(0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.elementContains)(root.current, relatedTarget)) {
+        if (!(0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.elementContains)(root.current, relatedTarget)) {
             internalState.hasFocus = false;
         }
     };
@@ -8882,39 +8695,35 @@ var FocusTrapZone = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (prop
         if (ev.target !== ev.currentTarget && !(ev.target === firstBumper.current || ev.target === lastBumper.current)) {
             // every time focus changes within the trap zone, remember the focused element so that
             // it can be restored if focus leaves the pane and returns via keystroke (i.e. via a call to this.focus(true))
-            internalState.previouslyFocusedElementInTrapZone = (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.getEventTarget)(ev.nativeEvent);
+            internalState.previouslyFocusedElementInTrapZone = ev.target;
         }
     };
     /** Called to restore focus on unmount or props change. (useEventCallback ensures latest prop values are used.) */
-    var returnFocusToInitiator = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useEventCallback)(function (elementToFocusOnDismiss) {
+    var returnFocusToInitiator = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__.useEventCallback)(function (elementToFocusOnDismiss) {
         FocusTrapZone.focusStack = FocusTrapZone.focusStack.filter(function (value) { return internalState.focusStackId !== value; });
         if (!doc) {
             return;
         }
-        // Do not use getActiveElement() here.
-        // When the FTZ is in shadow DOM focus returns to the
-        // shadow host rather than body so we need to be
-        // able to inspect that
         var activeElement = doc.activeElement;
         if (!disableRestoreFocus &&
             typeof (elementToFocusOnDismiss === null || elementToFocusOnDismiss === void 0 ? void 0 : elementToFocusOnDismiss.focus) === 'function' &&
             // only restore focus if the current focused element is within the FTZ, or if nothing is focused
-            ((0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.elementContains)(root.current, activeElement) || activeElement === doc.body || activeElement.shadowRoot)) {
+            ((0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.elementContains)(root.current, activeElement) || activeElement === doc.body)) {
             focusElementAsync(elementToFocusOnDismiss);
         }
     });
     /** Called in window event handlers. (useEventCallback ensures latest prop values are used.) */
-    var forceFocusOrClickInTrap = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_10__.useEventCallback)(function (ev) {
+    var forceFocusOrClickInTrap = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__.useEventCallback)(function (ev) {
         // be sure to use the latest values here
         if (disabled) {
             return;
         }
         if (internalState.focusStackId === FocusTrapZone.focusStack.slice(-1)[0]) {
-            var targetElement = (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.getEventTarget)(ev);
-            if (targetElement && !(0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.elementContains)(root.current, targetElement)) {
-                if (doc && (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.getActiveElement)(doc) === doc.body) {
+            var targetElement = ev.target;
+            if (targetElement && !(0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.elementContains)(root.current, targetElement)) {
+                if (doc && doc.activeElement === doc.body) {
                     setTimeout(function () {
-                        if (doc && (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.getActiveElement)(doc) === doc.body) {
+                        if (doc && doc.activeElement === doc.body) {
                             focusFTZ();
                             internalState.hasFocus = true; // set focus here since we stop event propagation
                         }
@@ -8933,16 +8742,16 @@ var FocusTrapZone = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (prop
     react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
         var disposables = [];
         if (forceFocusInsideTrap) {
-            disposables.push((0,_Utilities__WEBPACK_IMPORTED_MODULE_14__.on)(win, 'focus', forceFocusOrClickInTrap, true));
+            disposables.push((0,_Utilities__WEBPACK_IMPORTED_MODULE_10__.on)(window, 'focus', forceFocusOrClickInTrap, true));
         }
         if (!isClickableOutsideFocusTrap) {
-            disposables.push((0,_Utilities__WEBPACK_IMPORTED_MODULE_14__.on)(win, 'click', forceFocusOrClickInTrap, true));
+            disposables.push((0,_Utilities__WEBPACK_IMPORTED_MODULE_10__.on)(window, 'click', forceFocusOrClickInTrap, true));
         }
         return function () {
             disposables.forEach(function (dispose) { return dispose(); });
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps -- should only run when these two props change
-    }, [forceFocusInsideTrap, isClickableOutsideFocusTrap, win]);
+    }, [forceFocusInsideTrap, isClickableOutsideFocusTrap]);
     // On prop change or first render, focus the FTZ and update focusStack if appropriate
     react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
         // Do nothing if disabled, or if it's a re-render and forceFocusInsideTrap is false
@@ -8953,8 +8762,8 @@ var FocusTrapZone = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (prop
         }
         // Transition from forceFocusInsideTrap / FTZ disabled to enabled (or initial mount)
         FocusTrapZone.focusStack.push(internalState.focusStackId);
-        var elementToFocusOnDismiss = props.elementToFocusOnDismiss || (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.getActiveElement)(doc);
-        if (!disableFirstFocus && !(0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.elementContains)(root.current, elementToFocusOnDismiss)) {
+        var elementToFocusOnDismiss = props.elementToFocusOnDismiss || doc.activeElement;
+        if (!disableFirstFocus && !(0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.elementContains)(root.current, elementToFocusOnDismiss)) {
             focusFTZ();
         }
         // To match existing behavior, always return focus on cleanup (even if we didn't handle
@@ -8965,20 +8774,20 @@ var FocusTrapZone = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (prop
     // Handle modalization separately from first focus
     react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
         if (!disabled && enableAriaHiddenSiblings) {
-            var unmodalize = (0,_Utilities__WEBPACK_IMPORTED_MODULE_15__.modalize)(root.current);
+            var unmodalize = (0,_Utilities__WEBPACK_IMPORTED_MODULE_11__.modalize)(root.current);
             return unmodalize;
         }
     }, [disabled, enableAriaHiddenSiblings, root]);
     // Cleanup lifecyle method for internalState.
-    (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_16__.useUnmount)(function () {
+    (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_12__.useUnmount)(function () {
         // Dispose of element references so the DOM Nodes can be garbage-collected
         delete internalState.previouslyFocusedElementInTrapZone;
     });
     useComponentRef(componentRef, internalState.previouslyFocusedElementInTrapZone, focusFTZ);
-    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_17__.__assign)({ "aria-labelledby": props.ariaLabelledBy }, (0,_Utilities__WEBPACK_IMPORTED_MODULE_18__.getNativeProps)(props, _Utilities__WEBPACK_IMPORTED_MODULE_18__.divProperties), { ref: mergedRootRef, onFocusCapture: onRootFocusCapture, onBlurCapture: onRootBlurCapture }),
-        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_17__.__assign)({}, bumperProps, { ref: firstBumper })),
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_13__.__assign)({ "aria-labelledby": props.ariaLabelledBy }, (0,_Utilities__WEBPACK_IMPORTED_MODULE_14__.getNativeProps)(props, _Utilities__WEBPACK_IMPORTED_MODULE_14__.divProperties), { ref: mergedRootRef, onFocusCapture: onRootFocusCapture, onBlurCapture: onRootBlurCapture }),
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_13__.__assign)({}, bumperProps, { ref: firstBumper })),
         children,
-        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_17__.__assign)({}, bumperProps, { ref: lastBumper }))));
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_13__.__assign)({}, bumperProps, { ref: lastBumper }))));
 });
 FocusTrapZone.displayName = COMPONENT_NAME;
 FocusTrapZone.focusStack = [];
@@ -9129,7 +8938,7 @@ var IconBase = /** @class */ (function (_super) {
         var _a = this.props, children = _a.children, className = _a.className, styles = _a.styles, iconName = _a.iconName, imageErrorAs = _a.imageErrorAs, theme = _a.theme;
         var isPlaceholder = typeof iconName === 'string' && iconName.length === 0;
         var isImage = 
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         !!this.props.imageProps || this.props.iconType === _Icon_types__WEBPACK_IMPORTED_MODULE_4__.IconType.image || this.props.iconType === _Icon_types__WEBPACK_IMPORTED_MODULE_4__.IconType.Image;
         var iconContent = (0,_FontIcon__WEBPACK_IMPORTED_MODULE_5__.getIconContent)(iconName) || {};
         var iconClassName = iconContent.iconClassName, iconContentChildren = iconContent.children, mergeImageProps = iconContent.mergeImageProps;
@@ -9147,7 +8956,7 @@ var IconBase = /** @class */ (function (_super) {
         var imageLoadError = this.state.imageLoadError;
         var imageProps = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, this.props.imageProps), { onLoadingStateChange: this._onImageLoadingStateChange });
         var ImageType = (imageLoadError && imageErrorAs) || _Image_Image__WEBPACK_IMPORTED_MODULE_7__.Image;
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         var ariaLabel = this.props['aria-label'] || this.props.ariaLabel;
         var accessibleName = imageProps.alt || ariaLabel || this.props.title;
         var hasName = !!(accessibleName ||
@@ -9231,7 +9040,6 @@ __webpack_require__.r(__webpack_exports__);
 var classNames = (0,_Styling__WEBPACK_IMPORTED_MODULE_0__.mergeStyleSets)({
     root: {
         display: 'inline-block',
-        textDecoration: 'inherit',
     },
     placeholder: [
         'ms-Icon-placeHolder',
@@ -9258,7 +9066,7 @@ var getStyles = function (props) {
             iconClassName,
             className,
             styles && styles.root,
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             styles && styles.imageContainer,
         ],
     };
@@ -9436,8 +9244,8 @@ function useLoadState(props, imageElement) {
     return [loadState, onImageLoaded, onImageError];
 }
 var ImageBase = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, forwardedRef) {
-    var frameElement = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
-    var imageElement = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var frameElement = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
+    var imageElement = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     var _a = useLoadState(props, imageElement), loadState = _a[0], onImageLoaded = _a[1], onImageError = _a[2];
     var imageProps = (0,_Utilities__WEBPACK_IMPORTED_MODULE_4__.getNativeProps)(props, _Utilities__WEBPACK_IMPORTED_MODULE_4__.imgProperties, [
         'width',
@@ -9471,7 +9279,7 @@ var ImageBase = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, f
 ImageBase.displayName = 'ImageBase';
 function useCoverStyle(props, loadState, imageElement, frameElement) {
     var previousLoadState = react__WEBPACK_IMPORTED_MODULE_0__.useRef(loadState);
-    var coverStyle = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var coverStyle = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     if (coverStyle === undefined ||
         (previousLoadState.current === _Image_types__WEBPACK_IMPORTED_MODULE_2__.ImageLoadState.notLoaded && loadState === _Image_types__WEBPACK_IMPORTED_MODULE_2__.ImageLoadState.loaded)) {
         coverStyle.current = computeCoverStyle(props, loadState, imageElement, frameElement);
@@ -9581,10 +9389,7 @@ var getStyles = function (props) {
     };
     // Cut the mustard using msMaxTouchPoints to detect IE11 which does not support CSS object-fit
     var window = (0,_Utilities__WEBPACK_IMPORTED_MODULE_1__.getWindow)();
-    var supportsObjectFit = window !== undefined &&
-        // eslint-disable-next-line @fluentui/max-len
-        // cast needed as vendor prefixed `msMaxTouchPoints` api is no longer part of TS lib declaration - introduced with TS 4.4
-        window.navigator.msMaxTouchPoints === undefined;
+    var supportsObjectFit = window !== undefined && window.navigator.msMaxTouchPoints === undefined;
     var fallbackObjectFitStyles = (isContain && isLandscape) || (isCover && !isLandscape)
         ? { width: '100%', height: 'auto' }
         : { width: 'auto', height: '100%' };
@@ -9854,7 +9659,7 @@ __webpack_require__.r(__webpack_exports__);
  * Hook that creates attributes for components which are enabled with Keytip.
  */
 function useKeytipData(options) {
-    var uniqueId = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var uniqueId = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     var keytipProps = options.keytipProps
         ? (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__assign)({ disabled: options.disabled }, options.keytipProps) : undefined;
     var keytipManager = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_2__.useConst)(_utilities_keytips_index__WEBPACK_IMPORTED_MODULE_3__.KeytipManager.getInstance());
@@ -9880,7 +9685,7 @@ function useKeytipData(options) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     var nativeKeytipProps = {
-        ariaDescribedBy: options.ariaDescribedBy,
+        ariaDescribedBy: undefined,
         keytipId: undefined,
     };
     if (keytipProps) {
@@ -9898,7 +9703,7 @@ function getKeytipData(keytipManager, keytipProps, describedByPrepend) {
     var newKeytipProps = keytipManager.addParentOverflow(keytipProps);
     // Construct aria-describedby and data-ktp-id attributes
     var ariaDescribedBy = (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.mergeAriaAttributeValues)(describedByPrepend, (0,_utilities_keytips_index__WEBPACK_IMPORTED_MODULE_7__.getAriaDescribedBy)(newKeytipProps.keySequences));
-    var keySequences = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([], newKeytipProps.keySequences, true);
+    var keySequences = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([], newKeytipProps.keySequences);
     if (newKeytipProps.overflowSetSequence) {
         keySequences = (0,_utilities_keytips_index__WEBPACK_IMPORTED_MODULE_7__.mergeOverflows)(keySequences, newKeytipProps.overflowSetSequence);
     }
@@ -9923,25 +9728,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   LayerBase: () => (/* binding */ LayerBase)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! tslib */ 196);
-/* harmony import */ var _fluentui_react_portal_compat_context__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fluentui/react-portal-compat-context */ 9711);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! tslib */ 196);
+/* harmony import */ var _fluentui_react_portal_compat_context__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fluentui/react-portal-compat-context */ 9711);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ 8340);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ 8398);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Fabric__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Fabric */ 9758);
+/* harmony import */ var _Fabric__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Fabric */ 9758);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Utilities */ 3583);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Utilities */ 7291);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Utilities */ 5123);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Utilities */ 481);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Utilities */ 5746);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Utilities */ 1835);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Utilities */ 1777);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../Utilities */ 8972);
-/* harmony import */ var _Layer_notification__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Layer.notification */ 4997);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fluentui/react-hooks */ 544);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @fluentui/react-hooks */ 8670);
-/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @fluentui/react-hooks */ 2295);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Utilities */ 481);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Utilities */ 5746);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Utilities */ 1835);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Utilities */ 1777);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Utilities */ 8972);
+/* harmony import */ var _Layer_notification__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Layer.notification */ 4997);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fluentui/react-hooks */ 544);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fluentui/react-hooks */ 8670);
+/* harmony import */ var _fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @fluentui/react-hooks */ 2295);
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore "react-portal-compat-context" uses v9 configs via path aliases
@@ -9953,36 +9756,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var getClassNames = (0,_Utilities__WEBPACK_IMPORTED_MODULE_2__.classNamesFunction)();
-var getFocusVisibility = function (providerRef) {
-    if (providerRef === null || providerRef === void 0 ? void 0 : providerRef.current) {
-        return providerRef.current.classList.contains(_Utilities__WEBPACK_IMPORTED_MODULE_3__.IsFocusVisibleClassName);
-    }
-    return false;
-};
 var LayerBase = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, ref) {
-    var registerPortalEl = (0,_fluentui_react_portal_compat_context__WEBPACK_IMPORTED_MODULE_4__.usePortalCompat)();
+    var registerPortalEl = (0,_fluentui_react_portal_compat_context__WEBPACK_IMPORTED_MODULE_3__.usePortalCompat)();
     var rootRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
-    var mergedRef = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_5__.useMergedRefs)(rootRef, ref);
-    var layerRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var mergedRef = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_4__.useMergedRefs)(rootRef, ref);
+    var layerRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     var fabricElementRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
-    var focusContext = react__WEBPACK_IMPORTED_MODULE_0__.useContext(_Utilities__WEBPACK_IMPORTED_MODULE_6__.FocusRectsContext);
     // Tracks if the layer mount events need to be raised.
     // Required to allow the DOM to render after the layer element is added.
     var _a = react__WEBPACK_IMPORTED_MODULE_0__.useState(false), needRaiseLayerMount = _a[0], setNeedRaiseLayerMount = _a[1];
-    // Sets the focus visible className when the FocusRectsProvider for the layer is rendered
-    // This allows the current focus visibility style to be carried over to the layer content
-    var focusRectsRef = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(function (el) {
-        var isFocusVisible = getFocusVisibility(focusContext === null || focusContext === void 0 ? void 0 : focusContext.providerRef);
-        if (el && isFocusVisible) {
-            el.classList.add(_Utilities__WEBPACK_IMPORTED_MODULE_3__.IsFocusVisibleClassName);
-        }
-    }, [focusContext]);
     var children = props.children, className = props.className, eventBubblingEnabled = props.eventBubblingEnabled, fabricProps = props.fabricProps, hostId = props.hostId, insertFirst = props.insertFirst, _b = props.onLayerDidMount, onLayerDidMount = _b === void 0 ? function () { return undefined; } : _b, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     _c = props.onLayerMounted, 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     onLayerMounted = _c === void 0 ? function () { return undefined; } : _c, onLayerWillUnmount = props.onLayerWillUnmount, styles = props.styles, theme = props.theme;
-    var fabricRef = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_5__.useMergedRefs)(fabricElementRef, fabricProps === null || fabricProps === void 0 ? void 0 : fabricProps.ref, focusRectsRef);
+    var fabricRef = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_4__.useMergedRefs)(fabricElementRef, fabricProps === null || fabricProps === void 0 ? void 0 : fabricProps.ref);
     var classNames = getClassNames(styles, {
         theme: theme,
         className: className,
@@ -9990,25 +9778,23 @@ var LayerBase = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, r
     });
     // Returns the user provided hostId props element, the default target selector,
     // or undefined if document doesn't exist.
-    var getHost = function (doc, shadowRoot) {
+    var getHost = function (doc) {
         var _a, _b;
-        if (shadowRoot === void 0) { shadowRoot = null; }
-        var root = shadowRoot !== null && shadowRoot !== void 0 ? shadowRoot : doc;
         if (hostId) {
-            var layerHost = (0,_Layer_notification__WEBPACK_IMPORTED_MODULE_7__.getLayerHost)(hostId);
+            var layerHost = (0,_Layer_notification__WEBPACK_IMPORTED_MODULE_5__.getLayerHost)(hostId);
             if (layerHost) {
                 return (_a = layerHost.rootRef.current) !== null && _a !== void 0 ? _a : null;
             }
-            return (_b = root.getElementById(hostId)) !== null && _b !== void 0 ? _b : null;
+            return (_b = doc.getElementById(hostId)) !== null && _b !== void 0 ? _b : null;
         }
         else {
-            var defaultHostSelector = (0,_Layer_notification__WEBPACK_IMPORTED_MODULE_7__.getDefaultTarget)();
+            var defaultHostSelector = (0,_Layer_notification__WEBPACK_IMPORTED_MODULE_5__.getDefaultTarget)();
             // Find the host.
-            var host = defaultHostSelector ? root.querySelector(defaultHostSelector) : null;
+            var host = defaultHostSelector ? doc.querySelector(defaultHostSelector) : null;
             // If no host is available, create a container for injecting layers in.
             // Having a container scopes layout computation.
             if (!host) {
-                host = (0,_Layer_notification__WEBPACK_IMPORTED_MODULE_7__.createDefaultLayerHost)(doc, shadowRoot);
+                host = (0,_Layer_notification__WEBPACK_IMPORTED_MODULE_5__.createDefaultLayerHost)(doc);
             }
             return host;
         }
@@ -10025,43 +9811,30 @@ var LayerBase = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, r
     };
     // If a doc or host exists, it will remove and update layer parentNodes.
     var createLayerElement = function () {
-        var _a, _b, _c, _d;
-        var doc = (0,_Utilities__WEBPACK_IMPORTED_MODULE_8__.getDocument)(rootRef.current);
-        var shadowRoot = ((_b = (_a = rootRef.current) === null || _a === void 0 ? void 0 : _a.getRootNode()) === null || _b === void 0 ? void 0 : _b.host)
-            ? (_c = rootRef === null || rootRef === void 0 ? void 0 : rootRef.current) === null || _c === void 0 ? void 0 : _c.getRootNode()
-            : undefined;
-        if (!doc || (!doc && !shadowRoot)) {
+        var _a;
+        var doc = (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getDocument)(rootRef.current);
+        if (!doc) {
             return;
         }
-        var host = getHost(doc, shadowRoot);
+        var host = getHost(doc);
         if (!host) {
             return;
         }
-        // Tabster in V9 sets aria-hidden on the elements outside of the modal dialog. And it doesn't set aria-hidden
-        // on the virtual children of the dialog. But the host element itself is not a virtual child of a dialog, it
-        // might contain virtual children. noDirectAriaHidden flag makes Tabster to poke inside the element and set
-        // aria-hidden on the children (if they are not virtual children of the active V9 dialog) not on the host element.
-        // To avoid importing Tabster as a dependency here, we just set a flag on the host element which is checked by
-        // Tabster.
-        if (!host.__tabsterElementFlags) {
-            host.__tabsterElementFlags = {};
-        }
-        host.__tabsterElementFlags.noDirectAriaHidden = true;
         // Remove and re-create any previous existing layer elements.
         removeLayerElement();
-        var el = ((_d = host.ownerDocument) !== null && _d !== void 0 ? _d : doc).createElement('div');
+        var el = ((_a = host.ownerDocument) !== null && _a !== void 0 ? _a : doc).createElement('div');
         el.className = classNames.root;
-        (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.setPortalAttribute)(el);
-        (0,_Utilities__WEBPACK_IMPORTED_MODULE_10__.setVirtualParent)(el, rootRef.current);
+        (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.setPortalAttribute)(el);
+        (0,_Utilities__WEBPACK_IMPORTED_MODULE_8__.setVirtualParent)(el, rootRef.current);
         insertFirst ? host.insertBefore(el, host.firstChild) : host.appendChild(el);
         layerRef.current = el;
         setNeedRaiseLayerMount(true);
     };
-    (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_11__.useIsomorphicLayoutEffect)(function () {
+    (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_9__.useIsomorphicLayoutEffect)(function () {
         createLayerElement();
         // Check if the user provided a hostId prop and register the layer with the ID.
         if (hostId) {
-            (0,_Layer_notification__WEBPACK_IMPORTED_MODULE_7__.registerLayer)(hostId, createLayerElement);
+            (0,_Layer_notification__WEBPACK_IMPORTED_MODULE_5__.registerLayer)(hostId, createLayerElement);
         }
         var unregisterPortalEl = layerRef.current ? registerPortalEl(layerRef.current) : undefined;
         return function () {
@@ -10070,7 +9843,7 @@ var LayerBase = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, r
             }
             removeLayerElement();
             if (hostId) {
-                (0,_Layer_notification__WEBPACK_IMPORTED_MODULE_7__.unregisterLayer)(hostId, createLayerElement);
+                (0,_Layer_notification__WEBPACK_IMPORTED_MODULE_5__.unregisterLayer)(hostId, createLayerElement);
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps -- should run if the hostId updates.
@@ -10084,8 +9857,8 @@ var LayerBase = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (props, r
     }, [needRaiseLayerMount, onLayerMounted, onLayerDidMount]);
     useDebugWarnings(props);
     return (react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", { className: "ms-layer", ref: mergedRef }, layerRef.current &&
-        react_dom__WEBPACK_IMPORTED_MODULE_1__.createPortal(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Utilities__WEBPACK_IMPORTED_MODULE_12__.FocusRectsProvider, { layerRoot: true, providerRef: fabricRef },
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Fabric__WEBPACK_IMPORTED_MODULE_13__.Fabric, (0,tslib__WEBPACK_IMPORTED_MODULE_14__.__assign)({}, (!eventBubblingEnabled && getFilteredEvents()), fabricProps, { className: (0,_Utilities__WEBPACK_IMPORTED_MODULE_15__.css)(classNames.content, fabricProps === null || fabricProps === void 0 ? void 0 : fabricProps.className), ref: fabricRef }), children)), layerRef.current)));
+        react_dom__WEBPACK_IMPORTED_MODULE_1__.createPortal(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Utilities__WEBPACK_IMPORTED_MODULE_10__.FocusRectsProvider, { layerRoot: true, providerRef: fabricRef },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Fabric__WEBPACK_IMPORTED_MODULE_11__.Fabric, (0,tslib__WEBPACK_IMPORTED_MODULE_12__.__assign)({}, (!eventBubblingEnabled && getFilteredEvents()), fabricProps, { className: (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.css)(classNames.content, fabricProps === null || fabricProps === void 0 ? void 0 : fabricProps.className), ref: fabricRef }), children)), layerRef.current)));
 });
 LayerBase.displayName = 'LayerBase';
 var filteredEventProps;
@@ -10143,7 +9916,7 @@ function getFilteredEvents() {
 function useDebugWarnings(props) {
     if (true) {
         // eslint-disable-next-line react-hooks/rules-of-hooks -- build-time conditional
-        (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_16__.useWarnings)({
+        (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_14__.useWarnings)({
             name: 'Layer',
             props: props,
             deprecations: { onLayerMounted: 'onLayerDidMount' },
@@ -10203,7 +9976,7 @@ __webpack_require__.r(__webpack_exports__);
 var _layersByHostId = {};
 var _layerHostsById = {};
 var defaultHostId = 'fluent-default-layer-host';
-var _defaultHostSelector = "#".concat(defaultHostId);
+var _defaultHostSelector = "#" + defaultHostId;
 /**
  * Register a layer for a given host id
  * @param hostId - Id of the layer host
@@ -10297,29 +10070,20 @@ function unregisterLayerHost(hostId, layerHost) {
 /**
  * When no default layer host is provided, this function is executed to create the default host.
  */
-function createDefaultLayerHost(doc, shadowRoot) {
-    if (shadowRoot === void 0) { shadowRoot = null; }
+function createDefaultLayerHost(doc) {
     var host = doc.createElement('div');
     host.setAttribute('id', defaultHostId);
     host.style.cssText = 'position:fixed;z-index:1000000';
-    if (shadowRoot) {
-        shadowRoot.appendChild(host);
-    }
-    else {
-        doc === null || doc === void 0 ? void 0 : doc.body.appendChild(host);
-    }
-    // doc?.body.appendChild(host);
+    doc === null || doc === void 0 ? void 0 : doc.body.appendChild(host);
     return host;
 }
 /**
  * This function can be optionally called to clean up the default layer host as needed.
  */
-function cleanupDefaultLayerHost(doc, shadowRoot) {
-    if (shadowRoot === void 0) { shadowRoot = null; }
-    var root = shadowRoot !== null && shadowRoot !== void 0 ? shadowRoot : doc;
-    var host = root.querySelector("#".concat(defaultHostId));
+function cleanupDefaultLayerHost(doc) {
+    var host = doc.querySelector("#" + defaultHostId);
     if (host) {
-        root.removeChild(host);
+        doc.removeChild(host);
     }
 }
 /**
@@ -10553,26 +10317,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ 8340);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Button */ 4533);
-/* harmony import */ var _Layer__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../Layer */ 9686);
-/* harmony import */ var _Overlay__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../Overlay */ 1518);
-/* harmony import */ var _Popup__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../Popup */ 4218);
+/* harmony import */ var _Layer__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../Layer */ 9686);
+/* harmony import */ var _Overlay__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../Overlay */ 1518);
+/* harmony import */ var _Popup__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../Popup */ 4218);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Utilities */ 3583);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Utilities */ 2594);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Utilities */ 8972);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Utilities */ 2477);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Utilities */ 6549);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Utilities */ 8370);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Utilities */ 3211);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Utilities */ 1424);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Utilities */ 6657);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../Utilities */ 7974);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../Utilities */ 2419);
-/* harmony import */ var _FocusTrapZone_index__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../FocusTrapZone/index */ 3634);
-/* harmony import */ var _Panel_types__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Panel.types */ 8681);
-/* harmony import */ var _fluentui_react_window_provider__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @fluentui/react-window-provider */ 6130);
-/* harmony import */ var _utilities_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../utilities/dom */ 4707);
-
-
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Utilities */ 3211);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Utilities */ 1424);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Utilities */ 2477);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Utilities */ 6549);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Utilities */ 8370);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../Utilities */ 6657);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../Utilities */ 7974);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../Utilities */ 2419);
+/* harmony import */ var _FocusTrapZone_index__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../FocusTrapZone/index */ 3634);
+/* harmony import */ var _Panel_types__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Panel.types */ 8681);
 
 
 
@@ -10608,14 +10368,7 @@ var PanelBase = /** @class */ (function (_super) {
         };
         // Allow the user to scroll within the panel but not on the body
         _this._allowScrollOnPanel = function (elt) {
-            var _a;
-            _this._resizeObserver = _this._createResizeObserver(function (entries) {
-                if (entries.length > 0 && entries[0].target === elt) {
-                    _this._updateFooterPosition();
-                }
-            });
             if (elt) {
-                (_a = _this._resizeObserver) === null || _a === void 0 ? void 0 : _a.observe(elt);
                 if (_this._allowTouchBodyScroll) {
                     (0,_Utilities__WEBPACK_IMPORTED_MODULE_3__.allowOverscrollOnElement)(elt, _this._events);
                 }
@@ -10671,7 +10424,7 @@ var PanelBase = /** @class */ (function (_super) {
             }
             _this._animationCallback = _this._async.setTimeout(function () {
                 _this.setState({ visibility: newVisibilityState });
-                _this._onTransitionComplete(newVisibilityState);
+                _this._onTransitionComplete();
             }, 200);
         };
         _this._clearExistingAnimationTimer = function () {
@@ -10682,19 +10435,21 @@ var PanelBase = /** @class */ (function (_super) {
         _this._onPanelClick = function (ev) {
             _this.dismiss(ev);
         };
-        _this._onTransitionComplete = function (newVisibilityState) {
+        _this._onTransitionComplete = function () {
             _this._updateFooterPosition();
-            if (newVisibilityState === PanelVisibilityState.open && _this.props.onOpened) {
+            if (_this.state.visibility === PanelVisibilityState.open && _this.props.onOpened) {
                 _this.props.onOpened();
             }
-            if (newVisibilityState === PanelVisibilityState.closed && _this.props.onDismissed) {
+            if (_this.state.visibility === PanelVisibilityState.closed && _this.props.onDismissed) {
                 _this.props.onDismissed();
             }
         };
         var _a = _this.props.allowTouchBodyScroll, allowTouchBodyScroll = _a === void 0 ? false : _a;
         _this._allowTouchBodyScroll = allowTouchBodyScroll;
-        (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.initializeComponentRef)(_this);
-        (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.warnDeprecations)(COMPONENT_NAME, props, {
+        _this._async = new _Utilities__WEBPACK_IMPORTED_MODULE_6__.Async(_this);
+        _this._events = new _Utilities__WEBPACK_IMPORTED_MODULE_7__.EventGroup(_this);
+        (0,_Utilities__WEBPACK_IMPORTED_MODULE_8__.initializeComponentRef)(_this);
+        (0,_Utilities__WEBPACK_IMPORTED_MODULE_9__.warnDeprecations)(COMPONENT_NAME, props, {
             ignoreExternalFocusing: 'focusTrapZoneProps',
             forceFocusInsideTrap: 'focusTrapZoneProps',
             firstFocusableSelector: 'focusTrapZoneProps',
@@ -10703,7 +10458,7 @@ var PanelBase = /** @class */ (function (_super) {
             isFooterSticky: false,
             // intentionally ignore props so animation takes place during componentDidMount
             visibility: PanelVisibilityState.closed,
-            id: (0,_Utilities__WEBPACK_IMPORTED_MODULE_8__.getId)('Panel'),
+            id: (0,_Utilities__WEBPACK_IMPORTED_MODULE_10__.getId)('Panel'),
         };
         return _this;
     }
@@ -10724,13 +10479,9 @@ var PanelBase = /** @class */ (function (_super) {
         return null;
     };
     PanelBase.prototype.componentDidMount = function () {
-        this._async = new _Utilities__WEBPACK_IMPORTED_MODULE_9__.Async(this);
-        this._events = new _Utilities__WEBPACK_IMPORTED_MODULE_10__.EventGroup(this);
-        var win = (0,_utilities_dom__WEBPACK_IMPORTED_MODULE_11__.getWindowEx)(this.context);
-        var doc = (0,_utilities_dom__WEBPACK_IMPORTED_MODULE_11__.getDocumentEx)(this.context);
-        this._events.on(win, 'resize', this._updateFooterPosition);
+        this._events.on(window, 'resize', this._updateFooterPosition);
         if (this._shouldListenForOuterClick(this.props)) {
-            this._events.on(doc === null || doc === void 0 ? void 0 : doc.body, 'mousedown', this._dismissOnOuterClick, true);
+            this._events.on(document.body, 'mousedown', this._dismissOnOuterClick, true);
         }
         if (this.props.isOpen) {
             this.setState({ visibility: PanelVisibilityState.animatingOpen });
@@ -10748,30 +10499,27 @@ var PanelBase = /** @class */ (function (_super) {
                 this._animateTo(PanelVisibilityState.closed);
             }
         }
-        var doc = (0,_utilities_dom__WEBPACK_IMPORTED_MODULE_11__.getDocumentEx)(this.context);
         if (shouldListenOnOuterClick && !previousShouldListenOnOuterClick) {
-            this._events.on(doc === null || doc === void 0 ? void 0 : doc.body, 'mousedown', this._dismissOnOuterClick, true);
+            this._events.on(document.body, 'mousedown', this._dismissOnOuterClick, true);
         }
         else if (!shouldListenOnOuterClick && previousShouldListenOnOuterClick) {
-            this._events.off(doc === null || doc === void 0 ? void 0 : doc.body, 'mousedown', this._dismissOnOuterClick, true);
+            this._events.off(document.body, 'mousedown', this._dismissOnOuterClick, true);
         }
     };
     PanelBase.prototype.componentWillUnmount = function () {
-        var _a;
         this._async.dispose();
         this._events.dispose();
-        (_a = this._resizeObserver) === null || _a === void 0 ? void 0 : _a.disconnect();
     };
     PanelBase.prototype.render = function () {
         var _a = this.props, _b = _a.className, className = _b === void 0 ? '' : _b, elementToFocusOnDismiss = _a.elementToFocusOnDismiss, 
-        /* eslint-disable @typescript-eslint/no-deprecated */
+        /* eslint-disable deprecation/deprecation */
         firstFocusableSelector = _a.firstFocusableSelector, focusTrapZoneProps = _a.focusTrapZoneProps, forceFocusInsideTrap = _a.forceFocusInsideTrap, hasCloseButton = _a.hasCloseButton, headerText = _a.headerText, _c = _a.headerClassName, headerClassName = _c === void 0 ? '' : _c, ignoreExternalFocusing = _a.ignoreExternalFocusing, isBlocking = _a.isBlocking, isFooterAtBottom = _a.isFooterAtBottom, isLightDismiss = _a.isLightDismiss, isHiddenOnDismiss = _a.isHiddenOnDismiss, layerProps = _a.layerProps, overlayProps = _a.overlayProps, popupProps = _a.popupProps, type = _a.type, styles = _a.styles, theme = _a.theme, customWidth = _a.customWidth, _d = _a.onLightDismissClick, onLightDismissClick = _d === void 0 ? this._onPanelClick : _d, _e = _a.onRenderNavigation, onRenderNavigation = _e === void 0 ? this._onRenderNavigation : _e, _f = _a.onRenderHeader, onRenderHeader = _f === void 0 ? this._onRenderHeader : _f, _g = _a.onRenderBody, onRenderBody = _g === void 0 ? this._onRenderBody : _g, _h = _a.onRenderFooter, onRenderFooter = _h === void 0 ? this._onRenderFooter : _h;
         var _j = this.state, isFooterSticky = _j.isFooterSticky, visibility = _j.visibility, id = _j.id;
-        var isLeft = type === _Panel_types__WEBPACK_IMPORTED_MODULE_12__.PanelType.smallFixedNear || type === _Panel_types__WEBPACK_IMPORTED_MODULE_12__.PanelType.customNear ? true : false;
-        var isRTL = (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.getRTL)(theme);
+        var isLeft = type === _Panel_types__WEBPACK_IMPORTED_MODULE_11__.PanelType.smallFixedNear || type === _Panel_types__WEBPACK_IMPORTED_MODULE_11__.PanelType.customNear ? true : false;
+        var isRTL = (0,_Utilities__WEBPACK_IMPORTED_MODULE_12__.getRTL)(theme);
         var isOnRightSide = isRTL ? isLeft : !isLeft;
-        var customWidthStyles = type === _Panel_types__WEBPACK_IMPORTED_MODULE_12__.PanelType.custom || type === _Panel_types__WEBPACK_IMPORTED_MODULE_12__.PanelType.customNear ? { width: customWidth } : {};
-        var nativeProps = (0,_Utilities__WEBPACK_IMPORTED_MODULE_14__.getNativeProps)(this.props, _Utilities__WEBPACK_IMPORTED_MODULE_14__.divProperties);
+        var customWidthStyles = type === _Panel_types__WEBPACK_IMPORTED_MODULE_11__.PanelType.custom || type === _Panel_types__WEBPACK_IMPORTED_MODULE_11__.PanelType.customNear ? { width: customWidth } : {};
+        var nativeProps = (0,_Utilities__WEBPACK_IMPORTED_MODULE_13__.getNativeProps)(this.props, _Utilities__WEBPACK_IMPORTED_MODULE_13__.divProperties);
         var isOpen = this.isActive;
         var isAnimating = visibility === PanelVisibilityState.animatingClosed || visibility === PanelVisibilityState.animatingOpen;
         this._headerTextId = headerText && id + '-headerText';
@@ -10796,13 +10544,13 @@ var PanelBase = /** @class */ (function (_super) {
         var _k = this, _classNames = _k._classNames, _allowTouchBodyScroll = _k._allowTouchBodyScroll;
         var overlay;
         if (isBlocking && isOpen) {
-            overlay = (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Overlay__WEBPACK_IMPORTED_MODULE_15__.Overlay, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ className: _classNames.overlay, isDarkThemed: false, onClick: isLightDismiss ? onLightDismissClick : undefined, allowTouchBodyScroll: _allowTouchBodyScroll }, overlayProps)));
+            overlay = (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Overlay__WEBPACK_IMPORTED_MODULE_14__.Overlay, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ className: _classNames.overlay, isDarkThemed: false, onClick: isLightDismiss ? onLightDismissClick : undefined, allowTouchBodyScroll: _allowTouchBodyScroll }, overlayProps)));
         }
-        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Layer__WEBPACK_IMPORTED_MODULE_16__.Layer, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, layerProps),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Popup__WEBPACK_IMPORTED_MODULE_17__.Popup, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ role: "dialog", "aria-modal": isBlocking ? 'true' : undefined, ariaLabelledBy: this._headerTextId ? this._headerTextId : undefined, onDismiss: this.dismiss, className: _classNames.hiddenPanel, enableAriaHiddenSiblings: isOpen ? true : false }, popupProps),
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Layer__WEBPACK_IMPORTED_MODULE_15__.Layer, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, layerProps),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Popup__WEBPACK_IMPORTED_MODULE_16__.Popup, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ role: "dialog", "aria-modal": isBlocking ? 'true' : undefined, ariaLabelledBy: this._headerTextId ? this._headerTextId : undefined, onDismiss: this.dismiss, className: _classNames.hiddenPanel, enableAriaHiddenSiblings: isOpen ? true : false }, popupProps),
                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ "aria-hidden": !isOpen && isAnimating }, nativeProps, { ref: this._panel, className: _classNames.root }),
                     overlay,
-                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(_FocusTrapZone_index__WEBPACK_IMPORTED_MODULE_18__.FocusTrapZone, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ ignoreExternalFocusing: ignoreExternalFocusing, forceFocusInsideTrap: !isBlocking || (isHiddenOnDismiss && !isOpen) ? false : forceFocusInsideTrap, firstFocusableSelector: firstFocusableSelector, isClickableOutsideFocusTrap: true }, focusTrapZoneProps, { className: _classNames.main, style: customWidthStyles, elementToFocusOnDismiss: elementToFocusOnDismiss }),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(_FocusTrapZone_index__WEBPACK_IMPORTED_MODULE_17__.FocusTrapZone, (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({ ignoreExternalFocusing: ignoreExternalFocusing, forceFocusInsideTrap: !isBlocking || (isHiddenOnDismiss && !isOpen) ? false : forceFocusInsideTrap, firstFocusableSelector: firstFocusableSelector, isClickableOutsideFocusTrap: true }, focusTrapZoneProps, { className: _classNames.main, style: customWidthStyles, elementToFocusOnDismiss: elementToFocusOnDismiss }),
                         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: _classNames.contentInner },
                             react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { ref: this._allowScrollOnPanel, className: _classNames.scrollableContent, "data-is-scrollable": true },
                                 react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: _classNames.commands, "data-is-visible": true }, onRenderNavigation(this.props, this._onRenderNavigation)),
@@ -10838,15 +10586,6 @@ var PanelBase = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    PanelBase.prototype._createResizeObserver = function (callback) {
-        var _a;
-        var doc = (0,_utilities_dom__WEBPACK_IMPORTED_MODULE_11__.getDocumentEx)(this.context);
-        var resizeObserver = null;
-        if ((_a = doc === null || doc === void 0 ? void 0 : doc.defaultView) === null || _a === void 0 ? void 0 : _a.ResizeObserver) {
-            resizeObserver = new doc.defaultView.ResizeObserver(callback);
-        }
-        return resizeObserver;
-    };
     PanelBase.prototype._shouldListenForOuterClick = function (props) {
         return !!props.isBlocking && !!props.isOpen;
     };
@@ -10863,7 +10602,7 @@ var PanelBase = /** @class */ (function (_super) {
     PanelBase.prototype._dismissOnOuterClick = function (ev) {
         var panel = this._panel.current;
         if (this.isActive && panel && !ev.defaultPrevented) {
-            if (!(0,_Utilities__WEBPACK_IMPORTED_MODULE_19__.elementContains)(panel, ev.target)) {
+            if (!(0,_Utilities__WEBPACK_IMPORTED_MODULE_18__.elementContains)(panel, ev.target)) {
                 if (this.props.onOuterClick) {
                     this.props.onOuterClick(ev);
                 }
@@ -10878,9 +10617,8 @@ var PanelBase = /** @class */ (function (_super) {
         isOpen: undefined,
         isBlocking: true,
         hasCloseButton: true,
-        type: _Panel_types__WEBPACK_IMPORTED_MODULE_12__.PanelType.smallFixedFar,
+        type: _Panel_types__WEBPACK_IMPORTED_MODULE_11__.PanelType.smallFixedFar,
     };
-    PanelBase.contextType = _fluentui_react_window_provider__WEBPACK_IMPORTED_MODULE_20__.WindowContext;
     return PanelBase;
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component));
 
@@ -10977,35 +10715,35 @@ var panelMargin = {
 // Following consts are used below in `getPanelBreakpoints()` function to provide
 // necessary fallbacks for different types of Panel in different breakpoints.
 var smallPanelSelectors = (_a = {},
-    _a["@media (min-width: ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinMedium, "px)")] = {
+    _a["@media (min-width: " + _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinMedium + "px)"] = {
         width: panelWidth.sm,
     },
     _a);
 var mediumPanelSelectors = (_b = {},
-    _b["@media (min-width: ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinLarge, "px)")] = {
+    _b["@media (min-width: " + _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinLarge + "px)"] = {
         width: panelWidth.md1,
     },
-    _b["@media (min-width: ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinXLarge, "px)")] = {
+    _b["@media (min-width: " + _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinXLarge + "px)"] = {
         width: panelWidth.md2,
     },
     _b);
 var largePanelSelectors = (_c = {},
-    _c["@media (min-width: ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinUhfMobile, "px)")] = {
+    _c["@media (min-width: " + _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinUhfMobile + "px)"] = {
         left: panelMargin.md,
         width: panelWidth.auto,
     },
-    _c["@media (min-width: ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinXXLarge, "px)")] = {
+    _c["@media (min-width: " + _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinXXLarge + "px)"] = {
         left: panelMargin.lg,
     },
     _c);
 var largeFixedPanelSelectors = (_d = {},
-    _d["@media (min-width: ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinXXLarge, "px)")] = {
+    _d["@media (min-width: " + _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinXXLarge + "px)"] = {
         left: panelMargin.auto,
         width: panelWidth.lg,
     },
     _d);
 var extraLargePanelSelectors = (_e = {},
-    _e["@media (min-width: ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinXXLarge, "px)")] = {
+    _e["@media (min-width: " + _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinXXLarge + "px)"] = {
         left: panelMargin.xl,
     },
     _e);
@@ -11100,8 +10838,8 @@ var getStyles = function (props) {
                 right: panelMargin.none,
                 width: panelWidth.full,
                 selectors: (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((_a = {}, _a[_Styling__WEBPACK_IMPORTED_MODULE_0__.HighContrastSelector] = {
-                    borderLeft: "3px solid ".concat(semanticColors.variantBorder),
-                    borderRight: "3px solid ".concat(semanticColors.variantBorder),
+                    borderLeft: "3px solid " + semanticColors.variantBorder,
+                    borderRight: "3px solid " + semanticColors.variantBorder,
                 }, _a), getPanelBreakpoints(type)),
             },
             type === _Panel_types__WEBPACK_IMPORTED_MODULE_1__.PanelType.smallFluid && {
@@ -11132,7 +10870,7 @@ var getStyles = function (props) {
                 backgroundColor: semanticColors.bodyBackground,
                 paddingTop: 18,
                 selectors: (_b = {},
-                    _b["@media (min-height: ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinMedium, "px)")] = {
+                    _b["@media (min-height: " + _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinMedium + "px)"] = {
                         position: 'sticky',
                         top: 0,
                         zIndex: 1,
@@ -11209,7 +10947,7 @@ var getStyles = function (props) {
             },
             isFooterAtBottom && {
                 selectors: (_c = {},
-                    _c["@media (min-height: ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinMedium, "px)")] = {
+                    _c["@media (min-height: " + _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinMedium + "px)"] = {
                         flexGrow: 1,
                     },
                     _c),
@@ -11221,9 +10959,9 @@ var getStyles = function (props) {
                 // Ensure that footer doesn't shrink if screen is too small
                 flexShrink: 0,
                 borderTop: '1px solid transparent',
-                transition: "opacity ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.AnimationVariables.durationValue3, " ").concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.AnimationVariables.easeFunction2),
+                transition: "opacity " + _Styling__WEBPACK_IMPORTED_MODULE_0__.AnimationVariables.durationValue3 + " " + _Styling__WEBPACK_IMPORTED_MODULE_0__.AnimationVariables.easeFunction2,
                 selectors: (_d = {},
-                    _d["@media (min-height: ".concat(_Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinMedium, "px)")] = {
+                    _d["@media (min-height: " + _Styling__WEBPACK_IMPORTED_MODULE_0__.ScreenWidthMinMedium + "px)"] = {
                         position: 'sticky',
                         bottom: 0,
                     },
@@ -11450,7 +11188,7 @@ function defaultFocusRestorer(options) {
 }
 function useRestoreFocus(props, root) {
     var _a = props.onRestoreFocus, onRestoreFocus = _a === void 0 ? defaultFocusRestorer : _a;
-    var originalFocusedElement = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var originalFocusedElement = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     var containsFocus = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
     react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
         originalFocusedElement.current = (0,_Utilities__WEBPACK_IMPORTED_MODULE_3__.getDocument)().activeElement;
@@ -11488,7 +11226,7 @@ function useRestoreFocus(props, root) {
     }, []), true);
 }
 function useHideSiblingNodes(props, root) {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     var shouldHideSiblings = String(props['aria-modal']).toLowerCase() === 'true' && props.enableAriaHiddenSiblings;
     react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
         if (!(shouldHideSiblings && root.current)) {
@@ -11503,14 +11241,14 @@ function useHideSiblingNodes(props, root) {
  */
 var Popup = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function (propsWithoutDefaults, forwardedRef) {
     var props = (0,_Utilities__WEBPACK_IMPORTED_MODULE_7__.getPropsWithDefaults)({ shouldRestoreFocus: true, enableAriaHiddenSiblings: true }, propsWithoutDefaults);
-    var root = react__WEBPACK_IMPORTED_MODULE_0__.useRef(undefined);
+    var root = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
     var mergedRootRef = (0,_fluentui_react_hooks__WEBPACK_IMPORTED_MODULE_8__.useMergedRefs)(root, forwardedRef);
     useHideSiblingNodes(props, root);
     useRestoreFocus(props, root);
     var role = props.role, className = props.className, ariaLabel = props.ariaLabel, ariaLabelledBy = props.ariaLabelledBy, ariaDescribedBy = props.ariaDescribedBy, style = props.style, children = props.children, onDismiss = props.onDismiss;
     var needsVerticalScrollBar = useScrollbarAsync(props, root);
     var onKeyDown = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(function (ev) {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         switch (ev.which) {
             case _Utilities__WEBPACK_IMPORTED_MODULE_9__.KeyCodes.escape:
                 if (onDismiss) {
@@ -11589,7 +11327,7 @@ function getIsChecked(item) {
     return null;
 }
 function hasSubmenu(item) {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     return !!(item.subMenuProps || item.items);
 }
 function isItemDisabled(item) {
@@ -11736,7 +11474,7 @@ function getInitialResponsiveMode() {
  */
 function withResponsiveMode(ComposedComponent) {
     var _a;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    // eslint-disable-next-line deprecation/deprecation
     var resultClass = (_a = /** @class */ (function (_super) {
             (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__extends)(WithResponsiveMode, _super);
             function WithResponsiveMode(props) {
@@ -11812,79 +11550,6 @@ function getResponsiveMode(currentWindow) {
     }
     return responsiveMode;
 }
-
-
-/***/ }),
-
-/***/ 4707:
-/*!***********************************************************!*\
-  !*** ./node_modules/@fluentui/react/lib/utilities/dom.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getDocumentEx: () => (/* binding */ getDocumentEx),
-/* harmony export */   getWindowEx: () => (/* binding */ getWindowEx),
-/* harmony export */   useDocumentEx: () => (/* binding */ useDocumentEx),
-/* harmony export */   useWindowEx: () => (/* binding */ useWindowEx)
-/* harmony export */ });
-/* harmony import */ var _fluentui_react_window_provider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fluentui/react-window-provider */ 6130);
-
-/**
- * NOTE: the check for `window`/`document` is a bit verbose and perhaps
- * overkill but it ensures the prior assumbed behavior of directly
- * calling `window`/`document` is preserved.
- *
- * It is possible to set `window` to undefined on `WindowProvider` so
- * we'll fallback to directly accessing the global in that (hopefully unlikely)
- * case.
- */
-/**
- * Get a reference to the `document` object.
- * Use this in place of the global `document` in React function components.
- * @returns Document | undefined
- */
-var useDocumentEx = function () {
-    var _a;
-    // eslint-disable-next-line no-restricted-globals
-    return (_a = (0,_fluentui_react_window_provider__WEBPACK_IMPORTED_MODULE_0__.useDocument)()) !== null && _a !== void 0 ? _a : (typeof document !== 'undefined' ? document : undefined);
-};
-/**
- * Get a reference to the `window` object.
- * Use this in place of the global `window` in React function components.
- * @returns Window | undefined
- */
-var useWindowEx = function () {
-    var _a;
-    // eslint-disable-next-line no-restricted-globals
-    return (_a = (0,_fluentui_react_window_provider__WEBPACK_IMPORTED_MODULE_0__.useWindow)()) !== null && _a !== void 0 ? _a : (typeof window !== 'undefined' ? window : undefined);
-};
-/**
- * Get a reference to the `document` object.
- * Use this in place of the global `document` in React class components.
- *
- * @param ctx - Class component WindowContext
- * @returns Document | undefined
- */
-var getDocumentEx = function (ctx) {
-    var _a, _b;
-    // eslint-disable-next-line no-restricted-globals
-    return (_b = (_a = ctx === null || ctx === void 0 ? void 0 : ctx.window) === null || _a === void 0 ? void 0 : _a.document) !== null && _b !== void 0 ? _b : (typeof document !== 'undefined' ? document : undefined);
-};
-/**
- * Get a reference to the `window` object.
- * Use this in place of the global `window` in React class components.
- *
- * @param ctx - Class component WindowContext
- * @returns Window | undefined
- */
-var getWindowEx = function (ctx) {
-    var _a;
-    // eslint-disable-next-line no-restricted-globals
-    return (_a = ctx === null || ctx === void 0 ? void 0 : ctx.window) !== null && _a !== void 0 ? _a : (typeof window !== 'undefined' ? window : undefined);
-};
 
 
 /***/ }),
@@ -12144,7 +11809,7 @@ var KeytipManager = /** @class */ (function () {
      * @returns - Modified keytip props, if needed to be modified
      */
     KeytipManager.prototype.addParentOverflow = function (keytipProps) {
-        var fullSequence = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__spreadArray)([], keytipProps.keySequences, true);
+        var fullSequence = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__spreadArray)([], keytipProps.keySequences);
         fullSequence.pop();
         if (fullSequence.length !== 0) {
             var parentKeytip = this.sequenceMapping[fullSequence.toString()];
@@ -12224,8 +11889,8 @@ function sequencesToID(keySequences) {
  */
 function mergeOverflows(keySequences, overflowKeySequences) {
     var overflowSequenceLen = overflowKeySequences.length;
-    var overflowSequence = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([], overflowKeySequences, true).pop();
-    var newKeySequences = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([], keySequences, true);
+    var overflowSequence = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([], overflowKeySequences).pop();
+    var newKeySequences = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__spreadArray)([], keySequences);
     return (0,_Utilities__WEBPACK_IMPORTED_MODULE_2__.addElementAtIndex)(newKeySequences, overflowSequenceLen - 1, overflowSequence);
 }
 /**
@@ -12274,11 +11939,9 @@ function getAriaDescribedBy(keySequences) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   __positioningTestPackage: () => (/* binding */ __positioningTestPackage),
-/* harmony export */   calculateGapSpace: () => (/* binding */ calculateGapSpace),
 /* harmony export */   getBoundsFromTargetWindow: () => (/* binding */ getBoundsFromTargetWindow),
 /* harmony export */   getMaxHeight: () => (/* binding */ getMaxHeight),
 /* harmony export */   getOppositeEdge: () => (/* binding */ getOppositeEdge),
-/* harmony export */   getRectangleFromTarget: () => (/* binding */ getRectangleFromTarget),
 /* harmony export */   positionCallout: () => (/* binding */ positionCallout),
 /* harmony export */   positionCard: () => (/* binding */ positionCard),
 /* harmony export */   positionElement: () => (/* binding */ positionElement)
@@ -12286,8 +11949,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 196);
 /* harmony import */ var _common_DirectionalHint__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../common/DirectionalHint */ 9861);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Utilities */ 6657);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Utilities */ 7520);
-/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Utilities */ 2594);
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Utilities */ 2594);
 /* harmony import */ var _positioning_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./positioning.types */ 5079);
 /* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Utilities */ 9854);
 var _a;
@@ -12450,24 +12112,10 @@ function _getOutOfBoundsDegree(rect, bounds) {
     return total;
 }
 /**
- * Returns true if scroll-resizing will move the target edge within the bounding rectangle,
- * and there is room between the target edge and the bounding edge for scrolled content.
- * Returns false otherwise.
- */
-function _canScrollResizeToFitEdge(target, bounding, targetEdge, minimumScrollResizeHeight) {
-    if (minimumScrollResizeHeight === void 0) { minimumScrollResizeHeight = 200; }
-    // Only scroll vertically to fit - cannot scroll to fit right or left edges
-    if (targetEdge !== _positioning_types__WEBPACK_IMPORTED_MODULE_1__.RectangleEdge.bottom && targetEdge !== _positioning_types__WEBPACK_IMPORTED_MODULE_1__.RectangleEdge.top) {
-        return false;
-    }
-    return _getRelativeEdgeDifference(target, bounding, targetEdge) >= minimumScrollResizeHeight;
-}
-/**
  * Attempts to move the rectangle through various sides of the target to find a place to fit.
  * If no fit is found, the least bad option should be returned.
  */
-function _flipToFit(rect, target, bounding, positionData, shouldScroll, minimumScrollResizeHeight, gap) {
-    if (shouldScroll === void 0) { shouldScroll = false; }
+function _flipToFit(rect, target, bounding, positionData, gap) {
     if (gap === void 0) { gap = 0; }
     var directions = [
         _positioning_types__WEBPACK_IMPORTED_MODULE_1__.RectangleEdge.left,
@@ -12490,32 +12138,7 @@ function _flipToFit(rect, target, bounding, positionData, shouldScroll, minimumS
     // Keep switching sides until one is found with enough space.
     // If all sides don't fit then return the unmodified element.
     for (var i = 0; i < 4; i++) {
-        if (_isEdgeInBounds(currentEstimate, bounding, currentEdge)) {
-            // Edge is in bounds, return current estimate
-            return {
-                elementRectangle: currentEstimate,
-                targetEdge: currentEdge,
-                alignmentEdge: currentAlignment,
-            };
-        }
-        else if (shouldScroll && _canScrollResizeToFitEdge(target, bounding, currentEdge, minimumScrollResizeHeight)) {
-            // Scrolling will allow edge to fit, move the estimate currentEdge inside the bounds and return
-            switch (currentEdge) {
-                case _positioning_types__WEBPACK_IMPORTED_MODULE_1__.RectangleEdge.bottom:
-                    currentEstimate.bottom = bounding.bottom;
-                    break;
-                case _positioning_types__WEBPACK_IMPORTED_MODULE_1__.RectangleEdge.top:
-                    currentEstimate.top = bounding.top;
-                    break;
-            }
-            return {
-                elementRectangle: currentEstimate,
-                targetEdge: currentEdge,
-                alignmentEdge: currentAlignment,
-                forcedInBounds: true,
-            };
-        }
-        else {
+        if (!_isEdgeInBounds(currentEstimate, bounding, currentEdge)) {
             // update least-bad edges
             var currentOOBDegree = _getOutOfBoundsDegree(currentEstimate, bounding);
             if (!oobDegree || currentOOBDegree < oobDegree) {
@@ -12534,6 +12157,13 @@ function _flipToFit(rect, target, bounding, positionData, shouldScroll, minimumS
                 }
                 currentEstimate = _estimatePosition(rect, target, { targetEdge: currentEdge, alignmentEdge: currentAlignment }, gap);
             }
+        }
+        else {
+            return {
+                elementRectangle: currentEstimate,
+                targetEdge: currentEdge,
+                alignmentEdge: currentAlignment,
+            };
         }
     }
     // nothing fits, use least-bad option
@@ -12562,8 +12192,7 @@ function _flipAlignmentEdge(elementEstimate, target, gap, coverTarget) {
  * Adjusts a element rectangle to fit within the bounds given. If directionalHintFixed or covertarget is passed in
  * then the element will not flip sides on the target. They will, however, be nudged to fit within the bounds given.
  */
-function _adjustFitWithinBounds(element, target, bounding, positionData, shouldScroll, minimumScrollResizeHeight, gap, directionalHintFixed, coverTarget) {
-    if (shouldScroll === void 0) { shouldScroll = false; }
+function _adjustFitWithinBounds(element, target, bounding, positionData, gap, directionalHintFixed, coverTarget) {
     if (gap === void 0) { gap = 0; }
     var alignmentEdge = positionData.alignmentEdge, alignTargetEdge = positionData.alignTargetEdge;
     var elementEstimate = {
@@ -12572,7 +12201,7 @@ function _adjustFitWithinBounds(element, target, bounding, positionData, shouldS
         alignmentEdge: alignmentEdge,
     };
     if (!directionalHintFixed && !coverTarget) {
-        elementEstimate = _flipToFit(element, target, bounding, positionData, shouldScroll, minimumScrollResizeHeight, gap);
+        elementEstimate = _flipToFit(element, target, bounding, positionData, gap);
     }
     var outOfBounds = _getOutOfBoundsEdges(elementEstimate.elementRectangle, bounding);
     // if directionalHintFixed is specified, we need to force the target edge to not change
@@ -12790,8 +12419,7 @@ function getClosestEdge(targetEdge, target, boundingRect) {
         return negativeEdge;
     }
 }
-function _positionElementWithinBounds(elementToPosition, target, bounding, positionData, gap, shouldScroll, minimumScrollResizeHeight, directionalHintFixed, coverTarget) {
-    if (shouldScroll === void 0) { shouldScroll = false; }
+function _positionElementWithinBounds(elementToPosition, target, bounding, positionData, gap, directionalHintFixed, coverTarget) {
     var estimatedElementPosition = _estimatePosition(elementToPosition, target, positionData, gap, coverTarget);
     if (_isRectangleWithinBounds(estimatedElementPosition, bounding)) {
         return {
@@ -12801,7 +12429,7 @@ function _positionElementWithinBounds(elementToPosition, target, bounding, posit
         };
     }
     else {
-        return _adjustFitWithinBounds(estimatedElementPosition, target, bounding, positionData, shouldScroll, minimumScrollResizeHeight, gap, directionalHintFixed, coverTarget);
+        return _adjustFitWithinBounds(estimatedElementPosition, target, bounding, positionData, gap, directionalHintFixed, coverTarget);
     }
 }
 function _finalizeBeakPosition(elementPosition, positionedBeak, bounds) {
@@ -12845,7 +12473,6 @@ function _positionBeak(beakWidth, elementPosition) {
     return beakPosition;
 }
 function _getRectangleFromElement(element) {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     var clientRect = element.getBoundingClientRect();
     return new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(clientRect.left, clientRect.right, clientRect.top, clientRect.bottom);
 }
@@ -12867,9 +12494,9 @@ function _getTargetRect(bounds, target) {
         }
         else {
             var rectOrPoint = target;
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             var left = rectOrPoint.left || rectOrPoint.x;
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            // eslint-disable-next-line deprecation/deprecation
             var top_1 = rectOrPoint.top || rectOrPoint.y;
             var right = rectOrPoint.right || left;
             var bottom = rectOrPoint.bottom || top_1;
@@ -12911,12 +12538,11 @@ function _getMaxHeightFromTargetRectangle(targetRectangle, targetEdge, gapSpace,
     }
     return maxHeight > 0 ? maxHeight : bounds.height;
 }
-function _positionElementRelative(props, elementToPosition, boundingRect, previousPositions, shouldScroll, minimumScrollResizeHeight) {
-    if (shouldScroll === void 0) { shouldScroll = false; }
+function _positionElementRelative(props, elementToPosition, boundingRect, previousPositions) {
     var gap = props.gapSpace ? props.gapSpace : 0;
     var targetRect = _getTargetRect(boundingRect, props.target);
     var positionData = _getAlignmentData(_getPositionData(props.directionalHint, props.directionalHintForRTL, previousPositions), targetRect, boundingRect, props.coverTarget, props.alignTargetEdge);
-    var positionedElement = _positionElementWithinBounds(_getRectangleFromElement(elementToPosition), targetRect, boundingRect, positionData, gap, shouldScroll, minimumScrollResizeHeight, props.directionalHintFixed, props.coverTarget);
+    var positionedElement = _positionElementWithinBounds(_getRectangleFromElement(elementToPosition), targetRect, boundingRect, positionData, gap, props.directionalHintFixed, props.coverTarget);
     return (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({}, positionedElement), { targetRectangle: targetRect });
 }
 function _finalizePositionData(positionedElement, hostElement, bounds, coverTarget, doNotFinalizeReturnEdge) {
@@ -12927,61 +12553,28 @@ function _finalizePositionData(positionedElement, hostElement, bounds, coverTarg
         alignmentEdge: positionedElement.alignmentEdge,
     };
 }
-function _positionElement(props, hostElement, elementToPosition, previousPositions, win) {
-    var theWin = win !== null && win !== void 0 ? win : (0,_Utilities__WEBPACK_IMPORTED_MODULE_5__.getWindow)();
+function _positionElement(props, hostElement, elementToPosition, previousPositions) {
     var boundingRect = props.bounds
         ? _getRectangleFromIRect(props.bounds)
-        : new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(0, theWin.innerWidth - (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getScrollbarWidth)(), 0, theWin.innerHeight);
+        : new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(0, window.innerWidth - (0,_Utilities__WEBPACK_IMPORTED_MODULE_5__.getScrollbarWidth)(), 0, window.innerHeight);
     var positionedElement = _positionElementRelative(props, elementToPosition, boundingRect, previousPositions);
     return _finalizePositionData(positionedElement, hostElement, boundingRect, props.coverTarget);
 }
-function _calculateGapSpace(isBeakVisible, beakWidth, gapSpace) {
-    if (beakWidth === void 0) { beakWidth = 0; }
-    if (gapSpace === void 0) { gapSpace = 0; }
-    return _calculateActualBeakWidthInPixels(isBeakVisible ? beakWidth : 0) / 2 + gapSpace;
-}
-function _positionCallout(props, hostElement, callout, previousPositions, shouldScroll, minimumScrollResizeHeight, doNotFinalizeReturnEdge, win) {
-    if (shouldScroll === void 0) { shouldScroll = false; }
-    var theWin = win !== null && win !== void 0 ? win : (0,_Utilities__WEBPACK_IMPORTED_MODULE_5__.getWindow)();
+function _positionCallout(props, hostElement, callout, previousPositions, doNotFinalizeReturnEdge) {
     var beakWidth = props.isBeakVisible ? props.beakWidth || 0 : 0;
-    var gap = _calculateGapSpace(props.isBeakVisible, props.beakWidth, props.gapSpace);
+    var gap = _calculateActualBeakWidthInPixels(beakWidth) / 2 + (props.gapSpace ? props.gapSpace : 0);
     var positionProps = props;
     positionProps.gapSpace = gap;
     var boundingRect = props.bounds
         ? _getRectangleFromIRect(props.bounds)
-        : new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(0, theWin.innerWidth - (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getScrollbarWidth)(), 0, theWin.innerHeight);
-    var positionedElement = _positionElementRelative(positionProps, callout, boundingRect, previousPositions, shouldScroll, minimumScrollResizeHeight);
+        : new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(0, window.innerWidth - (0,_Utilities__WEBPACK_IMPORTED_MODULE_5__.getScrollbarWidth)(), 0, window.innerHeight);
+    var positionedElement = _positionElementRelative(positionProps, callout, boundingRect, previousPositions);
     var beakPositioned = _positionBeak(beakWidth, positionedElement);
     var finalizedBeakPosition = _finalizeBeakPosition(positionedElement, beakPositioned, boundingRect);
     return (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_4__.__assign)({}, _finalizePositionData(positionedElement, hostElement, boundingRect, props.coverTarget, doNotFinalizeReturnEdge)), { beakPosition: finalizedBeakPosition });
 }
-function _positionCard(props, hostElement, callout, previousPositions, win) {
-    var theWin = win !== null && win !== void 0 ? win : (0,_Utilities__WEBPACK_IMPORTED_MODULE_5__.getWindow)();
-    return _positionCallout(props, hostElement, callout, previousPositions, false, undefined, true, theWin);
-}
-function _getRectangleFromTarget(target) {
-    var _a, _b, _c, _d;
-    var mouseTarget = target;
-    var elementTarget = target;
-    var rectOrPointTarget = target;
-    var targetRect;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    var left = (_a = rectOrPointTarget.left) !== null && _a !== void 0 ? _a : rectOrPointTarget.x;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    var top = (_b = rectOrPointTarget.top) !== null && _b !== void 0 ? _b : rectOrPointTarget.y;
-    var right = (_c = rectOrPointTarget.right) !== null && _c !== void 0 ? _c : left;
-    var bottom = (_d = rectOrPointTarget.bottom) !== null && _d !== void 0 ? _d : top;
-    // eslint-disable-next-line no-extra-boolean-cast -- may not actually be a MouseEvent
-    if (!!mouseTarget.stopPropagation) {
-        targetRect = new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(mouseTarget.clientX, mouseTarget.clientX, mouseTarget.clientY, mouseTarget.clientY);
-    }
-    else if (left !== undefined && top !== undefined) {
-        targetRect = new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(left, right, top, bottom);
-    }
-    else {
-        targetRect = _getRectangleFromElement(elementTarget);
-    }
-    return targetRect;
+function _positionCard(props, hostElement, callout, previousPositions) {
+    return _positionCallout(props, hostElement, callout, previousPositions, true);
 }
 // END PRIVATE FUNCTIONS
 var __positioningTestPackage = {
@@ -12998,14 +12591,14 @@ var __positioningTestPackage = {
  * If positioning has been completed before, previousPositions can be passed to ensure that the positioning element
  * repositions based on its previous targets rather than starting with directionalhint.
  */
-function positionElement(props, hostElement, elementToPosition, previousPositions, win) {
-    return _positionElement(props, hostElement, elementToPosition, previousPositions, win);
+function positionElement(props, hostElement, elementToPosition, previousPositions) {
+    return _positionElement(props, hostElement, elementToPosition, previousPositions);
 }
-function positionCallout(props, hostElement, elementToPosition, previousPositions, shouldScroll, minimumScrollResizeHeight, win) {
-    return _positionCallout(props, hostElement, elementToPosition, previousPositions, shouldScroll, minimumScrollResizeHeight, undefined, win);
+function positionCallout(props, hostElement, elementToPosition, previousPositions) {
+    return _positionCallout(props, hostElement, elementToPosition, previousPositions);
 }
-function positionCard(props, hostElement, elementToPosition, previousPositions, win) {
-    return _positionCard(props, hostElement, elementToPosition, previousPositions, win);
+function positionCard(props, hostElement, elementToPosition, previousPositions) {
+    return _positionCard(props, hostElement, elementToPosition, previousPositions);
 }
 /**
  * Gets the maximum height that a rectangle can have in order to fit below or above a target.
@@ -13013,13 +12606,31 @@ function positionCard(props, hostElement, elementToPosition, previousPositions, 
  * of the target given.
  * If no bounds are provided then the window is treated as the bounds.
  */
-function getMaxHeight(target, targetEdge, gapSpace, bounds, coverTarget, win) {
+function getMaxHeight(target, targetEdge, gapSpace, bounds, coverTarget) {
     if (gapSpace === void 0) { gapSpace = 0; }
-    var theWin = win !== null && win !== void 0 ? win : (0,_Utilities__WEBPACK_IMPORTED_MODULE_5__.getWindow)();
-    var targetRect = _getRectangleFromTarget(target);
+    var mouseTarget = target;
+    var elementTarget = target;
+    var rectOrPointTarget = target;
+    var targetRect;
     var boundingRectangle = bounds
         ? _getRectangleFromIRect(bounds)
-        : new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(0, theWin.innerWidth - (0,_Utilities__WEBPACK_IMPORTED_MODULE_6__.getScrollbarWidth)(), 0, theWin.innerHeight);
+        : new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(0, window.innerWidth - (0,_Utilities__WEBPACK_IMPORTED_MODULE_5__.getScrollbarWidth)(), 0, window.innerHeight);
+    // eslint-disable-next-line deprecation/deprecation
+    var left = rectOrPointTarget.left || rectOrPointTarget.x;
+    // eslint-disable-next-line deprecation/deprecation
+    var top = rectOrPointTarget.top || rectOrPointTarget.y;
+    var right = rectOrPointTarget.right || left;
+    var bottom = rectOrPointTarget.bottom || top;
+    // eslint-disable-next-line no-extra-boolean-cast -- may not actually be a MouseEvent
+    if (!!mouseTarget.stopPropagation) {
+        targetRect = new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(mouseTarget.clientX, mouseTarget.clientX, mouseTarget.clientY, mouseTarget.clientY);
+    }
+    else if (left !== undefined && top !== undefined) {
+        targetRect = new _Utilities__WEBPACK_IMPORTED_MODULE_3__.Rectangle(left, right, top, bottom);
+    }
+    else {
+        targetRect = _getRectangleFromElement(elementTarget);
+    }
     return _getMaxHeightFromTargetRectangle(targetRect, targetEdge, gapSpace, boundingRectangle, coverTarget);
 }
 /**
@@ -13055,9 +12666,9 @@ function _getBoundsFromTargetWindow(target, targetWindow) {
     }
     // If the target is not null get x-axis and y-axis coordinates directly.
     else if (target !== null) {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         x = target.left || target.x;
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        // eslint-disable-next-line deprecation/deprecation
         y = target.top || target.y;
     }
     var bounds = { top: 0, left: 0, right: 0, bottom: 0, width: 0, height: 0 };
@@ -13079,12 +12690,6 @@ function _getBoundsFromTargetWindow(target, targetWindow) {
 }
 function getBoundsFromTargetWindow(target, targetWindow) {
     return _getBoundsFromTargetWindow(target, targetWindow);
-}
-function calculateGapSpace(isBeakVisible, beakWidth, gapSpace) {
-    return _calculateGapSpace(isBeakVisible, beakWidth, gapSpace);
-}
-function getRectangleFromTarget(target) {
-    return _getRectangleFromTarget(target);
 }
 
 
@@ -67484,16 +67089,26 @@ var ModernCalendarWebPart = /** @class */ (function (_super) {
         var calItems = items.map(function (list) {
             var start = list[_this.properties.start];
             var end = list[_this.properties.end];
+            var bg = (list[_this.properties.colorField] || '').toString().trim();
+            var bgNormalized = _this._normalizeColor(bg);
+            var textColor = _this._getContrastingTextColor(bgNormalized || '');
             return {
                 title: list[_this.properties.title],
                 start: moment__WEBPACK_IMPORTED_MODULE_6___default().utc(start, 'YYYY-MM-DD HH:mm:ss').toDate(),
                 end: moment__WEBPACK_IMPORTED_MODULE_6___default().utc(end, 'YYYY-MM-DD HH:mm:ss').toDate(),
                 id: list["Id"],
                 detail: list[_this.properties.detail],
-                color: _this._normalizeColor(list[_this.properties.colorField]),
+                // Force filled block styling
+                display: 'block',
+                backgroundColor: bgNormalized,
+                borderColor: bgNormalized,
+                textColor: textColor,
+                classNames: ['gentechEvent'],
+                extendedProps: {
+                    detail: list[_this.properties.detail]
+                }
             };
         });
-        this.context.statusRenderer.clearLoadingIndicator(this.domElement);
         this.context.statusRenderer.clearLoadingIndicator(this.domElement);
         // Create a container for the React Panel if not exists
         var panelContainer = document.getElementById('spfx-calendar-panel');
@@ -67513,6 +67128,7 @@ var ModernCalendarWebPart = /** @class */ (function (_super) {
         var calendarEl = document.getElementById('spfxcalendar');
         if (calendarEl) {
             var calendar = new _fullcalendar_core__WEBPACK_IMPORTED_MODULE_13__.Calendar(calendarEl, {
+                eventDisplay: 'block',
                 eventClick: function (args) {
                     var calEvent = args.event;
                     // Task B: Open React Panel
@@ -67523,8 +67139,7 @@ var ModernCalendarWebPart = /** @class */ (function (_super) {
                         color: calEvent.backgroundColor, // FullCalendar maps 'color' to 'backgroundColor' usually
                         description: calEvent.extendedProps.detail,
                         id: calEvent.id,
-                        // If we had a URL field, map it here. For now, assuming detail might contain it or we don't have it.
-                        url: calEvent.url // FullCalendar standard prop if mapped
+                        url: calEvent.url
                     };
                     args.jsEvent.preventDefault(); // Prevent default if it's a link
                     _renderPanel(eventDetails, true);
@@ -67536,27 +67151,11 @@ var ModernCalendarWebPart = /** @class */ (function (_super) {
                         var color = info.event.backgroundColor || info.event.borderColor || '#3788d8';
                         // Apply left border accent
                         row.style.borderLeft = "4px solid ".concat(color);
-                        // Add a hover effect class or style
-                        // We can't easily add a hover class that uses dynamic color without CSS variables or JS events.
-                        // Let's use a subtle background tint if possible, or just rely on CSS modules if we had them here.
-                        // For now, let's set a custom property we can use in CSS, or just style inline.
-                        // Let's try to set a data attribute for color and use CSS to tint it.
-                        // Or just simple inline style for now:
-                        // Note: FullCalendar list view already has some styling. 
-                        // We want to colorize the background of the row when selected/hovered? 
-                        // The requirement says: "entire row background changes (subtle theme-tinted background)"
-                        // "A left accent bar (4px-ish) shows the item’s category color" -> Done with borderLeft.
-                        // To make the WHOLE row clickable and colored:
-                        // The 'fc-list-event' class is on the tr.
-                        // Let's modify the dot to be hidden if we want the accent bar instead?
-                        // Requirement: "only the icon area highlights" -> "I want the entire row / full color block"
+                        // Hide the default dot if we use the bar
                         var dot = row.querySelector('.fc-list-event-dot');
                         if (dot) {
-                            dot.style.display = 'none'; // Hide the default dot if we use the bar
+                            dot.style.display = 'none';
                         }
-                        // We can apply a background color with low opacity
-                        // But strictly parsing hex to rgba is complex without a library.
-                        // Let's just stick to the border accent which is the main requirement and maybe a generic light gray hover if standard doesn't have it.
                     }
                 },
                 plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_14__["default"], _fullcalendar_list__WEBPACK_IMPORTED_MODULE_15__["default"]],
@@ -67681,6 +67280,21 @@ var ModernCalendarWebPart = /** @class */ (function (_super) {
         // If it fails both strict checks above, we might want to return undefined 
         // to allow FullCalendar to use the default color.
         return undefined;
+    };
+    ModernCalendarWebPart.prototype._getContrastingTextColor = function (hex) {
+        if (!hex)
+            return '#000';
+        var c = hex.replace('#', '').trim();
+        var full = c.length === 3 ? c.split('').map(function (x) { return x + x; }).join('') : c;
+        if (full.length !== 6)
+            return '#000';
+        var r = parseInt(full.slice(0, 2), 16) / 255;
+        var g = parseInt(full.slice(2, 4), 16) / 255;
+        var b = parseInt(full.slice(4, 6), 16) / 255;
+        // relative luminance
+        var lin = function (v) { return (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)); };
+        var L = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+        return L > 0.55 ? '#000' : '#fff';
     };
     return ModernCalendarWebPart;
 }(_microsoft_sp_webpart_base__WEBPACK_IMPORTED_MODULE_0__.BaseClientSideWebPart));

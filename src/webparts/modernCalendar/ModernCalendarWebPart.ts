@@ -456,16 +456,28 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
     const calItems: EventSourceInput = items.map((list: any) => {
       const start = list[this.properties.start];
       const end = list[this.properties.end];
+
+      const bg = (list[this.properties.colorField] || '').toString().trim();
+      const bgNormalized = this._normalizeColor(bg);
+      const textColor = this._getContrastingTextColor(bgNormalized || '');
+
       return {
         title: list[this.properties.title],
         start: moment.utc(start, 'YYYY-MM-DD HH:mm:ss').toDate(),
         end: moment.utc(end, 'YYYY-MM-DD HH:mm:ss').toDate(),
         id: list["Id"],
         detail: list[this.properties.detail],
-        color: this._normalizeColor(list[this.properties.colorField]),
+        // Force filled block styling
+        display: 'block',
+        backgroundColor: bgNormalized,
+        borderColor: bgNormalized,
+        textColor: textColor,
+        classNames: ['gentechEvent'],
+        extendedProps: {
+          detail: list[this.properties.detail]
+        }
       };
     });
-    this.context.statusRenderer.clearLoadingIndicator(this.domElement);
 
     this.context.statusRenderer.clearLoadingIndicator(this.domElement);
 
@@ -489,6 +501,7 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
     const calendarEl = document.getElementById('spfxcalendar');
     if (calendarEl) {
       const calendar = new Calendar(calendarEl, {
+        eventDisplay: 'block',
         eventClick: (args: EventClickArg) => {
           const calEvent = args.event;
           // Task B: Open React Panel
@@ -499,8 +512,7 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
             color: calEvent.backgroundColor, // FullCalendar maps 'color' to 'backgroundColor' usually
             description: calEvent.extendedProps.detail,
             id: calEvent.id,
-            // If we had a URL field, map it here. For now, assuming detail might contain it or we don't have it.
-            url: calEvent.url // FullCalendar standard prop if mapped
+            url: calEvent.url
           };
 
           args.jsEvent.preventDefault(); // Prevent default if it's a link
@@ -515,31 +527,11 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
             // Apply left border accent
             row.style.borderLeft = `4px solid ${color}`;
 
-            // Add a hover effect class or style
-            // We can't easily add a hover class that uses dynamic color without CSS variables or JS events.
-            // Let's use a subtle background tint if possible, or just rely on CSS modules if we had them here.
-            // For now, let's set a custom property we can use in CSS, or just style inline.
-            // Let's try to set a data attribute for color and use CSS to tint it.
-            // Or just simple inline style for now:
-
-            // Note: FullCalendar list view already has some styling. 
-            // We want to colorize the background of the row when selected/hovered? 
-            // The requirement says: "entire row background changes (subtle theme-tinted background)"
-            // "A left accent bar (4px-ish) shows the item’s category color" -> Done with borderLeft.
-
-            // To make the WHOLE row clickable and colored:
-            // The 'fc-list-event' class is on the tr.
-
-            // Let's modify the dot to be hidden if we want the accent bar instead?
-            // Requirement: "only the icon area highlights" -> "I want the entire row / full color block"
+            // Hide the default dot if we use the bar
             const dot = row.querySelector('.fc-list-event-dot') as HTMLElement;
             if (dot) {
-              dot.style.display = 'none'; // Hide the default dot if we use the bar
+              dot.style.display = 'none';
             }
-
-            // We can apply a background color with low opacity
-            // But strictly parsing hex to rgba is complex without a library.
-            // Let's just stick to the border accent which is the main requirement and maybe a generic light gray hover if standard doesn't have it.
           }
         },
         plugins: [dayGridPlugin, listPlugin],
@@ -547,10 +539,8 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
         eventSources: [
           {
             events: calItems,
-
           }
         ],
-
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
@@ -679,5 +669,22 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
     // If it fails both strict checks above, we might want to return undefined 
     // to allow FullCalendar to use the default color.
     return undefined;
+  }
+
+  private _getContrastingTextColor(hex: string): string {
+    if (!hex) return '#000';
+    const c = hex.replace('#', '').trim();
+    const full = c.length === 3 ? c.split('').map(x => x + x).join('') : c;
+    if (full.length !== 6) return '#000';
+
+    const r = parseInt(full.slice(0, 2), 16) / 255;
+    const g = parseInt(full.slice(2, 4), 16) / 255;
+    const b = parseInt(full.slice(4, 6), 16) / 255;
+
+    // relative luminance
+    const lin = (v: number) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+    const L = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+
+    return L > 0.55 ? '#000' : '#fff';
   }
 }
