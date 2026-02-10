@@ -1,0 +1,108 @@
+@import '~@fluentui/react/dist/sass/References.scss';
+
+.eventPanel {
+  .headerContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+
+  .colorStrip {
+    height: 6px;
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+
+  .headerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .headerTitle {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: "[theme: neutralPrimary, default: #323130]";
+  }
+
+  .closeButton {
+    margin-left: 10px;
+    color: "[theme: neutralSecondary, default: #605e5c]";
+    &:hover {
+        background-color: "[theme: neutralLight, default: #edebe9]";
+        color: "[theme: neutralPrimary, default: #323130]";
+    }
+  }
+
+  .panelBody {
+    padding: 0 4px;
+  }
+
+  .metaSection {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .metaRow {
+    display: flex;
+    align-items: center;
+    color: "[theme: neutralSecondary, default: #605e5c]";
+    font-size: 14px;
+  }
+
+  .metaIcon {
+    margin-right: 12px;
+    font-size: 16px;
+    color: "[theme: themePrimary, default: #0078d4]";
+  }
+
+  .metaText {
+    color: "[theme: neutralPrimary, default: #323130]";
+    font-weight: 500;
+  }
+
+  .descriptionSection {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid "[theme: neutralLight, default: #edebe9]";
+  }
+
+  .sectionTitle {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: "[theme: neutralPrimary, default: #323130]";
+  }
+
+  .descriptionContent {
+    font-size: 14px;
+    line-height: 1.5;
+    color: "[theme: neutralPrimary, default: #323130]";
+    
+    p {
+        margin-bottom: 10px;
+    }
+  }
+
+  .actionSection {
+      margin-top: 30px;
+      text-align: right;
+  }
+
+  .actionLink {
+      color: "[theme: themePrimary, default: #0078d4]";
+      text-decoration: none;
+      font-weight: 600;
+      &:hover {
+          text-decoration: underline;
+      }
+      i {
+          margin-left: 4px;
+          font-size: 12px;
+      }
+  }
+}
