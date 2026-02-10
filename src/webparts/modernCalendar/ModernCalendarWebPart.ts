@@ -75,6 +75,28 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
     }
   }
 
+  private _stringifyError(err: unknown): string {
+    try {
+      if (err instanceof Error) {
+        const stack = (err as any).stack ? `\n${(err as any).stack}` : '';
+        return `${err.name}: ${err.message}${stack}`;
+      }
+      if (typeof err === 'string') return err;
+      if (err == null) return 'Unknown error (null/undefined)';
+      return JSON.stringify(err, Object.getOwnPropertyNames(err));
+    } catch {
+      return String(err);
+    }
+  }
+
+  private _renderFatalError(userMessage: string, err?: unknown): void {
+    const details = err ? this._stringifyError(err) : '';
+    if (err) console.error('[ModernCalendarWebPart] Fatal error:', err);
+    const msg = details ? `${userMessage}\n\nDetails:\n${details}` : userMessage;
+    this.context.statusRenderer.clearLoadingIndicator(this.domElement);
+    this.context.statusRenderer.renderError(this.domElement, msg);
+  }
+
   public render(): void {
     if (this.properties.theme != null) {
       SPComponentLoader.loadCss(this.properties.theme);
@@ -623,10 +645,9 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
       })
       .catch((err) => {
         this._log('error', 'Error loading list data', err);
-        this.context.statusRenderer.clearLoadingIndicator(this.domElement);
-        this.context.statusRenderer.renderError(
-          this.domElement,
-          "There was an error loading your list, please verify the selected list has Calendar Events or choose a new list."
+        this._renderFatalError(
+          "There was an error loading your list. Verify the selected list has Calendar Events or choose a new list.",
+          err
         );
       });
   }
